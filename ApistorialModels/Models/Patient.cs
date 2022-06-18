@@ -85,10 +85,12 @@ namespace ApistorialModels.Models
         {
             var PatientList = new List<Patient>();
             var db = new DBConnection(connectionString);
+            var nameValue = new NameValue();
             var cmd = new SqlCommand();
             if (Top > 0)
             {
                 cmd.CommandText = @"SELECT TOP(@Top) * FROM PATIENT";
+                cmd.Parameters.Add(new SqlParameter("@Top", Top));
             }
             else
             {
@@ -104,11 +106,11 @@ namespace ApistorialModels.Models
                     Middle_Name = row["MIDDLE_NAME"].ToString(),
                     Last_Name = row["LAST_NAME"].ToString(),
                     Sex = row["SEX"].ToString(),
-                    NvIdentification_Type = new NameValue() { ID = int.Parse(row["NVIDENTIFICATION_TYPE"].ToString()) },
+                    NvIdentification_Type = nameValue.Find(int.Parse(row["NVIDENTIFICATION_TYPE"].ToString()), connectionString),
                     Identfication_Number = row["IDENTIFICATION_NUMBER"].ToString(),
                     Address1 = row["ADDRESS1"].ToString(),
                     Address2 = row["ADDRESS2"].ToString(),
-                    NvBlood = new NameValue() { ID = int.Parse(row["NVBLOOD_TYPE"].ToString()) },
+                    NvBlood = nameValue.Find(int.Parse(row["NVBLOOD_TYPE"].ToString()), connectionString),
                     Tel1 = row["TEL1"].ToString(),
                     Tel2 = row["TEL2"].ToString(),
                     Email = row["EMAIL"].ToString(),

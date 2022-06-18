@@ -57,6 +57,7 @@ namespace ApistorialModels.Models
             if (Top > 0)
             {
                 cmd.CommandText = @"SELECT TOP(@Top) * FROM Analysis";
+                cmd.Parameters.Add(new SqlParameter("@Top", Top));
             }
             else
             {
@@ -75,6 +76,24 @@ namespace ApistorialModels.Models
                 });
             }
             return AnalysisList;
+        }
+
+        public Analysis Find(int idAnalysis, string connectionString)
+        {
+            var db = new DBConnection(connectionString);
+            var analysisType_ = new AnalysisType();
+            var resultType_ = new ResultType();
+            var cmd = new SqlCommand();
+            cmd.CommandText = @"SELECT * FROM Analysis";
+            var ds = db.ExtractDataSet(cmd);
+            return new Analysis()
+            {
+                ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString()),
+                analysisType = analysisType_.Find(int.Parse(ds.Tables[0].Rows[0]["IdAnalysisType"].ToString()), connectionString),
+                resultType = resultType_.Find(int.Parse(ds.Tables[0].Rows[0]["IdResultType"].ToString()), connectionString),
+                Description = ds.Tables[0].Rows[0]["Description"].ToString(),
+                Code = ds.Tables[0].Rows[0]["Code"].ToString()
+            };
         }
 
     }

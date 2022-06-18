@@ -80,6 +80,7 @@ namespace ApistorialModels.Models
             if (Top > 0)
             {
                 cmd.CommandText = @"SELECT TOP(@Top) * FROM MEDICAL_CENTER";
+                cmd.Parameters.Add(new SqlParameter("@Top", Top));
             }
             else
             {
@@ -108,6 +109,35 @@ namespace ApistorialModels.Models
                 });
             }
             return MedicalCenterList;
+        }
+
+        public MedicalCenter Find(int idMedicalCenter, string connectionString)
+        {
+            var db = new DBConnection(connectionString);
+            var nameValue = new NameValue();
+            var cmd = new SqlCommand();
+            cmd.CommandText = @"SELECT * FROM MEDICAL_CENTER WHERE IDMEDICAL_CENTER = @IDMEDICAL_CENTER";
+            cmd.Parameters.Add(new SqlParameter("@IDMEDICAL_CENTER", idMedicalCenter));
+            var ds = db.ExtractDataSet(cmd);
+
+               return new MedicalCenter()
+                {
+                    ID = int.Parse(ds.Tables[0].Rows[0]["IDMEDICAL_CENTER"].ToString()),
+                    Description = ds.Tables[0].Rows[0]["DESCRIPTION"].ToString(),
+                    RNC = ds.Tables[0].Rows[0]["RNC"].ToString(),
+                    Tel1 = ds.Tables[0].Rows[0]["TEL1"].ToString(),
+                    Tel2 = ds.Tables[0].Rows[0]["TEL2"].ToString(),
+                    Email1 = ds.Tables[0].Rows[0]["EMAIL1"].ToString(),
+                    Email2 = ds.Tables[0].Rows[0]["EMAIL2"].ToString(),
+                    Name_Contact = ds.Tables[0].Rows[0]["Name_Contact"].ToString(),
+                    NVStatus_Center = nameValue.Find(int.Parse(ds.Tables[0].Rows[0]["NVSTATUS_CENTER"].ToString()), connectionString),
+                    Token = ds.Tables[0].Rows[0]["TOKEN"].ToString(),
+                    CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
+                    UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
+
+                };
         }
     }
 }

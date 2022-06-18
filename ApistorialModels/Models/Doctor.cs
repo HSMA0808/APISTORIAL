@@ -100,10 +100,12 @@ namespace ApistorialModels.Models
         {
             var DoctorList = new List<Doctor>();
             var db = new DBConnection(connectionString);
+            var nameValue = new NameValue();
             var cmd = new SqlCommand();
             if (Top > 0)
             {
                 cmd.CommandText = @"SELECT TOP(@Top) * FROM DOCTOR";
+                cmd.Parameters.Add(new SqlParameter("@Top", Top));
             }
             else
             {
@@ -119,12 +121,12 @@ namespace ApistorialModels.Models
                     Middle_Name = row["MIDDLE_NAME"].ToString(),
                     Last_Name = row["LAST_NAME"].ToString(),
                     Sex = row["SEX"].ToString(),
-                    NvIdentification_Type = new NameValue() { ID = int.Parse(row["NVIDENTIFICATION_TYPE"].ToString())},
+                    NvIdentification_Type = nameValue.Find(int.Parse(row["NVIDENTIFICATION_TYPE"].ToString()), connectionString),
                     Identfication_Number = row["IDENTIFICATION_NUMBER"].ToString(),
                     Address1 = row["ADDRESS1"].ToString(),
                     Address2 = row["ADDRESS2"].ToString(),
                     specialty = new Specialtys() { ID = int.Parse(row["IDSPECIALTY"].ToString())},
-                    NvBlood = new NameValue() { ID = int.Parse(row["NVBLOOD_TYPE"].ToString()) },
+                    NvBlood = nameValue.Find(int.Parse(row["NVBLOOD_TYPE"].ToString()), connectionString),
                     Tel1 = row["TEL1"].ToString(),
                     Tel2 = row["TEL2"].ToString(),
                     Email = row["EMAIL"].ToString(),
@@ -136,6 +138,40 @@ namespace ApistorialModels.Models
             }
             return DoctorList;
         }
+
+        public Doctor Find(int idDoctor, string connectionString)
+        {
+            var DoctorList = new List<Doctor>();
+            var db = new DBConnection(connectionString);
+            var oNameValue = new NameValue();
+            var oSpecialty = new Specialtys();
+            var cmd = new SqlCommand();
+            cmd.CommandText = @"SELECT * FROM DOCTOR WHERE IDDOCTOR = @IDDOCTOR";
+            cmd.Parameters.Add(new SqlParameter("@IDDOCTOR", idDoctor));
+            var ds = db.ExtractDataSet(cmd);
+            return new Doctor()
+                {
+                    ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString()),
+                    First_Name = ds.Tables[0].Rows[0]["FIRST_NAME"].ToString(),
+                    Middle_Name = ds.Tables[0].Rows[0]["MIDDLE_NAME"].ToString(),
+                    Last_Name = ds.Tables[0].Rows[0]["LAST_NAME"].ToString(),
+                    Sex = ds.Tables[0].Rows[0]["SEX"].ToString(),
+                    NvIdentification_Type = oNameValue.Find(int.Parse(ds.Tables[0].Rows[0]["NVIDENTIFICATION_TYPE"].ToString()), connectionString),
+                    Identfication_Number = ds.Tables[0].Rows[0]["IDENTIFICATION_NUMBER"].ToString(),
+                    Address1 = ds.Tables[0].Rows[0]["ADDRESS1"].ToString(),
+                    Address2 = ds.Tables[0].Rows[0]["ADDRESS2"].ToString(),
+                    specialty = oSpecialty.Find(int.Parse(ds.Tables[0].Rows[0]["IDSPECIALTY"].ToString()), connectionString),
+                    NvBlood = oNameValue.Find(int.Parse(ds.Tables[0].Rows[0]["NVBLOOD_TYPE"].ToString()), connectionString),
+                    Tel1 = ds.Tables[0].Rows[0]["TEL1"].ToString(),
+                    Tel2 = ds.Tables[0].Rows[0]["TEL2"].ToString(),
+                    Email = ds.Tables[0].Rows[0]["EMAIL"].ToString(),
+                    CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
+                    UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString()),
+                };
+            }
+        }
     }
-}
+
 
