@@ -1,10 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace ApistorialModels.Models
 {
     public class RecordInterments : EntityBase
     {
+        public Record record { get; set; }
+        public MedicalCenter medicalCenter { get; set; }
+        public DateTime IntermentDate { get; set; }
+        public string Reason { get; set; }
+
+        public int Save(string connectionString)
+        {
+            var db = new DBConnection(connectionString);
+            var cmd = new SqlCommand();
+            cmd.CommandText = @"INSERT INTO RECORD_INTERMENTS
+                                            (IDRECORD,
+                                             IDMEDICAL_CENTER,
+                                             INTERMENTDATE,
+                                             REASON,
+                                             CREATE_USER,
+                                             CREATE_DATE)
+                                             VALUES
+                                            (@IDRECORD,
+                                             @IDMEDICAL_CENTER,
+                                             @INTERMENTDATE,
+                                             @REASON,
+                                             @CREATE_USER,
+                                             @CREATE_DATE)";
+            cmd.Parameters.Add(new SqlParameter("@IDRECORD", record.ID));
+            cmd.Parameters.Add(new SqlParameter("@IDMEDICAL_CENTER", medicalCenter.ID));
+            cmd.Parameters.Add(new SqlParameter("@INTERMENTDATE", IntermentDate));
+            cmd.Parameters.Add(new SqlParameter("@REASON", Reason));
+            cmd.Parameters.Add(new SqlParameter("@CREATE_USER", CreateUser));
+            cmd.Parameters.Add(new SqlParameter("@CREATE_DATE", CreateDate));
+            db.ExecuteCommand(cmd);
+            var ds = db.ExtractDataSet(new SqlCommand("SELECT TOP(1) IDRECORD_INTERMENT FROM RECORD_INTERMENTS ORDER BY CREATE_DATE DESC"));
+            return int.Parse(ds.Tables[0].Rows[0][0].ToString());
+        }
+
+        public RecordInterments Find(int idRecordEmergencyEntry, string connectionString)
+        {
+            var db = new DBConnection(connectionString);
+            var oMedicalCenter = new MedicalCenter();
+            var oRecord = new Record();
+            var cmd = new SqlCommand();
+            cmd.CommandText = @"SELECT * FROM RECORD_INTERMENTS WHERE IDRECORD_INTERMENT = @IDRECORD_INTERMENT";
+            cmd.Parameters.Add(new SqlParameter("@IDRECORD_INTERMENT", idRecordEmergencyEntry));
+            var ds = db.ExtractDataSet(cmd);
+            return new RecordInterments()
+            {
+                ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_INTERMENT"].ToString()),
+                record = oRecord.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
+                medicalCenter = oMedicalCenter.Find(int.Parse(ds.Tables[0].Rows[0]["IDMEDICAL_CENTER"].ToString()), connectionString),
+                IntermentDate = DateTime.Parse(ds.Tables[0].Rows[0]["INTERMENTDATE"].ToString()),
+                CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
+                CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
+                UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
+                UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
+            };
+        }
+
+        public List<RecordInterments> ToList(string connectionString, int Top = 0)
+        {
+            var db = new DBConnection(connectionString);
+            var RecordIntermentsList = new List<RecordInterments>();
+            var oMedicalCenter = new MedicalCenter();
+            var oRecord = new Record();
+            var cmd = new SqlCommand();
+            if (Top > 0)
+            {
+                cmd.CommandText = @"SELECT TOP(@TOP) * FROM RECORD_INTERMENTS";
+                cmd.Parameters.Add(new SqlParameter("@top", Top));
+            }
+            var ds = db.ExtractDataSet(cmd);
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                RecordIntermentsList.Add(new RecordInterments()
+                {
+                    ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_INTERMENT"].ToString()),
+                    record = oRecord.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
+                    medicalCenter = oMedicalCenter.Find(int.Parse(ds.Tables[0].Rows[0]["IDMEDICAL_CENTER"].ToString()), connectionString),
+                    IntermentDate = DateTime.Parse(ds.Tables[0].Rows[0]["INTERMENTDATE"].ToString()),
+                    CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
+                    UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
+                });
+            }
+            return RecordIntermentsList;
+        }
     }
 }
