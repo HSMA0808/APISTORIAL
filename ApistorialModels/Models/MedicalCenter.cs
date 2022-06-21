@@ -25,11 +25,7 @@ namespace ApistorialModels.Models
         public int Save(string connectionString)
         {
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = @"INSERT INTO MEDICAL_CENTER 
-                                (DESCRIPTION, RNC, TEL1, TEL2, EMAIL1, EMAIL2
-                                , NVSTATUS_CENTER, TOKEN, CREATE_USER, CREATE_DATE) 
-                                VALUES 
-                                (@DESCRIPTION, @RNC, @TEL1, @TEL2, @EMAIL1, @EMAIL2
+            cmd.CommandText = @"EXEC INSERT_MEDICALCENTER @DESCRIPTION, @RNC, @TEL1, @TEL2, @EMAIL1, @EMAIL2
                                 , @NVSTATUS_CENTER, @TOKEN, @CREATE_USER, @CREATE_DATE)";
 
             cmd.Parameters.Add(new SqlParameter("@DESCRIPTION", Description));

@@ -23,20 +23,7 @@ namespace ApistorialModels.Models
         {
             var db = new DBConnection(connectionString);
             var cmd = new SqlCommand();
-            cmd.CommandText = @"INSERT INTO RECORD_OPERATIONS 
-                                            (IDRECORD,
-                                             IDOPERATION,
-                                             IDDOCTOR,
-                                             OPERATIONDATE,
-                                             CREATE_USER,
-                                             CREATE_DATE)
-                                        VALUES
-                                            (@IDRECORD,
-                                             @IDOPERATION,
-                                             @IDDOCTOR,
-                                             @OPERATIONDATE,
-                                             @CREATE_USER,
-                                             @CREATE_DATE)";
+            cmd.CommandText = @"EXEC INSER_RECORDOPERATION @IDRECORD, @IDOPERATION, @IDDOCTOR, @OPERATIONDATE, @CREATE_USER, @CREATE_DATE)";
             cmd.Parameters.Add(new SqlParameter("@IDRECORD", record.ID));
             cmd.Parameters.Add(new SqlParameter("@IDOPERATION", operation.ID));
             cmd.Parameters.Add(new SqlParameter("@IDDOCTOR", doctor.ID));

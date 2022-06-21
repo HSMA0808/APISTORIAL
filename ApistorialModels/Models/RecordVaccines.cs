@@ -20,18 +20,14 @@ namespace ApistorialModels.Models
         {
             var db = new DBConnection(connectionString);
             var cmd = new SqlCommand();
-            cmd.CommandText = @"INSERT INTO RECORD_VACCINES
-                                            (IDRECORD_VACCINES,
-                                             IDRECORD,
-                                             NVALLERGIES,
-                                             CREATE_USER,
-                                             CREATE_DATE)
-                                             VALUES
-                                             (@IDRECORD_VACCINES,
-                                             @IDRECORD,
-                                             @NVALLERGIES,
-                                             @CREATE_USER,
-                                             @CREATE_DATE)";
+            foreach (NameValue nv in NvVaccine)
+            {
+                cmd.CommandText = @"EXEC INSERT_RECORDVACCINES @IDRECORD, @NVVACCINE, @CREATE_USER, @CREATE_DATE)";
+                cmd.Parameters.Add(new SqlParameter("@IDRECORD", record.ID));
+                cmd.Parameters.Add(new SqlParameter("@NVVACCINE", nv.ID));
+                cmd.Parameters.Add(new SqlParameter("@CREATE_USER", CreateUser));
+                cmd.Parameters.Add(new SqlParameter("@CREATE_DATE", CreateDate));
+            }
             db.ExecuteCommand(cmd);
         }
 

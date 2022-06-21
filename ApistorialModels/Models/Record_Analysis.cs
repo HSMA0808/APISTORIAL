@@ -24,10 +24,7 @@ namespace ApistorialModels.Models
             var oRecord = new Record();
             var oAnalysis = new Analysis();
             var cmd = new SqlCommand();
-            cmd.CommandText = @"INSERT INTO RECORD_ANALYSIS
-                                            (IDRECORD, IDNALYSIS, PUBLIC_RESULTS, RESULTS, CREATE_USER, CREATE_DATE)
-                                            VALUES
-                                            (@IDRECORD, @IDNALYSIS, @PUBLIC_RESULTS, @RESULTS, @CREATE_USER, @CREATE_DATE)";
+            cmd.CommandText = @"EXEC INSERT_RECORDANALYSIS @IDRECORD, @IDNALYSIS, @PUBLIC_RESULTS, @RESULTS, @CREATE_USER, @CREATE_DATE)";
             cmd.Parameters.Add(new SqlParameter("@IDRECORD", record.ID));
             cmd.Parameters.Add(new SqlParameter("@IDANALYSIS", analysis.ID));
             cmd.Parameters.Add(new SqlParameter("@PUBLIC_RESULTS", PublicResults));

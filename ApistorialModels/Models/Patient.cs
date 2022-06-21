@@ -30,12 +30,7 @@ namespace ApistorialModels.Models
         public int Save(string connectionString)
         {
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = @"INSERT INTO PATIENT 
-                                  (FIRST_NAME, MIDDLE_NAME, LAST_NAME, SEX, NVIDENTIFICATION_TYPE
-                                , IDENTIFICATION_NUMBER, ADDRESS1, ADDRESS2, NVBLOOD_TYPE, TEL1, TEL2, EMAIL
-                                , CREATE_USER, CREATE_DATE) 
-                                VALUES 
-                                  (@FIRST_NAME, @MIDDLE_NAME, @LAST_NAME, @SEX, @NVIDENTIFICATION_TYPE
+            cmd.CommandText = @"EXEC INSERT_PATIENT @FIRST_NAME, @MIDDLE_NAME, @LAST_NAME, @SEX, @NVIDENTIFICATION_TYPE
                                 , @IDENTIFICATION_NUMBER, @ADDRESS1, @ADDRESS2, @NVBLOOD_TYPE, @TEL1, @TEL2, @EMAIL
                                 , @CREATE_USER, @CREATE_DATE)";
             cmd.Parameters.Add(new SqlParameter("@FIRST_NAME", First_Name));
