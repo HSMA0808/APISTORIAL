@@ -55,16 +55,16 @@ namespace ApistorialModels.Models
             foreach(DataRow row in ds.Tables[0].Rows)
             {
                 nameValueList.Add(new NameValue() {
-                    ID = int.Parse(ds.Tables[0].Rows[0]["IDNAMEVALUE"].ToString()),
-                    Description = ds.Tables[0].Rows[0]["DESCRIPTION"].ToString(),
-                    CustomString1 = ds.Tables[0].Rows[0]["CUSTOMSTRING1"].ToString(),
-                    CustomString2 = ds.Tables[0].Rows[0]["CUSTOMSTRING2"].ToString(),
-                    CustomInt1 = int.Parse(ds.Tables[0].Rows[0]["CUSTOMINT1"].ToString()),
-                    CustomInt2 = int.Parse(ds.Tables[0].Rows[0]["CUSTOMINT2"].ToString()),
-                    CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
-                    CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
-                    UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
-                    UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString()),
+                    ID = int.Parse(row["IDNAMEVALUE"].ToString()),
+                    Description = row["DESCRIPTION"].ToString(),
+                    CustomString1 = row["CUSTOMSTRING1"].ToString(),
+                    CustomString2 = row["CUSTOMSTRING2"].ToString(),
+                    CustomInt1 = int.Parse(row["CUSTOMINT1"].ToString()),
+                    CustomInt2 = int.Parse(row["CUSTOMINT2"].ToString()),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString()),
                 });
             };
             return nameValueList;

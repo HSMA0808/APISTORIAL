@@ -95,15 +95,15 @@ namespace ApistorialModels.Models
             {
                 RecordOperationList.Add(new Record_Operation()
                 {
-                    ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_OPERATIONS"].ToString()),
-                    record = oRecord.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
-                    operation = oOperation.Find(int.Parse(ds.Tables[0].Rows[0]["IDOPERATION"].ToString()), connectionString),
-                    doctor = oDoctor.Find(int.Parse(ds.Tables[0].Rows[0]["IDDOCTOR"].ToString()), connectionString),
-                    OperationDate = DateTime.Parse(ds.Tables[0].Rows[0]["OPERATIONDATE"].ToString()),
-                    CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
-                    CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
-                    UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
-                    UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
+                    ID = int.Parse(row["IDRECORD_OPERATIONS"].ToString()),
+                    record = oRecord.Find(int.Parse(row["IDRECORD"].ToString()), connectionString),
+                    operation = oOperation.Find(int.Parse(row["IDOPERATION"].ToString()), connectionString),
+                    doctor = oDoctor.Find(int.Parse(row["IDDOCTOR"].ToString()), connectionString),
+                    OperationDate = DateTime.Parse(row["OPERATIONDATE"].ToString()),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString())
                 });
             }
             return RecordOperationList;

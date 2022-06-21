@@ -84,15 +84,15 @@ namespace ApistorialModels.Models
             {
                 RecordAnalysisList.Add(new Record_Analysis()
                 {
-                    ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_ANALYSIS"].ToString()),
-                    record = record.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
-                    analysis = analysis.Find(int.Parse(ds.Tables[0].Rows[0]["IDANALYSIS"].ToString()), connectionString),
-                    PublicResults = bool.Parse(ds.Tables[0].Rows[0]["PUBLIC_RESULTS"].ToString()),
-                    Results = ds.Tables[0].Rows[0]["RESULTS"].ToString(),
-                    CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
-                    CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
-                    UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
-                    UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
+                    ID = int.Parse(row["IDRECORD_ANALYSIS"].ToString()),
+                    record = record.Find(int.Parse(row["IDRECORD"].ToString()), connectionString),
+                    analysis = analysis.Find(int.Parse(row["IDANALYSIS"].ToString()), connectionString),
+                    PublicResults = bool.Parse(row["PUBLIC_RESULTS"].ToString()),
+                    Results = row["RESULTS"].ToString(),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString())
                 });
             }
             return RecordAnalysisList;

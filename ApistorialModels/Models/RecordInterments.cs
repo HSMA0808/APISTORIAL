@@ -86,14 +86,14 @@ namespace ApistorialModels.Models
             {
                 RecordIntermentsList.Add(new RecordInterments()
                 {
-                    ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_INTERMENT"].ToString()),
-                    record = oRecord.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
-                    medicalCenter = oMedicalCenter.Find(int.Parse(ds.Tables[0].Rows[0]["IDMEDICAL_CENTER"].ToString()), connectionString),
-                    IntermentDate = DateTime.Parse(ds.Tables[0].Rows[0]["INTERMENTDATE"].ToString()),
-                    CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
-                    CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
-                    UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
-                    UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
+                    ID = int.Parse(row["IDRECORD_INTERMENT"].ToString()),
+                    record = oRecord.Find(int.Parse(row["IDRECORD"].ToString()), connectionString),
+                    medicalCenter = oMedicalCenter.Find(int.Parse(row["IDMEDICAL_CENTER"].ToString()), connectionString),
+                    IntermentDate = DateTime.Parse(row["INTERMENTDATE"].ToString()),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString())
                 });
             }
             return RecordIntermentsList;

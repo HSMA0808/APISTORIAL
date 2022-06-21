@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -67,6 +68,44 @@ namespace ApistorialModels.Models
                 UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
 
             };
+        }
+
+        public List<Record_Visit> ToList(string connectionString, int Top = 0)
+        {
+            var db = new DBConnection(connectionString);
+            var oRecord = new Record();
+            var oDoctor = new Doctor();
+            var oSpecialty = new Specialtys();
+            var RecordVisitsList = new List<Record_Visit>();
+            var cmd = new SqlCommand();
+            if (Top > 0)
+            {
+                cmd.CommandText = "SELECT TOP(@TOP)* FROM RECORD_VISITS ORDER BY CREATE_DATE DESC";
+                cmd.Parameters.Add(new SqlParameter("@TOP", Top));
+            }
+            else
+            {
+                cmd.CommandText = "SELECT * FROM RECORD_VISITS ORDER BY CREATE_DATE DESC";
+            }
+            var ds = db.ExtractDataSet(cmd);
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                RecordVisitsList.Add(new Record_Visit()
+                {
+                    ID = int.Parse(row["IDRECORD_VISITS"].ToString()),
+                    record = oRecord.Find(int.Parse(row["IDRECORD"].ToString()), connectionString),
+                    doctor = oDoctor.Find(int.Parse(row["IDDOCTOR"].ToString()), connectionString),
+                    specialty = oSpecialty.Find(int.Parse(row["IDSPECIALTY"].ToString()), connectionString),
+                    Observations = row["OBSERVATIONS"].ToString(),
+                    Indications = row["INDICATIONS"].ToString(),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString())
+
+                });
+            }
+            return RecordVisitsList;
         }
     }
 }
