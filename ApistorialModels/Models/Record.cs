@@ -12,6 +12,12 @@ namespace ApistorialModels.Models
         public MedicalCenter medicalCenter_Creator { get; set; }
         public MedicalCenter last_MedicalCenterUpdate { get; set; }
 
+        public Record()
+        {
+            patient = new Patient();
+            medicalCenter_Creator = new MedicalCenter();
+            last_MedicalCenterUpdate = new MedicalCenter();
+        }
         public int Save(string connectionString)
         {
             var db = new DBConnection(connectionString);

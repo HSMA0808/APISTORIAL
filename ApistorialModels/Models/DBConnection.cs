@@ -40,6 +40,7 @@ namespace ApistorialModels.Models
             var conexion = Conectar();
             try
             {
+                cmd.Connection = conexion;
                 cmd.Transaction = conexion.BeginTransaction();
                 cmd.ExecuteNonQuery();
                 cmd.Transaction.Commit();

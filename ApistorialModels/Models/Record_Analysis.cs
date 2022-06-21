@@ -13,6 +13,11 @@ namespace ApistorialModels.Models
         public bool PublicResults { get; set; }
         public string Results { get; set; }
 
+        public Record_Analysis()
+        { 
+            record = new Record();
+            analysis = new Analysis();
+        }
         public int Save(string connectionString)
         {
             var db = new DBConnection(connectionString);

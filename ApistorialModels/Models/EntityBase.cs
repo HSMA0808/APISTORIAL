@@ -12,12 +12,12 @@ namespace ApistorialModels.Models
         public string UpdateUser { get; set; }
         public DateTime UpdateDate { get; set; }
 
-        private void AuditUpdateData(string user)
+        public void AuditUpdateData(string user)
         {
             UpdateUser = user;
             UpdateDate = DateTime.Now;  
         }
-        private void AuditCreateData(string user)
+        public void AuditCreateData(string user)
         {
             CreateUser = user;
             CreateDate = DateTime.Now;

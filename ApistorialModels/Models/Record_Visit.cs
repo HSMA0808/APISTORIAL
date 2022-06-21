@@ -14,6 +14,12 @@ namespace ApistorialModels.Models
         public string Indications { get; set; }
         public DateTime VisitDate { get; set; }
 
+        public Record_Visit()
+        {
+            record = new Record();
+            doctor = new Doctor();
+            specialty = new Specialtys();
+        }
         public int Save(string connectionString)
         { 
             var db = new DBConnection(connectionString);

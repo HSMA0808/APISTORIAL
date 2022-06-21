@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
                         });
                 }
                 Record record = new Record();
-                var oRecord = record.Find(IdRecord, "");
+                var oRecord = record.Find(IdRecord, StaticsOperations.getConfiguration().GetConnectionString("DefaultConnection"));
                 return Ok(new {
                     ResponseCode = "00",
                     Message = "Success",

@@ -13,6 +13,12 @@ namespace ApistorialModels.Models
         public string Description { get; set; }
         public string Code { get; set; }
 
+        public Analysis()
+        {
+            analysisType = new AnalysisType();
+            resultType = new ResultType();
+        }
+
         public int Save(string connectionString)
         {
             SqlCommand cmd = new SqlCommand();

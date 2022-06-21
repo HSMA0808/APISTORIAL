@@ -12,6 +12,10 @@ namespace ApistorialModels.Models
         public string Description { get; set; }
         public string Code { get; set; }
 
+        public Operation()
+        {
+            operationType = new OperationType();
+        }
         public List<Operation> TolList(string connectionString, int Top = 0)
         {
             var db = new DBConnection(connectionString);

@@ -13,6 +13,12 @@ namespace ApistorialModels.Models
         public DateTime IntermentDate { get; set; }
         public string Reason { get; set; }
 
+        public RecordEmergencyEntry()
+        {
+            record = new Record();
+            medicalCenter = new MedicalCenter();
+        }
+
         public int Save(string connectionString)
         { 
             var db = new DBConnection(connectionString);

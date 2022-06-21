@@ -13,6 +13,12 @@ namespace ApistorialModels.Models
         public Doctor doctor { get; set; }
         public DateTime OperationDate { get; set; }
 
+        public Record_Operation()
+        {
+            record = new Record();
+            operation = new Operation();
+            doctor = new Doctor();
+        }
         public int Save(string connectionString)
         {
             var db = new DBConnection(connectionString);

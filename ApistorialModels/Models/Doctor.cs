@@ -23,6 +23,12 @@ namespace ApistorialModels.Models
         public string Tel2 { get; set; }
         public string Email { get; set; }
 
+        public Doctor()
+        {
+            NvIdentification_Type = new NameValue();
+            specialty = new Specialtys();
+            NvBlood = new NameValue();
+        }
         public int Save(string connectionString)
         {
             SqlCommand cmd = new SqlCommand();

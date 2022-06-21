@@ -18,6 +18,10 @@ namespace ApistorialModels.Models
         public NameValue NVStatus_Center { get; set; }
         public string Token { get; set; }
 
+        public MedicalCenter()
+        {
+            NVStatus_Center = new NameValue();
+        }
         public int Save(string connectionString)
         {
             SqlCommand cmd = new SqlCommand();
