@@ -11,8 +11,7 @@ namespace ApistorialModels.Models
         {
             var db = new DBConnection(connectionString);
             var cmd = new SqlCommand();
-            cmd.CommandText = @"SELECT * FROM ANALYSIS_TYPE WHERE IDANALYSIS_TYPE = @IDANALYSIS_TYPE";
-            cmd.Parameters.Add(new SqlParameter("@IDANALYSIS_TYPE", idAnalysisType));
+            cmd.CommandText = @"SELECT * FROM ANALYSIS_TYPE WHERE IDANALYSIS_TYPE = "+ idAnalysisType + "";
             var ds = db.ExtractDataSet(cmd);
             return new AnalysisType()
             {

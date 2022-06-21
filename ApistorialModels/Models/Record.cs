@@ -22,7 +22,7 @@ namespace ApistorialModels.Models
         {
             var db = new DBConnection(connectionString);
             var cmd = new SqlCommand();
-            cmd.CommandText = @"INSERT INTO MEDICAL_CENTER 
+            cmd.CommandText = @"INSERT INTO RECORD 
                                 (IDPATIENT, MEDICALCENTER_CREATOR, LAST_MEDICALCENTER_UPDATE, CREATE_DATE, CREATE_USER)
                                 VALUES (@IDPATIENT, @MEDICALCENTER_CREATOR, @LAST_MEDICALCENTER_UPDATE, @CREATE_DATE, @CREATE_USER)";
 
@@ -75,10 +75,8 @@ namespace ApistorialModels.Models
             var medicalCenter = new MedicalCenter();
             var cmd = new SqlCommand();
             var recordList = new List<Record>();
-            cmd.CommandText = @"SELECT R.*, MC.IDMEDICAL_CENTER FROM RECORD
-                              JOIN MEDICAL_CENTER MC ON R.LAST_MEDICALCENTER_UPDATE = MC.IDMEDICAL_CENTER
-                              WHERE IDRECORD = @IDRECORD";
-            cmd.Parameters.Add(new SqlParameter("@IDRECORD", id));
+            cmd.CommandText = @"SELECT * FROM RECORD
+                              WHERE IDRECORD = " + id + "";
             var ds = db.ExtractDataSet(cmd);
             return new Record()
             {

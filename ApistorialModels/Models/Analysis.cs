@@ -23,11 +23,7 @@ namespace ApistorialModels.Models
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = @"INSERT INTO Analysis (IdAnalysisType, IdResultType, Description, Code, CreateUser, CreateDate) 
-                                VALUES (@IdAnalysis, @IdResultType, @Description, @Code, @CreateUser, @CreateDate)";
-            cmd.Parameters.Add(new SqlParameter("@IdAnalysisType", analysisType.ID));
-            cmd.Parameters.Add(new SqlParameter("@IdResultType", resultType.ID));
-            cmd.Parameters.Add(new SqlParameter("@Description", Description));
-            cmd.Parameters.Add(new SqlParameter("@Code", Code));
+                                VALUES ("+ analysisType.ID + ", "+ resultType.ID + ", "+Description+", "+ Code +", "+CreateUser+", CONVERT(CHAR(19), '"+CreateDate.ToString()+"'))";
             var db = new DBConnection(connectionString);
             db.ExecuteCommand(cmd);
             var ds = db.ExtractDataSet(new SqlCommand("select top(1) * from Analysis"));
@@ -62,8 +58,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = @"SELECT TOP(@Top) * FROM Analysis";
-                cmd.Parameters.Add(new SqlParameter("@Top", Top));
+                cmd.CommandText = @"SELECT TOP("+ Top + ") * FROM Analysis";
             }
             else
             {
