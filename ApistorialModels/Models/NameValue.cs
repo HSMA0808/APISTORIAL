@@ -43,11 +43,11 @@ namespace ApistorialModels.Models
             var nameValueList = new List<NameValue>(); 
             if (Top > 0)
             {
-                cmd.CommandText = "SELECT * FROM NAMEVALUE WHERE IDNAMEVALUE";
+                cmd.CommandText = "SELECT TOP(" + Top + ") * FROM NAMEVALUE";
             }
             else
             {
-                cmd.CommandText = "SELECT TOP("+Top+") * FROM NAMEVALUE WHERE IDNAMEVALUE";
+                cmd.CommandText = "SELECT * FROM NAMEVALUE";
             }
             var ds = db.ExtractDataSet(cmd);
             foreach(DataRow row in ds.Tables[0].Rows)
@@ -65,6 +65,7 @@ namespace ApistorialModels.Models
                     UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString()),
                 });
             };
+            
             return nameValueList;
         }
     }

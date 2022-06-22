@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ApistorialModels.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using System.Configuration;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
         [ApiController]
-        [Route("[controller]")]
+        [Route("[controller]/[action]")]
+
         public class RecordsController : ControllerBase
         {
             [HttpGet(Name = "GetRecordById")]
@@ -18,19 +20,24 @@ namespace WebAPI.Controllers
                         return BadRequest(new {
                             Message = "El parametro IdRecord debe puede ser 0 o nulo"
                         });
+                    break;
                 }
-                Record record = new Record();
-                var oRecord = record.Find(IdRecord, StaticsOperations.getConfiguration().GetConnectionString("DefaultConnection"));
-                return Ok(new {
+                var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                var nvList = db.Namevalues.ToList();
+                return Ok(new { 
                     ResponseCode = "00",
                     Message = "Success",
-                    IdRecord = oRecord.ID,
-                    MedicalCenterCreator = oRecord.medicalCenter_Creator.Description,
-                    Create_Date = oRecord.CreateDate,
-                    LastMedicalCenterUpdate = oRecord.last_MedicalCenterUpdate.Description,
-                    Update_Date = oRecord.UpdateDate,
-                    Patient = oRecord.patient
+                    NameValueList = nvList
                 });
             }
-    }
+            [HttpPost(Name = "NewRecord")]
+            public IActionResult NewRecord(string record)
+            {
+            return Ok(new
+            {
+                ResponseCode = "00",
+                Message = "Success",
+            });
+        }
+        }
 }
