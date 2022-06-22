@@ -39,25 +39,30 @@ namespace ApistorialModels.Models
             return int.Parse(ds.Tables[0].Rows[0]["IDRECORD_ANALYSIS"].ToString());
         }
 
-        public Record_Analysis Find(int idRecord_Analysis, string connectionString)
+        public List<Record_Analysis> Find(int idRecord, string connectionString)
         {
             var db = new DBConnection(connectionString);
             var oRecord = new Record();
             var oAnalysis = new Analysis();
-            var cmd = new SqlCommand("SELECT * FROM RECORD_ANALYSIS WHERE IDRECORD_ANALYSIS = @IDRECORD_ANALYSIS");
-            cmd.Parameters.Add(new SqlParameter("@IDRECORD_ANALYSIS", idRecord_Analysis));
+            var RecordAnalysisList = new List<Record_Analysis>();
+            var cmd = new SqlCommand("SELECT * FROM RECORD_ANALYSIS WHERE IDRECORD = "+ idRecord + "");
             var ds = db.ExtractDataSet(cmd);
-            return new Record_Analysis() {
-                ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_ANALYSIS"].ToString()),
-                record = record.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
-                analysis = analysis.Find(int.Parse(ds.Tables[0].Rows[0]["IDANALYSIS"].ToString()), connectionString),
-                PublicResults = bool.Parse(ds.Tables[0].Rows[0]["PUBLIC_RESULTS"].ToString()),
-                Results = ds.Tables[0].Rows[0]["RESULTS"].ToString(),
-                CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
-                CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
-                UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
-                UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
-            };
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                RecordAnalysisList.Add(new Record_Analysis()
+                {
+                    ID = int.Parse(row["IDRECORD_ANALYSIS"].ToString()),
+                    record = record.Find(int.Parse(row["IDRECORD"].ToString()), connectionString),
+                    analysis = analysis.Find(int.Parse(row["IDANALYSIS"].ToString()), connectionString),
+                    PublicResults = bool.Parse(row["PUBLIC_RESULTS"].ToString()),
+                    Results = row["RESULTS"].ToString(),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString())
+                });
+            }
+            return RecordAnalysisList;
         }
 
         public List<Record_Analysis> ToList(string connectionString, int Top = 0)
@@ -69,8 +74,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd = new SqlCommand("SELECT TOP(@TOP) * FROM RECORD_ANALYSIS");
-                cmd.Parameters.Add(new SqlParameter("@TOP", Top));
+                cmd = new SqlCommand("SELECT TOP("+Top+") * FROM RECORD_ANALYSIS");
             }
             else
             {

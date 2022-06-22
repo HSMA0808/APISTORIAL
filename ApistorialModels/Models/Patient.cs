@@ -90,8 +90,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = @"SELECT TOP(@Top) * FROM PATIENT";
-                cmd.Parameters.Add(new SqlParameter("@Top", Top));
+                cmd.CommandText = @"SELECT TOP("+Top+") * FROM PATIENT";
             }
             else
             {
@@ -122,6 +121,37 @@ namespace ApistorialModels.Models
                 });
             }
             return PatientList;
+        }
+
+        public Patient Find(int idPatient, string connectionString)
+        {
+            var PatientList = new List<Patient>();
+            var db = new DBConnection(connectionString);
+            var nameValue = new NameValue();
+            var cmd = new SqlCommand();
+            cmd.CommandText = @"SELECT * FROM PATIENT WHERE IDPATIENT = "+idPatient+"";
+            var ds = db.ExtractDataSet(cmd);
+            var row = ds.Tables[0].Rows[0];
+            return new Patient()
+                {
+                    ID = int.Parse(row["ID"].ToString()),
+                    First_Name = row["FIRST_NAME"].ToString(),
+                    Middle_Name = row["MIDDLE_NAME"].ToString(),
+                    Last_Name = row["LAST_NAME"].ToString(),
+                    Sex = row["SEX"].ToString(),
+                    NvIdentification_Type = nameValue.Find(int.Parse(row["NVIDENTIFICATION_TYPE"].ToString()), connectionString),
+                    Identfication_Number = row["IDENTIFICATION_NUMBER"].ToString(),
+                    Address1 = row["ADDRESS1"].ToString(),
+                    Address2 = row["ADDRESS2"].ToString(),
+                    NvBlood = nameValue.Find(int.Parse(row["NVBLOOD_TYPE"].ToString()), connectionString),
+                    Tel1 = row["TEL1"].ToString(),
+                    Tel2 = row["TEL2"].ToString(),
+                    Email = row["EMAIL"].ToString(),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString()),
+                };
         }
     }
 }

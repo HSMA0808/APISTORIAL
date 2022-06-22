@@ -33,8 +33,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = @"SELECT TOP(@TOP) * FROM RECORD_ALLERGIES ORDER BY CREATE_DATE DESC";
-                cmd.Parameters.Add(new SqlParameter("@TOP", Top));
+                cmd.CommandText = @"SELECT TOP("+Top+") * FROM RECORD_ALLERGIES ORDER BY CREATE_DATE DESC";
             }
             else
             {
@@ -64,8 +63,7 @@ namespace ApistorialModels.Models
             var oNameValue = new NameValue();
             var RecordAllergiesList = new List<RecordAllergies>();
             var cmd = new SqlCommand();
-            cmd.CommandText = @"SELECT * FROM RECORD_ALLERGIES WHERE IDRECORD = @IDRECORD";
-            cmd.Parameters.Add(new SqlParameter("@IDRECORD", IDRecord));
+            cmd.CommandText = @"SELECT * FROM RECORD_ALLERGIES WHERE IDRECORD = "+IDRecord+"";
             var ds = db.ExtractDataSet(cmd);
             foreach (DataRow row in ds.Tables[0].Rows)
             {

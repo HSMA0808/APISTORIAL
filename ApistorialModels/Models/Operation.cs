@@ -24,8 +24,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = @"SELECT TOP(@TOP) FROM OPERATION";
-                cmd.Parameters.Add(new SqlParameter("@TOP", Top));
+                cmd.CommandText = @"SELECT TOP("+Top+") FROM OPERATION";
             }
             else
             {
@@ -55,8 +54,7 @@ namespace ApistorialModels.Models
             var operationType_ = new OperationType();
             var operationList = new List<Operation>();
             var cmd = new SqlCommand();
-            cmd.CommandText = @"SELECT * FROM OPERATION WHERE IDOPERATION = @IDOPERATION";
-            cmd.Parameters.Add(new SqlParameter("@IDOPERATION", Id));
+            cmd.CommandText = @"SELECT * FROM OPERATION WHERE IDOPERATION = "+Id+"";
             var ds = db.ExtractDataSet(cmd);
             return new Operation()
             {

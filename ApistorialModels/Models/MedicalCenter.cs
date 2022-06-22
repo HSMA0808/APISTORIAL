@@ -79,8 +79,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = @"SELECT TOP(@Top) * FROM MEDICAL_CENTER";
-                cmd.Parameters.Add(new SqlParameter("@Top", Top));
+                cmd.CommandText = @"SELECT TOP("+Top+") * FROM MEDICAL_CENTER";
             }
             else
             {
@@ -116,8 +115,7 @@ namespace ApistorialModels.Models
             var db = new DBConnection(connectionString);
             var nameValue = new NameValue();
             var cmd = new SqlCommand();
-            cmd.CommandText = @"SELECT * FROM MEDICAL_CENTER WHERE IDMEDICAL_CENTER = @IDMEDICAL_CENTER";
-            cmd.Parameters.Add(new SqlParameter("@IDMEDICAL_CENTER", idMedicalCenter));
+            cmd.CommandText = @"SELECT * FROM MEDICAL_CENTER WHERE IDMEDICAL_CENTER = "+idMedicalCenter+"";
             var ds = db.ExtractDataSet(cmd);
 
                return new MedicalCenter()

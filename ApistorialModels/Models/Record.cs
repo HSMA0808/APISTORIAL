@@ -42,14 +42,12 @@ namespace ApistorialModels.Models
             var recordList = new List<Record>();
             if (Top > 0)
             {
-                cmd.CommandText = @"SELECT TOP(@TOP) R.*, MC.IDMEDICAL_CENTER FROM RECORD R
-                                    JOIN MEDICAL_CENTER MC ON R.LAST_MEDICALCENTER_UPDATE = MC.IDMEDICAL_CENTER";
+                cmd.CommandText = @"SELECT TOP("+Top+") * FROM RECORD";
                 cmd.Parameters.Add(new SqlParameter("@Top", Top));
             }
             else
             {
-                cmd.CommandText = @"SELECT R.*, MC.IDMEDICAL_CENTER FROM RECORD
-                                  JOIN MEDICAL_CENTER MC ON R.LAST_MEDICALCENTER_UPDATE = MC.IDMEDICAL_CENTER";
+                cmd.CommandText = @"SELECT * FROM RECORD ";
 
             }
             var ds = db.ExtractDataSet(cmd);
@@ -70,6 +68,7 @@ namespace ApistorialModels.Models
         public Record Find(int id, string connectionString)
         {
             var db = new DBConnection(connectionString);
+            var oPatient = new Patient();
             var medicalCenter = new MedicalCenter();
             var cmd = new SqlCommand();
             var recordList = new List<Record>();
@@ -79,6 +78,7 @@ namespace ApistorialModels.Models
             return new Record()
             {
                 ID = Convert.ToInt32(ds.Tables[0].Rows[0]["ID"].ToString()),
+                patient = oPatient.Find(int.Parse(ds.Tables[0].Rows[0]["IDPATIENT"].ToString()), connectionString),
                 medicalCenter_Creator = medicalCenter.Find(int.Parse(ds.Tables[0].Rows[0]["MEDICALCENTER_CREATOR"].ToString()), connectionString),
                 last_MedicalCenterUpdate = medicalCenter.Find(int.Parse(ds.Tables[0].Rows[0]["LAST_MEDICALCENTER_UPDATE"].ToString()), connectionString),
                 CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),

@@ -40,29 +40,34 @@ namespace ApistorialModels.Models
             return int.Parse(ds.Tables[0].Rows[0]["IDRECORD_VISITS"].ToString());
         }
 
-        public Record_Visit Find(int idRecord_Visits, string connectionString)
+        public List<Record_Visit> Find(int idRecord, string connectionString)
         { 
             var db = new DBConnection(connectionString);
             var oRecord = new Record();
             var oDoctor = new Doctor();
             var oSpecialty = new Specialtys();
+            var RecordVisitsList = new List<Record_Visit>();
             var cmd = new SqlCommand();
-            cmd.CommandText = "SELECT * FROM RECORD_VISITS WHERE IDRECORD_VISITS = @IDRECORD_VISITS";
-            cmd.Parameters.Add(new SqlParameter("@IDRECORD_VISITS", idRecord_Visits));
+            cmd.CommandText = "SELECT * FROM RECORD_VISITS WHERE IDRECORD = "+idRecord+"";
             var ds = db.ExtractDataSet(cmd);
-            return new Record_Visit() {
-                ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_VISITS"].ToString()),
-                record = oRecord.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
-                doctor = oDoctor.Find(int.Parse(ds.Tables[0].Rows[0]["IDDOCTOR"].ToString()), connectionString),
-                specialty = oSpecialty.Find(int.Parse(ds.Tables[0].Rows[0]["IDSPECIALTY"].ToString()), connectionString),
-                Observations = ds.Tables[0].Rows[0]["OBSERVATIONS"].ToString(),
-                Indications = ds.Tables[0].Rows[0]["INDICATIONS"].ToString(),
-                CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
-                CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
-                UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
-                UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                RecordVisitsList.Add(new Record_Visit()
+                {
+                    ID = int.Parse(row["IDRECORD_VISITS"].ToString()),
+                    record = oRecord.Find(int.Parse(row["IDRECORD"].ToString()), connectionString),
+                    doctor = oDoctor.Find(int.Parse(row["IDDOCTOR"].ToString()), connectionString),
+                    specialty = oSpecialty.Find(int.Parse(row["IDSPECIALTY"].ToString()), connectionString),
+                    Observations = row["OBSERVATIONS"].ToString(),
+                    Indications = row["INDICATIONS"].ToString(),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString())
 
-            };
+                });
+            }
+            return RecordVisitsList;
         }
 
         public List<Record_Visit> ToList(string connectionString, int Top = 0)
@@ -75,8 +80,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = "SELECT TOP(@TOP)* FROM RECORD_VISITS ORDER BY CREATE_DATE DESC";
-                cmd.Parameters.Add(new SqlParameter("@TOP", Top));
+                cmd.CommandText = "SELECT TOP("+Top+") * FROM RECORD_VISITS ORDER BY CREATE_DATE DESC";
             }
             else
             {

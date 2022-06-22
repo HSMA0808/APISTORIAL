@@ -105,8 +105,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = @"SELECT TOP(@Top) * FROM DOCTOR";
-                cmd.Parameters.Add(new SqlParameter("@Top", Top));
+                cmd.CommandText = @"SELECT TOP("+Top+") * FROM DOCTOR";
             }
             else
             {
@@ -147,8 +146,7 @@ namespace ApistorialModels.Models
             var oNameValue = new NameValue();
             var oSpecialty = new Specialtys();
             var cmd = new SqlCommand();
-            cmd.CommandText = @"SELECT * FROM DOCTOR WHERE IDDOCTOR = @IDDOCTOR";
-            cmd.Parameters.Add(new SqlParameter("@IDDOCTOR", idDoctor));
+            cmd.CommandText = @"SELECT * FROM DOCTOR WHERE IDDOCTOR = "+idDoctor+"";
             var ds = db.ExtractDataSet(cmd);
             return new Doctor()
                 {

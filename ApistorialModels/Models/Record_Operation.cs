@@ -37,27 +37,32 @@ namespace ApistorialModels.Models
             return int.Parse(ds.Tables[0].Rows[0]["IDRECORD_OPERATIONs"].ToString());
         }
 
-        public Record_Operation Find(int id, string connectionString)
+        public List<Record_Operation> Find(int idRecord, string connectionString)
         {
             var db = new DBConnection(connectionString);
             var oRecord = new Record();
             var oOperation = new Operation();
             var oDoctor = new Doctor();
+            var RecordOperationList = new List<Record_Operation>();
             var cmd = new SqlCommand();
-            cmd.CommandText = "SELECT * FROM RECORD_OPERATIONS WHERE IDRECORD_OPERATIONS = @IDRECORD_OPERATIONS";
-            cmd.Parameters.Add(new SqlParameter("@IDRECORD_OPERATIONS", id));
+            cmd.CommandText = "SELECT * FROM RECORD_OPERATIONS WHERE IDRECORD = "+idRecord+"";
             var ds = db.ExtractDataSet(cmd);
-            return new Record_Operation() {
-                ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_OPERATIONS"].ToString()),
-                record = oRecord.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
-                operation = oOperation.Find(int.Parse(ds.Tables[0].Rows[0]["IDOPERATION"].ToString()), connectionString),
-                doctor = oDoctor.Find(int.Parse(ds.Tables[0].Rows[0]["IDDOCTOR"].ToString()), connectionString),
-                OperationDate = DateTime.Parse(ds.Tables[0].Rows[0]["OPERATIONDATE"].ToString()),
-                CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
-                CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
-                UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
-                UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
-            };
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                RecordOperationList.Add(new Record_Operation()
+                {
+                    ID = int.Parse(row["IDRECORD_OPERATIONS"].ToString()),
+                    record = oRecord.Find(int.Parse(row["IDRECORD"].ToString()), connectionString),
+                    operation = oOperation.Find(int.Parse(row["IDOPERATION"].ToString()), connectionString),
+                    doctor = oDoctor.Find(int.Parse(row["IDDOCTOR"].ToString()), connectionString),
+                    OperationDate = DateTime.Parse(row["OPERATIONDATE"].ToString()),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString())
+                });
+            }
+            return RecordOperationList;
         }
 
         public List<Record_Operation> ToList(string connectionString, int Top = 0)
@@ -70,8 +75,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = "SELECT TOP(@TOP) * FROM RECORD_OPERATIONS";
-                cmd.Parameters.Add(new SqlParameter("@TOP", Top));
+                cmd.CommandText = "SELECT TOP("+Top+") * FROM RECORD_OPERATIONS";
             }
             else
             {

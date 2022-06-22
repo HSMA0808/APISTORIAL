@@ -34,26 +34,30 @@ namespace ApistorialModels.Models
             return int.Parse(ds.Tables[0].Rows[0][0].ToString());
         }
 
-        public RecordInterments Find(int idRecordEmergencyEntry, string connectionString)
+        public List<RecordInterments> Find(int idRecordInterments, string connectionString)
         {
             var db = new DBConnection(connectionString);
             var oMedicalCenter = new MedicalCenter();
             var oRecord = new Record();
+            var RecordIntermentsList = new List<RecordInterments>();
             var cmd = new SqlCommand();
-            cmd.CommandText = @"SELECT * FROM RECORD_INTERMENTS WHERE IDRECORD_INTERMENT = @IDRECORD_INTERMENT";
-            cmd.Parameters.Add(new SqlParameter("@IDRECORD_INTERMENT", idRecordEmergencyEntry));
+            cmd.CommandText = @"SELECT * FROM RECORD_INTERMENTS WHERE IDRECORD = "+idRecordInterments+"";
             var ds = db.ExtractDataSet(cmd);
-            return new RecordInterments()
+            foreach (DataRow row in ds.Tables[0].Rows)
             {
-                ID = int.Parse(ds.Tables[0].Rows[0]["IDRECORD_INTERMENT"].ToString()),
-                record = oRecord.Find(int.Parse(ds.Tables[0].Rows[0]["IDRECORD"].ToString()), connectionString),
-                medicalCenter = oMedicalCenter.Find(int.Parse(ds.Tables[0].Rows[0]["IDMEDICAL_CENTER"].ToString()), connectionString),
-                IntermentDate = DateTime.Parse(ds.Tables[0].Rows[0]["INTERMENTDATE"].ToString()),
-                CreateUser = ds.Tables[0].Rows[0]["CREATE_USER"].ToString(),
-                CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CREATE_DATE"].ToString()),
-                UpdateUser = ds.Tables[0].Rows[0]["UPDATE_USER"].ToString(),
-                UpdateDate = DateTime.Parse(ds.Tables[0].Rows[0]["UPDATE_DATE"].ToString())
-            };
+                RecordIntermentsList.Add(new RecordInterments()
+                {
+                    ID = int.Parse(row["IDRECORD_INTERMENT"].ToString()),
+                    record = oRecord.Find(int.Parse(row["IDRECORD"].ToString()), connectionString),
+                    medicalCenter = oMedicalCenter.Find(int.Parse(row["IDMEDICAL_CENTER"].ToString()), connectionString),
+                    IntermentDate = DateTime.Parse(row["INTERMENTDATE"].ToString()),
+                    CreateUser = row["CREATE_USER"].ToString(),
+                    CreateDate = DateTime.Parse(row["CREATE_DATE"].ToString()),
+                    UpdateUser = row["UPDATE_USER"].ToString(),
+                    UpdateDate = DateTime.Parse(row["UPDATE_DATE"].ToString())
+                });
+            }
+            return RecordIntermentsList;
         }
 
         public List<RecordInterments> ToList(string connectionString, int Top = 0)
@@ -65,8 +69,7 @@ namespace ApistorialModels.Models
             var cmd = new SqlCommand();
             if (Top > 0)
             {
-                cmd.CommandText = @"SELECT TOP(@TOP) * FROM RECORD_INTERMENTS";
-                cmd.Parameters.Add(new SqlParameter("@top", Top));
+                cmd.CommandText = @"SELECT TOP("+Top+") * FROM RECORD_INTERMENTS";
             }
             var ds = db.ExtractDataSet(cmd);
             foreach (DataRow row in ds.Tables[0].Rows)

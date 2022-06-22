@@ -11,8 +11,7 @@ namespace ApistorialModels.Models
         {
             var db = new DBConnection(connectionString);
             var cmd = new SqlCommand();
-            cmd.CommandText = @"SELECT * FROM SPECIALTYS WHERE IDSPECIALTY = @SPECIALTY";
-            cmd.Parameters.Add(new SqlParameter("@IDSPECIALTY", idSpecialty));
+            cmd.CommandText = @"SELECT * FROM SPECIALTYS WHERE IDSPECIALTY = "+idSpecialty+"";
             var ds = db.ExtractDataSet(cmd);
             return new Specialtys()
             {

@@ -20,8 +20,7 @@ namespace ApistorialModels.Models
         {
             var db = new DBConnection(connectionString);
             var cmd = new SqlCommand();
-            cmd.CommandText = "SELECT * FROM NAMEVALUE WHERE IDNAMEVALUE = @IDNAMEVALUE";
-            cmd.Parameters.Add(new SqlParameter("@IDNAMEVALUE", IdNameValue));
+            cmd.CommandText = "SELECT * FROM NAMEVALUE WHERE IDNAMEVALUE = "+IdNameValue+"";
             var ds = db.ExtractDataSet(cmd);
             return new NameValue() {
                 ID = int.Parse(ds.Tables[0].Rows[0]["IDNAMEVALUE"].ToString()),
@@ -48,8 +47,7 @@ namespace ApistorialModels.Models
             }
             else
             {
-                cmd.CommandText = "SELECT TOP(@TOP) * FROM NAMEVALUE WHERE IDNAMEVALUE";
-                cmd.Parameters.Add(new SqlParameter("@Top", Top));
+                cmd.CommandText = "SELECT TOP("+Top+") * FROM NAMEVALUE WHERE IDNAMEVALUE";
             }
             var ds = db.ExtractDataSet(cmd);
             foreach(DataRow row in ds.Tables[0].Rows)
