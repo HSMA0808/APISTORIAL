@@ -35,5 +35,21 @@ namespace WebAPI.Models
         public virtual Namevalue? NvidentificationTypeNavigation { get; set; }
         public virtual ICollection<RecordOperation> RecordOperations { get; set; }
         public virtual ICollection<RecordVisit> RecordVisits { get; set; }
+
+
+        public bool ReviewDoctor(string Identification)
+        {
+            var AllGood = false;
+            var db = new APISTORIAL_v1Context(new Microsoft.EntityFrameworkCore.DbContextOptions<APISTORIAL_v1Context>());
+            if (db.Doctors.Where(d => d.IdentificationNumber == Identification).ToList().Count <= 0)
+            {
+                //Consultar padron y crear
+            }
+            else
+            {
+                AllGood = true;
+            }
+            return AllGood;
+        }
     }
 }

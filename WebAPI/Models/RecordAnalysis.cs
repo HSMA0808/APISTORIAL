@@ -10,6 +10,7 @@ namespace WebAPI.Models
         public int? Idanalysis { get; set; }
         public bool? PublicResults { get; set; }
         public string? Results { get; set; }
+        public DateTime? AnalysisDate { get; set; }
         public string? CreateUser { get; set; }
         public DateTime? CreateDate { get; set; }
         public string? UpdateUser { get; set; }
