@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Configuration;
 using Newtonsoft.Json;
 using WebAPI.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace WebAPI.Controllers
 {
         [ApiController]
+        [EnableCors("MyPolicy")]
         [Route("[controller]/[action]")]
 
         public class RecordsController : ControllerBase
@@ -47,39 +49,40 @@ namespace WebAPI.Controllers
                             oRecord = db.Records.Where(x => x.Idpatient == idPatient).Include(r => r.RecordVisits).ToList()[0];
                             var oRecordVisits = oRecord.RecordVisits.ToList()[0];
                             var oSpecialty = db.Specialtys.Find(oRecordVisits.Idspecialty);
-                            return Ok(new
+                        var response = new
+                        {
+                            ResponseCode = "00",
+                            Message = "Success",
+                            Record = new
                             {
-                                ResponseCode = "00",
-                                Message = "Success",
-                                Record = new
-                                {
-                                    IDRecord = oRecord.Idrecord,
-                                    IDPatient = oRecord.Idpatient,
-                                    NewRecord = NewRecord,
-                                    Create_User = oRecord.CreateUser,
-                                    Create_Date = oRecord.CreateDate
-                                },
+                                IDRecord = oRecord.Idrecord,
+                                IDPatient = oRecord.Idpatient,
+                                NewRecord = NewRecord,
+                                Create_User = oRecord.CreateUser,
+                                Create_Date = oRecord.CreateDate
+                            },
 
-                                Paciente = new
-                                {
-                                    Nombre = patientList[0].FirstName + " " + patientList[0].LastName,
-                                    Identificacion = patientList[0].IdentificationNumber,
-                                    Telefono = patientList[0].Tel1,
-                                    Telefono2 = patientList[0].Tel2,
-                                    Email = patientList[0].Email,
-                                    Direccion1 = patientList[0].Address1,
-                                    Direccion2 = patientList[0].Address2
-                                },
-                                RecordVisits = new
-                                {
-                                    IDRecordVisit = oRecordVisits.IdrecordVisits,
-                                    IDDoctor = oRecordVisits.Iddoctor,
-                                    EspecialidadMedica = oSpecialty.Description,
-                                    Observaciones = oRecordVisits.Observations,
-                                    Indicaciones = oRecordVisits.Indications,
-                                    Fecha_Visita = oRecordVisits.VisitDate
-                                }
-                            });
+                            Paciente = new
+                            {
+                                Nombre = patientList[0].FirstName + " " + patientList[0].LastName,
+                                Identificacion = patientList[0].IdentificationNumber,
+                                Telefono = patientList[0].Tel1,
+                                Telefono2 = patientList[0].Tel2,
+                                Email = patientList[0].Email,
+                                Direccion1 = patientList[0].Address1,
+                                Direccion2 = patientList[0].Address2
+                            },
+                            RecordVisits = new
+                            {
+                                IDRecordVisit = oRecordVisits.IdrecordVisits,
+                                IDDoctor = oRecordVisits.Iddoctor,
+                                EspecialidadMedica = oSpecialty.Description,
+                                Observaciones = oRecordVisits.Observations,
+                                Indicaciones = oRecordVisits.Indications,
+                                Fecha_Visita = oRecordVisits.VisitDate
+                            }
+                        };
+                        return Ok(JsonConvert.SerializeObject(response));
                         }
                     }
                 }
