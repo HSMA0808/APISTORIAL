@@ -193,7 +193,6 @@ namespace WebAPI.Controllers
             return response;
         }
 
-
         [HttpPost(Name = "SetRecordVist")]
         public IActionResult SetRecordVist(int idRecord, string Doctor_Identification, string SpecialtyCode, string Observations, string Indications, string VisitDate, string Referencia)
         {
@@ -217,18 +216,27 @@ namespace WebAPI.Controllers
             else
             {
                 var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                db.RecordVisits.Add(new RecordVisit()
-                {
-                    Idrecord = idRecord,
-                    Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == Doctor_Identification).ToList()[0].Iddoctor,
-                    Idspecialty = db.Specialtys.Where(sp => sp.Code == SpecialtyCode).ToList()[0].Idspecialty,
-                    Observations = Observations,
-                    Indications = Indications,
-                    VisitDate = DateTime.Parse(VisitDate),
-                    CreateUser = Referencia,
-                    CreateDate = DateTime.Now
-                });
-                db.SaveChanges();
+                var doctorReview = new Doctor();
+                    if (doctorReview.ReviewDoctor(Doctor_Identification))
+                    {
+                        db.RecordVisits.Add(new RecordVisit()
+                        {
+                            Idrecord = idRecord,
+                            Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == Doctor_Identification).ToList()[0].Iddoctor,
+                            Idspecialty = db.Specialtys.Where(sp => sp.Code == SpecialtyCode).ToList()[0].Idspecialty,
+                            Observations = Observations,
+                            Indications = Indications,
+                            VisitDate = DateTime.Parse(VisitDate),
+                            CreateUser = Referencia,
+                            CreateDate = DateTime.Now
+                        });
+                        db.SaveChanges();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                    }
+                    else
+                    {
+                        response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error con la identificacion del doctor. Intentelo mas tarde, de volver a ocurrir comuniquese con el administrador." });
+                    }
             }
             }
             catch (Exception e)
@@ -261,16 +269,25 @@ namespace WebAPI.Controllers
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    db.RecordOperations.Add(new RecordOperation()
+                    var doctorReview = new Doctor();
+                    if (doctorReview.ReviewDoctor(Doctor_Identification))
                     {
-                        Idrecord = idRecord,
-                        Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == Doctor_Identification).ToList()[0].Iddoctor,
-                        Idoperation = db.Operations.Where(op => op.Code == OperationCode).ToList()[0].Idoperation,
-                        Operationdate = DateTime.Parse(OperationDate),
-                        CreateUser = Referencia,
-                        CreateDate = DateTime.Now
-                    });
-                    db.SaveChanges();
+                        db.RecordOperations.Add(new RecordOperation()
+                        {
+                            Idrecord = idRecord,
+                            Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == Doctor_Identification).ToList()[0].Iddoctor,
+                            Idoperation = db.Operations.Where(op => op.Code == OperationCode).ToList()[0].Idoperation,
+                            Operationdate = DateTime.Parse(OperationDate),
+                            CreateUser = Referencia,
+                            CreateDate = DateTime.Now
+                        });
+                        db.SaveChanges();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                    }
+                    else
+                    {
+                        response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error con la identificacion del doctor. Intentelo mas tarde, de volver a ocurrir comuniquese con el administrador." });
+                    }
                 }
             }
             catch (Exception e)
@@ -310,6 +327,7 @@ namespace WebAPI.Controllers
                         CreateDate = DateTime.Now
                     });
                     db.SaveChanges();
+                    response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
                 }
             }
             catch (Exception e)
@@ -318,6 +336,168 @@ namespace WebAPI.Controllers
             }
             return response;
         }
-  
+
+        [HttpPost(Name = "SetRecordInterment")]
+        public IActionResult SetRecordInterment(int idRecord, string MedicalCenter_Token, string ReasonInterment, string IntermentDate, string Referencia)
+        {
+            IActionResult response = BadRequest();
+            DateTime intermentDate = new DateTime();
+            try
+            {
+                if (idRecord == 0 || MedicalCenter_Token.Trim() == string.Empty || ReasonInterment.Trim() == string.Empty)
+                {
+                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, Token, Reason" });
+                }
+                else if (!DateTime.TryParse(IntermentDate, out intermentDate))
+                {
+                    response = BadRequest(new { ResponseCode = 99, Message = "El parametro AnalysisDate tiene el formato incorrecto" });
+                }
+                else
+                {
+                    var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == MedicalCenter_Token).ToList()[0];
+                    db.RecordInterments.Add(new RecordInterment()
+                    {
+                        Idrecord = idRecord,
+                        IdmedicalCenter = medicalCenter.IdmedicalCenter,
+                        Reason = ReasonInterment,
+                        Intermentdate = intermentDate,
+                        CreateUser = Referencia,
+                        CreateDate = DateTime.Now
+                    });
+                    db.SaveChanges();
+                    response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error: " + e.Message });
+            }
+            return response;
+        }
+        
+        [HttpPost(Name = "SetRecordEmergencyEntry")]
+        public IActionResult SetRecordEmergencyEntry(int idRecord, string MedicalCenter_Token, string ReasonInterment, string IntermentDate, string Referencia)
+        {
+            IActionResult response = BadRequest();
+            DateTime intermentDate = new DateTime();
+            try
+            {
+                if (idRecord == 0 || MedicalCenter_Token.Trim() == string.Empty || ReasonInterment.Trim() == string.Empty)
+                {
+                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, Token, Reason" });
+                }
+                else if (!DateTime.TryParse(IntermentDate, out intermentDate))
+                {
+                    response = BadRequest(new { ResponseCode = 99, Message = "El parametro AnalysisDate tiene el formato incorrecto" });
+                }
+                else
+                {
+                    var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == MedicalCenter_Token).ToList()[0];
+                    db.RecordEmergencyemtries.Add(new RecordEmergencyEntry()
+                    {
+                        Idrecord = idRecord,
+                        IdmedicalCenter = medicalCenter.IdmedicalCenter,
+                        Reason = ReasonInterment,
+                        Intermentdate = intermentDate,
+                        CreateUser = Referencia,
+                        CreateDate = DateTime.Now
+                    });
+                    db.SaveChanges();
+                    response = Ok(new { ResponseCode = "00", Message = "Success", IDRecord = idRecord });
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error: " + e.Message });
+            }
+            return response;
+        }
+
+        [HttpPost(Name = "SetRecordVaccines")]
+        public IActionResult SetRecordVaccines(int idRecord, List<string> VaccineCodes, string Referencia)
+        {
+            IActionResult response = BadRequest();
+            try
+            {
+                if (idRecord == 0 || VaccineCodes.Count == 0)
+                {
+                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, VaccinesCode"});
+                }
+                else
+                {
+                    var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                    foreach (var vaccineCode in VaccineCodes)
+                    {
+                        var vaccineResult = db.Namevalues.Where(nv => nv.Customstring1 == vaccineCode).ToList();
+                        if (vaccineResult.Count == 0)
+                        {
+                            throw new Exception("El codigo " + vaccineCode + " no existe en la base de datos.");
+                        }
+                        else 
+                        {
+                            db.RecordVaccines.Add(new RecordVaccine()
+                            {
+                                Idrecord = idRecord,
+                                Nvvaccine = vaccineResult[0].Idnamevalue,
+                                CreateUser = Referencia,
+                                CreateDate = DateTime.Now
+                            });
+                        }
+                    }
+                    db.SaveChanges();
+                    response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord});
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error: " + e.Message });
+            }
+            return response;
+        }
+
+        [HttpPost(Name = "SetRecordAllergies")]
+        public IActionResult SetRecordAllergies(int idRecord, List<string> AllergiesCodes, string Referencia)
+        {
+            IActionResult response = BadRequest();
+            try
+            {
+                if (idRecord == 0 || AllergiesCodes.Count == 0)
+                {
+                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, AllergiesCodes" });
+                }
+                else
+                {
+                    var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                    foreach (var allergieCode in AllergiesCodes)
+                    {
+                        var allergieResult = db.Namevalues.Where(nv => nv.Customstring1 == allergieCode).ToList();
+                        if (allergieResult.Count == 0)
+                        {
+                            throw new Exception("El codigo " + allergieCode + " no existe en la base de datos.");
+                        }
+                        else
+                        {
+                            db.RecordAllergies.Add(new RecordAllergy()
+                            {
+                                Idrecord = idRecord,
+                                Nvallergie = allergieResult[0].Idnamevalue,
+                                CreateUser = Referencia,
+                                CreateDate = DateTime.Now
+                            });
+                        }
+                    }
+                    db.SaveChanges();
+                    response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error: " + e.Message });
+            }
+            return response;
+        }
+
     }
 }

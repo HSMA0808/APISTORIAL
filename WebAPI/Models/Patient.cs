@@ -31,5 +31,26 @@ namespace WebAPI.Models
         public virtual Namevalue? NvbloodTypeNavigation { get; set; }
         public virtual Namevalue? NvidentificationTypeNavigation { get; set; }
         public virtual ICollection<Record> Records { get; set; }
+
+        public bool ReviewPatient(string Identification)
+        {
+            var AllGood = false;
+            var db = new APISTORIAL_v1Context();
+            var patientResult = db.Patients.Where(p => p.IdentificationNumber == Identification).ToList();
+            if (patientResult.Count == 0)
+            {
+                //Crear desde padron
+                AllGood = true;
+            }
+            else if (patientResult.Count == 1)
+            {
+                AllGood = true;
+            }
+            else
+            {
+                //Error
+            }
+            return AllGood;
+        }
     }
 }

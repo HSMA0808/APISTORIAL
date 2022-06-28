@@ -28,7 +28,7 @@ namespace WebAPI.Models
         public virtual DbSet<Record> Records { get; set; } = null!;
         public virtual DbSet<RecordAllergy> RecordAllergies { get; set; } = null!;
         public virtual DbSet<RecordAnalysis> RecordAnalyses { get; set; } = null!;
-        public virtual DbSet<RecordEmergencyemtry> RecordEmergencyemtries { get; set; } = null!;
+        public virtual DbSet<RecordEmergencyEntry> RecordEmergencyemtries { get; set; } = null!;
         public virtual DbSet<RecordInterment> RecordInterments { get; set; } = null!;
         public virtual DbSet<RecordOperation> RecordOperations { get; set; } = null!;
         public virtual DbSet<RecordVaccine> RecordVaccines { get; set; } = null!;
@@ -619,7 +619,7 @@ namespace WebAPI.Models
                     .HasConstraintName("FK_LAST_IDRECORD_RECORDANALYSIS_RECORD");
             });
 
-            modelBuilder.Entity<RecordEmergencyemtry>(entity =>
+            modelBuilder.Entity<RecordEmergencyEntry>(entity =>
             {
                 entity.HasKey(e => e.IdrecordEmergencyentry)
                     .HasName("PK__RECORD_E__46A2FABA696D0035");

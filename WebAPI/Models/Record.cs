@@ -9,7 +9,7 @@ namespace WebAPI.Models
         {
             RecordAllergies = new HashSet<RecordAllergy>();
             RecordAnalyses = new HashSet<RecordAnalysis>();
-            RecordEmergencyemtries = new HashSet<RecordEmergencyemtry>();
+            RecordEmergencyemtries = new HashSet<RecordEmergencyEntry>();
             RecordInterments = new HashSet<RecordInterment>();
             RecordOperations = new HashSet<RecordOperation>();
             RecordVaccines = new HashSet<RecordVaccine>();
@@ -30,7 +30,7 @@ namespace WebAPI.Models
         public virtual MedicalCenter? MedicalcenterCreatorNavigation { get; set; }
         public virtual ICollection<RecordAllergy> RecordAllergies { get; set; }
         public virtual ICollection<RecordAnalysis> RecordAnalyses { get; set; }
-        public virtual ICollection<RecordEmergencyemtry> RecordEmergencyemtries { get; set; }
+        public virtual ICollection<RecordEmergencyEntry> RecordEmergencyemtries { get; set; }
         public virtual ICollection<RecordInterment> RecordInterments { get; set; }
         public virtual ICollection<RecordOperation> RecordOperations { get; set; }
         public virtual ICollection<RecordVaccine> RecordVaccines { get; set; }

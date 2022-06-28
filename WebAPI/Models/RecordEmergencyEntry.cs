@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebAPI.Models
 {
-    public partial class RecordEmergencyemtry
+    public partial class RecordEmergencyEntry
     {
         public int IdrecordEmergencyentry { get; set; }
         public int? Idrecord { get; set; }

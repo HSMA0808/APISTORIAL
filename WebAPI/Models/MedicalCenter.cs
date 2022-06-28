@@ -7,7 +7,7 @@ namespace WebAPI.Models
     {
         public MedicalCenter()
         {
-            RecordEmergencyemtries = new HashSet<RecordEmergencyemtry>();
+            RecordEmergencyemtries = new HashSet<RecordEmergencyEntry>();
             RecordInterments = new HashSet<RecordInterment>();
             RecordLastMedicalcenterUpdateNavigations = new HashSet<Record>();
             RecordMedicalcenterCreatorNavigations = new HashSet<Record>();
@@ -29,7 +29,7 @@ namespace WebAPI.Models
         public DateTime? UpdateDate { get; set; }
 
         public virtual Namevalue? NvstatusCenterNavigation { get; set; }
-        public virtual ICollection<RecordEmergencyemtry> RecordEmergencyemtries { get; set; }
+        public virtual ICollection<RecordEmergencyEntry> RecordEmergencyemtries { get; set; }
         public virtual ICollection<RecordInterment> RecordInterments { get; set; }
         public virtual ICollection<Record> RecordLastMedicalcenterUpdateNavigations { get; set; }
         public virtual ICollection<Record> RecordMedicalcenterCreatorNavigations { get; set; }
