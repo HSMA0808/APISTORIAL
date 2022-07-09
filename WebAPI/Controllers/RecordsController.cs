@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using WebAPI.Models;
 using WebAPI.ResponseObjects;
 using Microsoft.AspNetCore.Cors;
+using WebAPI.RequestObjects;
 
 namespace WebAPI.Controllers
 { 
@@ -193,23 +194,58 @@ namespace WebAPI.Controllers
             return response;
         }
 
+        [HttpGet(Name = "GetRecordAnalysis")]
+        public IActionResult GetRecordAnalysis(int idRecord)
+        {
+            IActionResult response;
+            try
+            {
+                var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                var oRecord = db.Records.Find(idRecord);
+                if (oRecord.Idrecord == null || oRecord.Idrecord == 0)
+                {
+                    response = Ok(new { ResponseCode = "99", Message = "Record No. " + idRecord + " no encontrado" });
+                }
+                else
+                {
+
+                    var oPatient = db.Patients.Find(oRecord.Idpatient);
+                    var oRecordAnalysis = db.RecordAnalyses.Where(ro => ro.Idrecord == idRecord).ToList();
+                    var rI = new ResponseObjects.Response_RecordAnalysis().ToResponseList(oRecordAnalysis);
+                    response = Ok(new
+                    {
+                        ResponseCode = "00",
+                        Message = "Success",
+                        Record = new { IDRecord = oRecord.Idrecord, IDPaciente = oRecord.Idpatient },
+                        Paciente = new { Nombre = oPatient.FirstName + " " + oPatient.LastName, Identificacion = oPatient.IdentificationNumber, Tel1 = oPatient.Tel1, Tel2 = oPatient.Tel2, Email = oPatient.Email, Direccion1 = oPatient.Address1, Direccion2 = oPatient.Address2 },
+                        RecordsAnalysis = rI
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error: " + e.Message });
+            }
+            return response;
+        }
+
         [HttpPost(Name = "SetRecordVist")]
-        public IActionResult SetRecordVist(int idRecord, string Doctor_Identification, string SpecialtyCode, string Observations, string Indications, string VisitDate, string Referencia)
+        public IActionResult SetRecordVist(Request_RecordVisit request)
         {
             IActionResult response = BadRequest();
             var visitDate = new DateTime();
             var doctor = new Doctor();
             try
             {
-            if (idRecord == 0 || Doctor_Identification.Trim() == string.Empty || SpecialtyCode.Trim() == string.Empty || VisitDate.Trim() == string.Empty)
+            if (request.idRecord == 0 || request.Doctor_Identification.Trim() == string.Empty || request.SpecialtyCode.Trim() == string.Empty || request.VisitDate.Trim() == string.Empty)
             {
                 response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, IDDoctor, SpecialtyCode, VisitDate" });
             }
-            else if (!DateTime.TryParse(VisitDate, out visitDate))
+            else if (!DateTime.TryParse(request.VisitDate, out visitDate))
             {
                 response = BadRequest(new { ResponseCode = 99, Message = "El parametro VisitDate tiene el formato incorrecto" });
             }
-            else if (!doctor.ReviewDoctor(Doctor_Identification))
+            else if (!doctor.ReviewDoctor(request.Doctor_Identification))
             {
                 response = BadRequest(new { ResponseCode = 99, Message = "RecordVisit no insertado, El doctor no fue encontrado en el padron electoral" });
             }
@@ -217,21 +253,26 @@ namespace WebAPI.Controllers
             {
                 var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
                 var doctorReview = new Doctor();
-                    if (doctorReview.ReviewDoctor(Doctor_Identification))
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
+                    if (medicalCenter.Count == 0)
+                    {
+                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                    }
+                    else if(doctorReview.ReviewDoctor(request.Doctor_Identification))
                     {
                         db.RecordVisits.Add(new RecordVisit()
                         {
-                            Idrecord = idRecord,
-                            Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == Doctor_Identification).ToList()[0].Iddoctor,
-                            Idspecialty = db.Specialtys.Where(sp => sp.Code == SpecialtyCode).ToList()[0].Idspecialty,
-                            Observations = Observations,
-                            Indications = Indications,
-                            VisitDate = DateTime.Parse(VisitDate),
-                            CreateUser = Referencia,
+                            Idrecord = request.idRecord,
+                            Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == request.Doctor_Identification).ToList()[0].Iddoctor,
+                            Idspecialty = db.Specialtys.Where(sp => sp.Code == request.SpecialtyCode).ToList()[0].Idspecialty,
+                            Observations = request.Observations,
+                            Indications = request.Indications,
+                            VisitDate = DateTime.Parse(request.VisitDate),
+                            CreateUser = medicalCenter[0].Description,
                             CreateDate = DateTime.Now
                         });
                         db.SaveChanges();
-                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = request.idRecord });
                     }
                     else
                     {
@@ -247,22 +288,22 @@ namespace WebAPI.Controllers
         }
   
         [HttpPost(Name = "SetRecordOperation")]
-        public IActionResult SetRecordOperation(int idRecord, string Doctor_Identification, string OperationCode, string OperationDate, string Referencia)
+        public IActionResult SetRecordOperation(Request_RecordOperation request)
         {
             IActionResult response = BadRequest();
             var visitDate = new DateTime();
             var doctor = new Doctor();
             try
             {
-                if (idRecord == 0 || Doctor_Identification.Trim() == string.Empty || OperationCode.Trim() == string.Empty || OperationDate.Trim() == string.Empty)
+                if (request.idRecord == 0 || request.Doctor_Identification.Trim() == string.Empty || request.OperationCode.Trim() == string.Empty || request.OperationDate.Trim() == string.Empty)
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, IDDoctor, OperationCode, OperationDate" });
                 }
-                else if (!DateTime.TryParse(OperationDate, out visitDate))
+                else if (!DateTime.TryParse(request.OperationDate, out visitDate))
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "El parametro OperationDate tiene el formato incorrecto" });
                 }
-                else if (!doctor.ReviewDoctor(Doctor_Identification))
+                else if (!doctor.ReviewDoctor(request.Doctor_Identification))
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "RecordOperation no insertado, El doctor no fue encontrado en el padron electoral" });
                 }
@@ -270,19 +311,24 @@ namespace WebAPI.Controllers
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
                     var doctorReview = new Doctor();
-                    if (doctorReview.ReviewDoctor(Doctor_Identification))
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
+                    if (medicalCenter.Count == 0)
+                    {
+                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                    }
+                    else if(doctorReview.ReviewDoctor(request.Doctor_Identification))
                     {
                         db.RecordOperations.Add(new RecordOperation()
                         {
-                            Idrecord = idRecord,
-                            Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == Doctor_Identification).ToList()[0].Iddoctor,
-                            Idoperation = db.Operations.Where(op => op.Code == OperationCode).ToList()[0].Idoperation,
-                            Operationdate = DateTime.Parse(OperationDate),
-                            CreateUser = Referencia,
+                            Idrecord = request.idRecord,
+                            Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == request.Doctor_Identification).ToList()[0].Iddoctor,
+                            Idoperation = db.Operations.Where(op => op.Code == request.OperationCode).ToList()[0].Idoperation,
+                            Operationdate = DateTime.Parse(request.OperationDate),
+                            CreateUser = medicalCenter[0].Description,
                             CreateDate = DateTime.Now
                         });
                         db.SaveChanges();
-                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = request.idRecord });
                     }
                     else
                     {
@@ -298,36 +344,55 @@ namespace WebAPI.Controllers
         }
   
         [HttpPost(Name = "SetRecordAnalysis")]
-        public IActionResult SetRecordAnalysis(int idRecord, string AnalysisCode, bool PublicResults, string Results, string AnalysisDate, string Referencia)
+        public IActionResult SetRecordAnalysis(Request_RecordAnalysis request)
         {
             IActionResult response = BadRequest();
             var analysisDate = new DateTime();
-            var doctor = new Doctor();
             try
             {
-                if (idRecord == 0 || AnalysisCode.Trim() == string.Empty || Results.Trim() == string.Empty)
+                if (request.idRecord == 0 || request.AnalysisCode.Trim() == string.Empty || request.ResultsObservations.Trim() == string.Empty || request.ResultCode.Trim() == string.Empty)
                 {
-                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, AnalysisCode, Results" });
+                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, AnalysisCode, ResultsObservations, ResultCode" });
                 }
-                else if (!DateTime.TryParse(AnalysisDate, out analysisDate))
+                else if (!DateTime.TryParse(request.AnalysisDate, out analysisDate))
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "El parametro AnalysisDate tiene el formato incorrecto" });
                 }
                 else
                 {
+
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    db.RecordAnalyses.Add(new RecordAnalysis()
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
+                    var nvResults = db.Namevalues.Where(x => x.GroupName == "RESULTTYPEBINARY_GROUP" && x.Customstring1 == request.ResultCode).ToList();
+                    var analysis = db.Analyses.Where(a => a.Code == request.AnalysisCode).ToList();
+                    if (medicalCenter.Count == 0)
                     {
-                        Idrecord = idRecord,
-                        Idanalysis = db.Analyses.Where(a => a.Code == AnalysisCode).ToList()[0].Idanalysis,
-                        PublicResults = PublicResults,
-                        Results = Results,
-                        AnalysisDate = DateTime.Parse(AnalysisDate),
-                        CreateUser = Referencia,
-                        CreateDate = DateTime.Now
-                    });
-                    db.SaveChanges();
-                    response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                    }
+                    else if (nvResults.Count == 0)
+                    {
+                        response = BadRequest(new { ResponseCode = 99, Message = "El ResultCode no existe en la base de datos" });
+                    }
+                    else if (analysis.Count > 0)
+                    {
+                        db.RecordAnalyses.Add(new RecordAnalysis()
+                        {
+                            Idrecord = request.idRecord,
+                            Idanalysis = analysis[0].Idanalysis,
+                            PublicResults = request.PublicResults,
+                            Result = nvResults[0].Description,
+                            ResultsObservations = request.ResultsObservations,
+                            AnalysisDate = DateTime.Parse(request.AnalysisDate),
+                            CreateUser = medicalCenter[0].Description,
+                            CreateDate = DateTime.Now
+                        });
+                        db.SaveChanges();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = request.idRecord });
+                    }
+                    else
+                    {
+                        response = BadRequest(new { Response = "99", Message = "El AnalysisCode suministrado no existe en la base de datos." });
+                    }
                 }
             }
             catch (Exception e)
@@ -338,35 +403,42 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost(Name = "SetRecordInterment")]
-        public IActionResult SetRecordInterment(int idRecord, string MedicalCenter_Token, string ReasonInterment, string IntermentDate, string Referencia)
+        public IActionResult SetRecordInterment(Request_RecordInterment request)
         {
             IActionResult response = BadRequest();
             DateTime intermentDate = new DateTime();
             try
             {
-                if (idRecord == 0 || MedicalCenter_Token.Trim() == string.Empty || ReasonInterment.Trim() == string.Empty)
+                if (request.idRecord == 0 || request.MedicalCenter_Token.Trim() == string.Empty || request.ReasonInterment.Trim() == string.Empty)
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, Token, Reason" });
                 }
-                else if (!DateTime.TryParse(IntermentDate, out intermentDate))
+                else if (!DateTime.TryParse(request.IntermentDate, out intermentDate))
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "El parametro AnalysisDate tiene el formato incorrecto" });
                 }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == MedicalCenter_Token).ToList()[0];
-                    db.RecordInterments.Add(new RecordInterment()
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
+                    if (medicalCenter.Count == 0)
                     {
-                        Idrecord = idRecord,
-                        IdmedicalCenter = medicalCenter.IdmedicalCenter,
-                        Reason = ReasonInterment,
-                        Intermentdate = intermentDate,
-                        CreateUser = Referencia,
-                        CreateDate = DateTime.Now
-                    });
-                    db.SaveChanges();
-                    response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                    }
+                    else
+                    {
+                        db.RecordInterments.Add(new RecordInterment()
+                        {
+                            Idrecord = request.idRecord,
+                            IdmedicalCenter = medicalCenter[0].IdmedicalCenter,
+                            Reason = request.ReasonInterment,
+                            Intermentdate = intermentDate,
+                            CreateUser = medicalCenter[0].Description,
+                            CreateDate = DateTime.Now
+                        });
+                        db.SaveChanges();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = request.idRecord });
+                    }
                 }
             }
             catch (Exception e)
@@ -377,35 +449,42 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost(Name = "SetRecordEmergencyEntry")]
-        public IActionResult SetRecordEmergencyEntry(int idRecord, string MedicalCenter_Token, string ReasonInterment, string IntermentDate, string Referencia)
+        public IActionResult SetRecordEmergencyEntry(Request_RecordEmergencyEntry request)
         {
             IActionResult response = BadRequest();
-            DateTime intermentDate = new DateTime();
+            DateTime entryDate = new DateTime();
             try
             {
-                if (idRecord == 0 || MedicalCenter_Token.Trim() == string.Empty || ReasonInterment.Trim() == string.Empty)
+                if (request.idRecord == 0 || request.MedicalCenter_Token.Trim() == string.Empty || request.ReasonInterment.Trim() == string.Empty)
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, Token, Reason" });
                 }
-                else if (!DateTime.TryParse(IntermentDate, out intermentDate))
+                else if (!DateTime.TryParse(request.EntryDate, out entryDate))
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "El parametro AnalysisDate tiene el formato incorrecto" });
                 }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == MedicalCenter_Token).ToList()[0];
-                    db.RecordEmergencyemtries.Add(new RecordEmergencyEntry()
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
+                    if (medicalCenter.Count == 0)
                     {
-                        Idrecord = idRecord,
-                        IdmedicalCenter = medicalCenter.IdmedicalCenter,
-                        Reason = ReasonInterment,
-                        Intermentdate = intermentDate,
-                        CreateUser = Referencia,
-                        CreateDate = DateTime.Now
-                    });
-                    db.SaveChanges();
-                    response = Ok(new { ResponseCode = "00", Message = "Success", IDRecord = idRecord });
+                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                    }
+                    else
+                    {
+                        db.RecordEmergencyemtries.Add(new RecordEmergencyEntry()
+                        {
+                            Idrecord = request.idRecord,
+                            IdmedicalCenter = medicalCenter[0].IdmedicalCenter,
+                            Reason = request.ReasonInterment,
+                            Intermentdate = entryDate,
+                            CreateUser = medicalCenter[0].Description,
+                            CreateDate = DateTime.Now
+                        });
+                        db.SaveChanges();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IDRecord = request.idRecord });
+                    }
                 }
             }
             catch (Exception e)
@@ -416,38 +495,46 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost(Name = "SetRecordVaccines")]
-        public IActionResult SetRecordVaccines(int idRecord, List<string> VaccineCodes, string Referencia)
+        public IActionResult SetRecordVaccines(int idRecord, string MedicalCenter_Token, string[] VaccineCodes)
         {
             IActionResult response = BadRequest();
             try
             {
-                if (idRecord == 0 || VaccineCodes.Count == 0)
+                if (idRecord == 0 || VaccineCodes.Length == 0)
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, VaccinesCode"});
                 }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    foreach (var vaccineCode in VaccineCodes)
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == MedicalCenter_Token).ToList();
+                    if (medicalCenter.Count == 0)
                     {
-                        var vaccineResult = db.Namevalues.Where(nv => nv.Customstring1 == vaccineCode).ToList();
-                        if (vaccineResult.Count == 0)
-                        {
-                            throw new Exception("El codigo " + vaccineCode + " no existe en la base de datos.");
-                        }
-                        else 
-                        {
-                            db.RecordVaccines.Add(new RecordVaccine()
-                            {
-                                Idrecord = idRecord,
-                                Nvvaccine = vaccineResult[0].Idnamevalue,
-                                CreateUser = Referencia,
-                                CreateDate = DateTime.Now
-                            });
-                        }
+                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
                     }
-                    db.SaveChanges();
-                    response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord});
+                    else
+                    {
+                        foreach (var vaccineCode in VaccineCodes)
+                        {
+                            var vaccineResult = db.Namevalues.Where(nv => nv.Customstring1 == vaccineCode).ToList();
+                            if (vaccineResult.Count == 0)
+                            {
+                                throw new Exception("El codigo " + vaccineCode + " no existe en la base de datos.");
+                            }
+                            else
+                            {
+                                db.RecordVaccines.Add(new RecordVaccine()
+                                {
+                                    Idrecord = idRecord,
+                                    Nvvaccine = vaccineResult[0].Idnamevalue,
+                                    CreateUser = medicalCenter[0].Description,
+                                    CreateDate = DateTime.Now
+                                });
+                            }
+                        }
+                        db.SaveChanges();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                    }
                 }
             }
             catch (Exception e)
@@ -458,7 +545,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost(Name = "SetRecordAllergies")]
-        public IActionResult SetRecordAllergies(int idRecord, List<string> AllergiesCodes, string Referencia)
+        public IActionResult SetRecordAllergies(int idRecord, string MedicalCenter_Token, List<string> AllergiesCodes)
         {
             IActionResult response = BadRequest();
             try
@@ -470,26 +557,34 @@ namespace WebAPI.Controllers
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    foreach (var allergieCode in AllergiesCodes)
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == MedicalCenter_Token).ToList();
+                    if (medicalCenter.Count == 0)
                     {
-                        var allergieResult = db.Namevalues.Where(nv => nv.Customstring1 == allergieCode).ToList();
-                        if (allergieResult.Count == 0)
-                        {
-                            throw new Exception("El codigo " + allergieCode + " no existe en la base de datos.");
-                        }
-                        else
-                        {
-                            db.RecordAllergies.Add(new RecordAllergy()
-                            {
-                                Idrecord = idRecord,
-                                Nvallergie = allergieResult[0].Idnamevalue,
-                                CreateUser = Referencia,
-                                CreateDate = DateTime.Now
-                            });
-                        }
+                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
                     }
-                    db.SaveChanges();
-                    response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                    else
+                    {
+                        foreach (var allergieCode in AllergiesCodes)
+                        {
+                            var allergieResult = db.Namevalues.Where(nv => nv.Customstring1 == allergieCode).ToList();
+                            if (allergieResult.Count == 0)
+                            {
+                                throw new Exception("El codigo " + allergieCode + " no existe en la base de datos.");
+                            }
+                            else
+                            {
+                                db.RecordAllergies.Add(new RecordAllergy()
+                                {
+                                    Idrecord = idRecord,
+                                    Nvallergie = allergieResult[0].Idnamevalue,
+                                    CreateUser = medicalCenter[0].Description,
+                                    CreateDate = DateTime.Now
+                                });
+                            }
+                        }
+                        db.SaveChanges();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                    }
                 }
             }
             catch (Exception e)

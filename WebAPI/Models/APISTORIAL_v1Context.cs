@@ -596,9 +596,13 @@ namespace WebAPI.Models
 
                 entity.Property(e => e.PublicResults).HasColumnName("PUBLIC_RESULTS");
 
-                entity.Property(e => e.Results)
+                entity.Property(e => e.ResultsObservations)
                     .HasMaxLength(500)
-                    .HasColumnName("RESULTS");
+                    .HasColumnName("RESULTSOBSERVATIONS");
+
+                entity.Property(e => e.Result)
+                    .HasMaxLength(500)
+                    .HasColumnName("RESULT");
 
                 entity.Property(e => e.UpdateDate)
                     .HasColumnType("datetime")
