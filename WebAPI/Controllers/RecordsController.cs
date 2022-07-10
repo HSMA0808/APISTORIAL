@@ -267,6 +267,7 @@ namespace WebAPI.Controllers
                             Idspecialty = db.Specialtys.Where(sp => sp.Code == request.SpecialtyCode).ToList()[0].Idspecialty,
                             Observations = request.Observations,
                             Indications = request.Indications,
+                            IdMedicalCenter = db.MedicalCenters.Where(m=>m.Token == request.MedicalCenter_Token).First().IdmedicalCenter,
                             VisitDate = DateTime.Parse(request.VisitDate),
                             CreateUser = medicalCenter[0].Description,
                             CreateDate = DateTime.Now
@@ -324,6 +325,7 @@ namespace WebAPI.Controllers
                             Iddoctor = db.Doctors.Where(d => d.IdentificationNumber == request.Doctor_Identification).ToList()[0].Iddoctor,
                             Idoperation = db.Operations.Where(op => op.Code == request.OperationCode).ToList()[0].Idoperation,
                             Operationdate = DateTime.Parse(request.OperationDate),
+                            IdMedicalCenter = db.MedicalCenters.Where(m=>m.Token == request.MedicalCenter_Token).First().IdmedicalCenter,
                             CreateUser = medicalCenter[0].Description,
                             CreateDate = DateTime.Now
                         });

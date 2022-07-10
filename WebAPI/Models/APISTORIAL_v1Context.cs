@@ -41,7 +41,7 @@ namespace WebAPI.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-0K0HM7M;Initial Catalog=APISTORIAL_v1;Integrated Security=True;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer(StaticsOperations.getConfiguration().GetConnectionString("DefaultConnection"));
             }
         }
 

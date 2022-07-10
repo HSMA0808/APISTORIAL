@@ -9,6 +9,7 @@ namespace WebAPI.Models
         public int? Idrecord { get; set; }
         public int? Idoperation { get; set; }
         public int? Iddoctor { get; set; }
+        public int? IdMedicalCenter { get; set; }
         public DateTime? Operationdate { get; set; }
         public string? CreateUser { get; set; }
         public DateTime? CreateDate { get; set; }

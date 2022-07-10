@@ -11,6 +11,7 @@ namespace WebAPI.Models
         public int? Idspecialty { get; set; }
         public string? Observations { get; set; }
         public string? Indications { get; set; }
+        public int? IdMedicalCenter { get; set; }
         public DateTime? VisitDate { get; set; }
         public string? CreateUser { get; set; }
         public DateTime? CreateDate { get; set; }
