@@ -12,6 +12,8 @@ namespace WebAPI.ResponseObjects
         public string? Indicaciones { get; set; }
         public string? CentroMedico { get; set; }
         public DateTime? Fecha_Visita { get; set; }
+        public string? CreateUser { get; set; }
+        public DateTime? CreateDate { get; set; }
 
         public List<Response_RecordVisit> ToList(List<RecordVisit> recordVisits)
         {
@@ -37,7 +39,9 @@ namespace WebAPI.ResponseObjects
                         CentroMedico = centroMedico,
                         Observaciones = rv.Observations,
                         Indicaciones = rv.Indications,
-                        Fecha_Visita = rv.VisitDate
+                        Fecha_Visita = rv.VisitDate,
+                        CreateUser = rv.CreateUser,
+                        CreateDate = rv.CreateDate
                     });
                 }
                 return list;

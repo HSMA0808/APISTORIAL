@@ -21,15 +21,17 @@ namespace WebAPI.ResponseObjects
             else
             {
                 var db = new APISTORIAL_v1Context(new Microsoft.EntityFrameworkCore.DbContextOptions<APISTORIAL_v1Context>());
-                foreach (var rI in recordsEmergencyEntry)
+                foreach (var rE in recordsEmergencyEntry)
                 {
-                    var medicalCenter = db.MedicalCenters.Find(rI.IdmedicalCenter);
+                    var medicalCenter = db.MedicalCenters.Find(rE.IdmedicalCenter);
                     list.Add(new Response_RecordEmergencyEntry()
                     {
-                        IdrecordInterment = rI.IdrecordEmergencyentry,
-                        Reason = rI.Reason,
-                        EntryDate = rI.Intermentdate,
+                        IdrecordInterment = rE.IdrecordEmergencyentry,
+                        Reason = rE.Reason,
+                        EntryDate = rE.Intermentdate,
                         MedicalCenter = medicalCenter.Description,
+                        CreateUser = rE.CreateUser,
+                        CreateDate = rE.CreateDate,
                     });
                 }
                 return list;

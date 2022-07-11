@@ -30,6 +30,8 @@ namespace WebAPI.ResponseObjects
                         Reason = rI.Reason,
                         Intermentdate = rI.Intermentdate,
                         MedicalCenter = medicalCenter.Description,
+                        CreateUser = rI.CreateUser,
+                        CreateDate = rI.CreateDate,
                     });
                 }
                 return list;

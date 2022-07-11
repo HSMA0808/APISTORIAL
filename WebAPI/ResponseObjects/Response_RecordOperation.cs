@@ -10,6 +10,8 @@ namespace WebAPI.ResponseObjects
         public string? Operacion { get; set; }
         public string? CentroMedico { get; set; }
         public DateTime? Fecha_Operacion { get; set; }
+        public string? CreateUser { get; set; }
+        public DateTime? CreateDate { get; set; }
 
         public List<Response_RecordOperation> ToList(List<RecordOperation> recordOperation)
         {
@@ -33,7 +35,9 @@ namespace WebAPI.ResponseObjects
                         Doctor_Nombre = Doctor.FirstName + " " + Doctor.LastName,
                         Operacion = Operacion.Description,
                         CentroMedico = centroMedico,
-                        Fecha_Operacion = ro.Operationdate
+                        Fecha_Operacion = ro.Operationdate,
+                        CreateUser = ro.CreateUser,
+                        CreateDate = ro.CreateDate
                     });
                 }
                 return list;

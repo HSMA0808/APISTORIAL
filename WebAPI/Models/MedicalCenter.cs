@@ -33,5 +33,17 @@ namespace WebAPI.Models
         public virtual ICollection<RecordInterment> RecordInterments { get; set; }
         public virtual ICollection<Record> RecordLastMedicalcenterUpdateNavigations { get; set; }
         public virtual ICollection<Record> RecordMedicalcenterCreatorNavigations { get; set; }
+
+        public bool MedicalCenterValid(string MedicalCenterToken)
+        {
+            bool isValid = false;
+            var db = new APISTORIAL_v1Context(new Microsoft.EntityFrameworkCore.DbContextOptions<APISTORIAL_v1Context>());
+            var mcList = db.MedicalCenters.Where(m => m.Token == MedicalCenterToken && m.NvstatusCenter == 6).ToList();
+            if (mcList.Count == 1)
+            {
+                isValid = true;
+            }
+            return isValid;
+        }
     }
 }

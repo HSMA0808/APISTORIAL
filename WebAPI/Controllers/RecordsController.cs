@@ -16,92 +16,103 @@ namespace WebAPI.Controllers
     public class RecordsController : ControllerBase
     {
         [HttpGet(Name = "GetRecord")]
-        public IActionResult GetRecord(string Identification = "")
+        public IActionResult GetRecord(string MedicalCenterToken, string Identification = "")
             {
+                IActionResult response;  
                 bool NewRecord = false;
                 try
                 {
                     Record oRecord = new Record();
-                    if (Identification.Trim() == string.Empty)
+                    var medicalCenter = new MedicalCenter();
+                if (Identification.Trim() == string.Empty)
+                {
+                    response =  BadRequest(new
                     {
-                        return BadRequest(new
+                        ResponseCode = "99",
+                        Message = "El parametro <Identification> no puede ser enviado sin data"
+                    });
+                }
+                else if (medicalCenter.MedicalCenterValid(MedicalCenterToken) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
+                }
+                else
+                {
+                    var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                    var Response_rv = new Response_RecordVisit();
+                    var oRecordVisits = new List<RecordVisit>();
+                    var response_RvList = new List<Response_RecordVisit>();
+                    var idPatient = 0;
+                    var patientList = db.Patients.Where(x => x.IdentificationNumber == Identification).ToList();
+                    if (patientList.Count() <= 0)
+                    {
+                        NewRecord = true;
+                        //Logica para crear el paciente consultando el padron
+                        response = Ok(new
                         {
-                            ResponseCode = "99",
-                            Message = "El parametro <Identification> no puede ser enviado sin data"
+                            ResponseCode = "00",
+                            Message = "Success",
+                            oRecord
                         });
                     }
                     else
                     {
-                        var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                        var Response_rv = new Response_RecordVisit();
-                        var oRecordVisits = new List<RecordVisit>();
-                        var response_RvList = new List<Response_RecordVisit>();
-                        var idPatient = 0;
-                        var patientList = db.Patients.Where(x => x.IdentificationNumber == Identification).ToList();
-                        if (patientList.Count() <= 0)
+                        idPatient = patientList[0].Idpatient;
+                        oRecord = oRecord.ReviewRecord(patientList[0].IdentificationNumber, MedicalCenterToken);
+                        response = Ok(new
                         {
-                            NewRecord = true;
-                            //Logica para crear el paciente consultando el padron
-                            return Ok(new
+                            ResponseCode = "00",
+                            Message = "Success",
+                            Record = new
                             {
-                                ResponseCode = "00",
-                                Message = "Success",
-                                oRecord
-                            });
-                        }
-                        else
-                        {
-                            idPatient = patientList[0].Idpatient;
-                            oRecord = db.Records.Where(x => x.Idpatient == idPatient).Include(r => r.RecordVisits).ToList()[0];
-                            var response = new
-                            {
-                                ResponseCode = "00",
-                                Message = "Success",
-                                Record = new
-                                {
-                                    IDRecord = oRecord.Idrecord,
-                                    IDPatient = oRecord.Idpatient,
-                                    NewRecord = NewRecord,
-                                    Create_User = oRecord.CreateUser,
-                                    Create_Date = oRecord.CreateDate
-                                },
+                                IDRecord = oRecord.Idrecord,
+                                IDPatient = oRecord.Idpatient,
+                                NewRecord = NewRecord,
+                                Create_User = oRecord.CreateUser,
+                                Create_Date = oRecord.CreateDate
+                            },
 
-                                Paciente = new
-                                {
-                                    Nombre = patientList[0].FirstName + " " + patientList[0].LastName,
-                                    Identificacion = patientList[0].IdentificationNumber,
-                                    Telefono = patientList[0].Tel1,
-                                    Telefono2 = patientList[0].Tel2,
-                                    Email = patientList[0].Email,
-                                    Direccion1 = patientList[0].Address1,
-                                    Direccion2 = patientList[0].Address2
-                                }
-                            };
-                            return Ok(JsonConvert.SerializeObject(response));
-                        }
+                            Paciente = new
+                            {
+                                Nombre = patientList[0].FirstName + " " + patientList[0].LastName,
+                                Identificacion = patientList[0].IdentificationNumber,
+                                Telefono = patientList[0].Tel1,
+                                Telefono2 = patientList[0].Tel2,
+                                Email = patientList[0].Email,
+                                Direccion1 = patientList[0].Address1,
+                                Direccion2 = patientList[0].Address2
+                            }
+                        });
                     }
+                }
                 }
                 catch (Exception e)
                 {
-                    return BadRequest(new
+                    response = BadRequest(new
                     {
                         ResponseCode = "99",
                         Message = "Ha ocurrido un error: " + e.Message
                     });
                 }
+            return response;
             }
   
         [HttpGet(Name = "GetRecordVisit")]
-        public IActionResult GetRecordVisit(int idRecord)
+        public IActionResult GetRecordVisit(string MedicalCenterToken, int idRecord)
         {
             IActionResult response;
             try
             {
                 var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
                 var oRecord = db.Records.Find(idRecord);
-                if (oRecord.Idrecord == null || oRecord.Idrecord == 0)
+                var medicalCenter = new MedicalCenter();
+                if (oRecord == null)
                 {
                     response = Ok(new { ResponseCode = "99", Message = "Record No. " + idRecord + " no encontrado" });
+                }
+                else if (medicalCenter.MedicalCenterValid(MedicalCenterToken) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                 }
                 else
                 {
@@ -126,16 +137,21 @@ namespace WebAPI.Controllers
         }
   
         [HttpGet(Name = "GetRecordOperation")]
-        public IActionResult GetRecordOperation(int idRecord)
+        public IActionResult GetRecordOperation(string MedicalCenterToken, int idRecord)
         {
             IActionResult response;
             try
             {
                 var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                var medicalCenter = new MedicalCenter();
                 var oRecord = db.Records.Find(idRecord);
-                if (oRecord.Idrecord == null || oRecord.Idrecord == 0)
+                if (oRecord == null)
                 {
                     response = Ok(new { ResponseCode = "99", Message = "Record No. " + idRecord + " no encontrado" });
+                }
+                else if (medicalCenter.MedicalCenterValid(MedicalCenterToken) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                 }
                 else
                 {
@@ -160,16 +176,21 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet(Name = "GetRecordInterment")]
-        public IActionResult GetRecordInterment(int idRecord)
+        public IActionResult GetRecordInterment(string MedicalCenterToken, int idRecord)
         {
             IActionResult response;
             try
             {
                 var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                var medicalCenter = new MedicalCenter();
                 var oRecord = db.Records.Find(idRecord);
-                if (oRecord.Idrecord == null || oRecord.Idrecord == 0 )
+                if (oRecord == null)
                 {
                     response = Ok(new { ResponseCode = "99", Message = "Record No. " + idRecord + " no encontrado" });
+                }
+                else if (medicalCenter.MedicalCenterValid(MedicalCenterToken) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                 }
                 else
                 {
@@ -194,17 +215,62 @@ namespace WebAPI.Controllers
             return response;
         }
 
-        [HttpGet(Name = "GetRecordAnalysis")]
-        public IActionResult GetRecordAnalysis(int idRecord)
+        [HttpGet(Name = "GetRecordEmergencyEntry")]
+        public IActionResult GetRecordEmergencyEntry(string MedicalCenterToken, int idRecord)
         {
             IActionResult response;
             try
             {
                 var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                var medicalCenter = new MedicalCenter();
                 var oRecord = db.Records.Find(idRecord);
-                if (oRecord.Idrecord == null || oRecord.Idrecord == 0)
+                if (oRecord == null)
                 {
                     response = Ok(new { ResponseCode = "99", Message = "Record No. " + idRecord + " no encontrado" });
+                }
+                else if (medicalCenter.MedicalCenterValid(MedicalCenterToken) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
+                }
+                else
+                {
+
+                    var oPatient = db.Patients.Find(oRecord.Idpatient);
+                    var oRecordEmergencyEntry = db.RecordEmergencyemtries.Where(ro => ro.Idrecord == idRecord).ToList();
+                    var rE = new ResponseObjects.Response_RecordEmergencyEntry().ToResponseList(oRecordEmergencyEntry);
+                    response = Ok(new
+                    {
+                        ResponseCode = "00",
+                        Message = "Success",
+                        Record = new { IDRecord = oRecord.Idrecord, IDPaciente = oRecord.Idpatient },
+                        Paciente = new { Nombre = oPatient.FirstName + " " + oPatient.LastName, Identificacion = oPatient.IdentificationNumber, Tel1 = oPatient.Tel1, Tel2 = oPatient.Tel2, Email = oPatient.Email, Direccion1 = oPatient.Address1, Direccion2 = oPatient.Address2 },
+                        RecordsEmergencyEntries = rE
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error: " + e.Message });
+            }
+            return response;
+        }
+
+        [HttpGet(Name = "GetRecordAnalysis")]
+        public IActionResult GetRecordAnalysis(string MedicalCenterToken, int idRecord)
+        {
+            IActionResult response;
+            try
+            {
+                var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                var medicalCenter = new MedicalCenter();
+                var oRecord = db.Records.Find(idRecord);
+                if (oRecord == null)
+                {
+                    response = Ok(new { ResponseCode = "99", Message = "Record No. " + idRecord + " no encontrado" });
+                }
+                else if (medicalCenter.MedicalCenterValid(MedicalCenterToken) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                 }
                 else
                 {

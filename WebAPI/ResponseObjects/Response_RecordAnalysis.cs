@@ -25,17 +25,19 @@ namespace WebAPI.ResponseObjects
             {
                 var db = new APISTORIAL_v1Context(new Microsoft.EntityFrameworkCore.DbContextOptions<APISTORIAL_v1Context>());
                 var analysis = new Analysis();
-                foreach (var rI in recordsAnalysis)
+                foreach (var rA in recordsAnalysis)
                 {
-                    analysis = db.Analyses.Find(rI.Idanalysis);
+                    analysis = db.Analyses.Find(rA.Idanalysis);
                     list.Add(new Response_RecordAnalysis()
                     {
-                        IdrecordAnalysis = rI.IdrecordAnalysis,
+                        IdrecordAnalysis = rA.IdrecordAnalysis,
                         analysisName = analysis.Description,
                         analysisCode = analysis.Code,
-                        Result = rI.Result,
-                        ResultsObservations = rI.ResultsObservations,
-                        AnalysisDate = rI.AnalysisDate
+                        Result = rA.Result,
+                        ResultsObservations = rA.ResultsObservations,
+                        AnalysisDate = rA.AnalysisDate,
+                        CreateUser = rA.CreateUser,
+                        CreateDate = rA.CreateDate,
                     });
                 }
                 return list;

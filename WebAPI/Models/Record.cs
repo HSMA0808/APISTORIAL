@@ -35,5 +35,23 @@ namespace WebAPI.Models
         public virtual ICollection<RecordOperation> RecordOperations { get; set; }
         public virtual ICollection<RecordVaccine> RecordVaccines { get; set; }
         public virtual ICollection<RecordVisit> RecordVisits { get; set; }
+
+        public Record ReviewRecord(string Identification, string MedicalCenterToken)
+        {
+            var db = new APISTORIAL_v1Context(new Microsoft.EntityFrameworkCore.DbContextOptions<APISTORIAL_v1Context>());
+            var idPatient = db.Patients.Where(p => p.IdentificationNumber == Identification).First().Idpatient;
+            var medicalCenter = db.MedicalCenters.Where(m => m.Token == MedicalCenterToken).First();
+            if (db.Records.Where(r => r.Idpatient == idPatient).ToList().Count == 0)
+            {
+                db.Records.Add(new Record() {
+                    Idpatient = idPatient,
+                    MedicalcenterCreator = medicalCenter.IdmedicalCenter,
+                    CreateUser = medicalCenter.Description,
+                    CreateDate = DateTime.Now,
+                });
+                db.SaveChanges();
+            }
+            return db.Records.Where(r=>r.Idpatient == idPatient).First();
+        }
     }
 }
