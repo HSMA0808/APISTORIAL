@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!--<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="css/index.css">-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <title>Record del Paciente</title>
+</head>
+<body class ="bg-dark">
+  <nav class="navbar navbar-light bg-light static-top mb-10">
+      <div class="container">
+          <a class="navbar-brand" href="#!">APISTORIAL</a>
+          <a class="btn btn-primary" href="#signup">Contacto</a>
+      </div>
+  </nav>
+  <br>
+  <div class="container text-white" >
+    <h6 class="mb-15">Record: <small>132165456</small></h6>
+  </div>
+        <div class="container mt-10 bg-white">
+          <br>
+          <div class="row bg-white">
+            <!--Tarjeta con los datos del cliente-->
+            <div class="col-md-4 border rounded p-2">
+              <form class="form" action="#" autocomplete="off">
+                  <div align = "center" class="picture-container mb-3">
+                      <img align = "center" class="profile" src="./imgs/pro.png" alt="">
+                  </div>
+                      <div class="profile-inputs form-group">
+                        <div class="row g-2">
+                        <div class="col-md">
+                          <div class="form-floating">
+                            <input readonly type="text" class="form-control" id="txtNombre" placeholder="JUAN ROBERTO" value=" ">
+                            <label for="txtNombre">Nombre</label>
+                          </div>
+                        </div>
+                        <div class="col-md">
+                          <div class="form-floating">
+                            <input readonly type="text" class="form-control" id="txtApellido" placeholder="PEREZ MARTINEZ" value=" ">
+                            <label for="txtApellido">Apellido</label>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <br>
+                  <div class = "col-md-12">
+                      <div class="row form-group mb-2 g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                              <select disabled class="form-select" id="dpTipoIdentificacion" aria-label="Floating label select example">
+                                <option selected>Seleccione</option>
+                                <option value="1">Cedula</option>
+                                <option value="2">Pasaporte</option>
+                              </select>
+                              <label for="floatingSelectGrid">Tipo Identificacion</label>
+                            </div>
+                          </div>
+                          <div class="col-md">
+                            <div class="form-floating">
+                              <input readonly type="text" class="form-control" id="txtNoIdentificacion" placeholder="XXX-XXXXXXX-X" value=" ">
+                              <label for="txtNoIdentificacion">No. Identificacion</label>
+                            </div>
+                          </div>
+                      </div>
+
+                      <div class="row form-group mb-2 g-2">
+                        <div class="col-md">
+                          <div class="form-floating">
+                            <input readonly type="text" class="form-control" id="txtTelefono" placeholder="XXX-XXX-XXXX" value=" ">
+                            <label for="txtTelefono">Telefono</label>
+                          </div>
+                        </div>
+                        <div class="col-md">
+                          <div class="form-floating">
+                            <input readonly type="text" class="form-control" id="txtTelefono2" placeholder="XXX-XXX-XXXX" value=" ">
+                            <label for="txtTelefono2">Telefono 2</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group mb-2">
+                        <div class="form-floating">
+                          <input readonly type="text" class="form-control" id="txtEmail" placeholder="example@example.com" value=" ">
+                          <label for="txtEmail">Email</label>
+                        </div>
+                      </div>
+
+                      <div class="form-group mb-2">
+                        <div class="form-floating">
+                          <textarea readonly type="text" class="form-control" id="txtDireccion" placeholder="Calle 01 #2, Sector"> </textarea>
+                          <label for="txtDireccion">Direccion</label>
+                        </div>
+                      </div>
+                      <div class="form-group mb-2">
+                        <div class="form-floating">
+                          <textarea readonly type="text" class="form-control" id="txtDireccion2" placeholder="Calle 01 #2, Sector"> </textarea>
+                          <label for="txtDireccion2">Direccion 2</label>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-secondary" type="button"><i class="fas fa-edit"></i> Editar</button>
+                  </div>
+              </form>
+            </div>
+
+            <!--Tabs con los tipos de records-->
+            <div class="col-md-8 ">
+                <nav>
+                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link text-black active" id="consulta-tab" data-bs-toggle="tab" data-bs-target="#nav-consulta" type="button" role="tab" aria-controls="nav-consulta" aria-selected="true">Consulta</button>
+                    <button class="nav-link text-black" id="analisis-tab" data-bs-toggle="tab" data-bs-target="#nav-analisis" type="button" role="tab" aria-controls="nav-analisis" aria-selected="false">Analisis</button>
+                    <button class="nav-link text-black" id="operaciones-tab" data-bs-toggle="tab" data-bs-target="#nav-operaciones" type="button" role="tab" aria-controls="nav-operaciones" aria-selected="false">Operaciones</button>
+                    <button class="nav-link text-black" id="internamientos-tab" data-bs-toggle="tab" data-bs-target="#nav-internamientos" type="button" role="tab" aria-controls="nav-internamientos" aria-selected="false">Internamiento</button>
+                    <button class="nav-link text-black" id="emergencia-tab" data-bs-toggle="tab" data-bs-target="#nav-emergencia" type="button" role="tab" aria-controls="nav-emergencia" aria-selected="false">Emergencia</button>
+                  </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="nav-consulta" role="tabpanel" aria-labelledby="consulta-tab">
+                    <table  id="tabla_Consultas"class="mb-15 table table-hover">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>ID</th>
+                                <th>Oservaciones</th>
+                                <th>Indicaciones</th>
+                                <th>Doctor</th>
+                                <th>Especialidad</th>
+                                <th>Fecha</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2523</td>
+                                <td>Dolor de cabeza</td>
+                                <td>Tomar vinatimna D</td>
+                                <td>Dr. Rojas</td>
+                                <td>Odontologo</td>
+                                <td>02/05/2022</td>
+                                <td><button class = "btn btn-secondary"><i class="fas fa-eye"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="" align = "right">
+                        <button id = "btnNuevaConsulta"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-analisis" role="tabpanel" aria-labelledby="analisis-tab">
+                    <table id = "tabla_Analisis" class="mb-15 table table-hover">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>ID</th>
+                                <th>Analisis</th>
+                                <th>Resultados</th>
+                                <th>Fecha</th>
+                                <th>Centro</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2524</td>
+                                <td>FALCEMIA</td>
+                                <td>POSITIVO</td>
+                                <td>02/05/2022</td>
+                                <td>AMADITA</td>
+                                <td><button class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="" align = "right">
+                        <button id = "btnNuevoAnalisis"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-operaciones" role="tabpanel" aria-labelledby="operaciones-tab">
+                    <table id = "tabla_Operaciones" class="mb-15 table table-hover">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>ID</th>
+                                <th>Operacion</th>
+                                <th>Centro Medico</th>
+                                <th>Fecha</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2523</td>
+                                <td>APENDICECTOMIA</td>
+                                <td>PLAZA DE LA SALUD</td>
+                                <td>02/05/2022</td>
+                                <td><button class = "btn btn-secondary"> <i class="fas fa-eye"></i> </button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="" align = "right">
+                        <button id = "btnNuevaOperacion"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-internamientos" role="tabpanel" aria-labelledby="internamientos-tab">
+                    <table id = "tabla_Internamientos" class="mb-15 table table-hover">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>ID</th>
+                                <th>Razon</th>
+                                <th>Centro Medico</th>
+                                <th>Fecha</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2526</td>
+                                <td>Paro respiratorio</td>
+                                <td>DARIO CONTRERAS</td>
+                                <td>02/05/2022</td>
+                                <td><button class ="btn btn-secondary"> <i class="fas fa-eye"></i> </button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="" align = "right">
+                        <button id = "btnNuevoInternamiento"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-emergencia" role="tabpanel" aria-labelledby="emergencia-tab">
+                    <table id="tabla_Emergencias" class="mb-15 table table-hover">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>ID</th>
+                                <th>Razon</th>
+                                <th>Centro Medico</th>
+                                <th>Fecha</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2523</td>
+                                <td>Quemaduras 2do. Grado</td>
+                                <td>DARIO CONTRERAS</td>
+                                <td>02/05/2022</td>
+                                <td><button class ="btn btn-secondary"> <i class = "fas fa-eye"></i> </button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="" align = "right">
+                        <button id = "btnNuevoIngresoEmergencia"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <hr width="100%">
+
+          <!--Fila para colocar las listas de vacunas y alergias-->
+          <div class="row bg-white">
+            <div class="col-md-6">
+              <div>
+                <h5>Vacunas</h5>
+                <br>
+                <table class = "table table-hover table-striped">
+                  <thead class = "bg-secondary text-white">
+                    <th>ID</th>
+                    <th>Vacuna</th>
+                    <th>A?o</th>
+                  </thead>
+                  <tbody>
+                    <th>2335489</th>
+                    <th>COVID SINOVAC</th>
+                    <th>2021</th>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div>
+                <h5>Alergias</h5>
+                <br>
+                <table class="table table-hover table-striped">
+                  <thead class = "bg-secondary text-white">
+                    <th>ID</th>
+                    <th>Alergia</th>
+                  </thead>
+                  <tbody>
+                    <th>2335488</th>
+                    <th>Antibioticos</th>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+</body>
+<br>
+<footer class="footer bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                <ul class="list-inline mb-2">
+                    <li class="list-inline-item"><a href="#!">Acerca</a></li>
+                    <li class="list-inline-item">⋅</li>
+                    <li class="list-inline-item"><a href="#!">Contacto</a></li>
+                    <li class="list-inline-item">⋅</li>
+                    <li class="list-inline-item"><a href="#!">Terminos de uso</a></li>
+                    <li class="list-inline-item">⋅</li>
+                    <li class="list-inline-item"><a href="#!">Politicas de privacidad</a></li>
+                </ul>
+                <p class="text-muted small mb-4 mb-lg-0">&copy; Aphistory 2022. Todos los derechos reservados</p>
+            </div>
+            <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item me-4">
+                        <a href="#!"><i class="bi-facebook fs-3"></i></a>
+                    </li>
+                    <li class="list-inline-item me-4">
+                        <a href="#!"><i class="bi-twitter fs-3"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#!"><i class="bi-instagram fs-3"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<!--<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>-->
+<!--<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>-->
+</html>
