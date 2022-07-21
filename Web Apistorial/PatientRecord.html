@@ -113,6 +113,230 @@
               </form>
             </div>
 
+            <!--Modals para los tipo de records-->
+            <!--Modal Nueva Consulta-->
+            <div class="modal fade" id="ModalConsulta" tabindex="-1" aria-labelledby="ModalConsultaLabel" aria-hidden="true">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nueva Consulta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row mb-5">
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpDoctor">Doctor</label>
+                        <select id="dpDoctor"class="select form-control" name="">
+                          <option value="0">--Doctor--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-3 form-group">
+                        <label class = "sr-only" for="txtNoIdentificacion">No. Identificacion</label>
+                        <input readonly id = "txtNoIdentificacion" class = "form-control" type="text" name="NoIdentificacion" value="" placeholder="No. Identificacion">
+                      </div>
+                      <div class="col-md-3 form-group">
+                        <label class = "sr-only" for="txtEspecialidad">Especialidad</label>
+                        <input readonly id = "txtEspecialidad" class = "form-control" type="text" name="Especialidad" value="" placeholder="Especialidad">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 form-group">
+                        <textarea id="txtObservaciones" class = "form-control" name="name" rows="8" placeholder="Observaciones"></textarea>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <textarea id="txtIndicaciones" class = "form-control" name="name" rows="8" placeholder="Indicaciones"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Modal Nuevo Analisis-->
+            <div class="modal fade" id="ModalAnalisis" tabindex="-1" aria-labelledby="ModalAnalisisLabel" aria-hidden="true">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nuevo Analisis</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row mb-5">
+                      <div class="col-md-5 form-group">
+                        <label class = "sr-only" for="dpTipoAnalisis">Tipo Analisis</label>
+                        <select id="dpTipoAnalisis"class="select form-control" name="">
+                          <option value="0">--Tipo Analisis--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-5 form-group">
+                        <label class = "sr-only" for="dpAnalisis">Analisis</label>
+                        <select id="dpAnalisis"class="select form-control" name="">
+                          <option value="0">--Analisis--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 form-group">
+                        <label class = "sr-only" for="dpResultados">Resultados</label>
+                        <select id="dpResultados"class="select form-control" name="">
+                          <option value="0">--Resultados--</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 form-group">
+                        <textarea id="txtObservaciones" class = "form-control" name="name" rows="8" placeholder="Observaciones"></textarea>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <span> <input id="checkPublicResults" type="checkbox" align = "left" name="" value=""> Marque el check si desea que los resultados sean encriptados.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Modal Nueva Operacion-->
+            <div class="modal fade" id="ModalOperacion" tabindex="-1" aria-labelledby="ModalOperacionLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nueva Operacion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row mb-5">
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpDoctor">Doctor</label>
+                        <select id="dpDoctor"class="select form-control" name="">
+                          <option value="0">--Doctor--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="txtIdentificacion">No. Identificacion</label>
+                        <input readonly id = "txtIdentificacion" class = "form-control" type="text" name="" value="" placeholder="No. Identificacion">
+                      </div>
+                    </div>
+                    <div class="row mb-5">
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpTipoOperacion">Tipo Operacion</label>
+                        <select id="dpTipoOperacion"class="select form-control" name="">
+                          <option value="0">--Tipo Operacion--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpOperacion">Operacion</label>
+                        <select id="dpOperacion"class="select form-control" name="">
+                          <option value="0">--Operacion--</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Modal Nuevo Internamiento-->
+            <div class="modal fade" id="ModalInternamiento" tabindex="-1" aria-labelledby="ModalInternamientoLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nuevo Internamiento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row mb-5">
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpDoctor">Doctor</label>
+                        <select id="dpDoctor"class="select form-control" name="">
+                          <option value="0">--Doctor--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="txtIdentificacion">No. Identificacion</label>
+                        <input readonly id = "txtIdentificacion" class = "form-control" type="text" name="" value="" placeholder="No. Identificacion">
+                      </div>
+                    </div>
+                    <div class="row mb-5">
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpTipoOperacion">Tipo Operacion</label>
+                        <select id="dpTipoOperacion"class="select form-control" name="">
+                          <option value="0">--Tipo Operacion--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpOperacion">Operacion</label>
+                        <select id="dpOperacion"class="select form-control" name="">
+                          <option value="0">--Operacion--</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Modal Nuevo Emergencias-->
+            <div class="modal fade" id="ModalEmergencias" tabindex="-1" aria-labelledby="ModalEmergenciasLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nueva Entrada a Emergencias</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row mb-5">
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpDoctor">Doctor</label>
+                        <select id="dpDoctor"class="select form-control" name="">
+                          <option value="0">--Doctor--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="txtIdentificacion">No. Identificacion</label>
+                        <input readonly id = "txtIdentificacion" class = "form-control" type="text" name="" value="" placeholder="No. Identificacion">
+                      </div>
+                    </div>
+                    <div class="row mb-5">
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpTipoOperacion">Tipo Operacion</label>
+                        <select id="dpTipoOperacion"class="select form-control" name="">
+                          <option value="0">--Tipo Operacion--</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="dpOperacion">Operacion</label>
+                        <select id="dpOperacion"class="select form-control" name="">
+                          <option value="0">--Operacion--</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!--Tabs con los tipos de records-->
             <div class="col-md-8 ">
                 <nav>
@@ -151,7 +375,7 @@
                         </tbody>
                     </table>
                     <div class="" align = "right">
-                        <button id = "btnNuevaConsulta"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                        <button id = "btnNuevaConsulta"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalConsulta"><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
                   <div class="tab-pane fade" id="nav-analisis" role="tabpanel" aria-labelledby="analisis-tab">
@@ -178,7 +402,7 @@
                         </tbody>
                     </table>
                     <div class="" align = "right">
-                        <button id = "btnNuevoAnalisis"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                        <button id = "btnNuevoAnalisis"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalAnalisis" ><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
                   <div class="tab-pane fade" id="nav-operaciones" role="tabpanel" aria-labelledby="operaciones-tab">
@@ -203,7 +427,7 @@
                         </tbody>
                     </table>
                     <div class="" align = "right">
-                        <button id = "btnNuevaOperacion"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                        <button id = "btnNuevaOperacion"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalOperacion" ><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
                   <div class="tab-pane fade" id="nav-internamientos" role="tabpanel" aria-labelledby="internamientos-tab">
@@ -228,7 +452,7 @@
                         </tbody>
                     </table>
                     <div class="" align = "right">
-                        <button id = "btnNuevoInternamiento"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                        <button id = "btnNuevoInternamiento"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalInternamiento" ><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
                   <div class="tab-pane fade" id="nav-emergencia" role="tabpanel" aria-labelledby="emergencia-tab">
@@ -253,7 +477,7 @@
                         </tbody>
                     </table>
                     <div class="" align = "right">
-                        <button id = "btnNuevoIngresoEmergencia"class = "btn btn-primary"><i class="fas fa-add"> </i> Agregar</button>
+                        <button id = "btnNuevoIngresoEmergencia"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEmergencias" ><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
                 </div>
