@@ -295,6 +295,85 @@ namespace WebAPI.Controllers
             return response;
         }
 
+        [HttpGet(Name = "GetRecordVaccines")]
+        public IActionResult GetRecordVaccines(string MedicalCenterToken, int idRecord)
+        {
+            IActionResult response;
+            try
+            {
+                var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                var medicalCenter = new MedicalCenter();
+                var oRecord = db.Records.Find(idRecord);
+                if (oRecord == null)
+                {
+                    response = Ok(new { ResponseCode = "99", Message = "Record No. " + idRecord + " no encontrado" });
+                }
+                else if (medicalCenter.MedicalCenterValid(MedicalCenterToken) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
+                }
+                else
+                {
+
+                    var oPatient = db.Patients.Find(oRecord.Idpatient);
+                    var oRecordVaccines = db.RecordVaccines.Where(rvs => rvs.Idrecord == idRecord).Include(nv => nv.NvvaccineNavigation).ToList();
+                    var rvs = new ResponseObjects.Response_RecordVaccines().ToResponseList(oRecordVaccines);
+                    response = Ok(new
+                    {
+                        ResponseCode = "00",
+                        Message = "Success",
+                        Record = new { IDRecord = oRecord.Idrecord, IDPaciente = oRecord.Idpatient },
+                        Paciente = new { Nombre = oPatient.FirstName + " " + oPatient.LastName, Identificacion = oPatient.IdentificationNumber, Tel1 = oPatient.Tel1, Tel2 = oPatient.Tel2, Email = oPatient.Email, Direccion1 = oPatient.Address1, Direccion2 = oPatient.Address2 },
+                        Vacunas = rvs
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error: " + e.Message });
+            }
+            return response;
+        }
+        [HttpGet(Name = "GetRecordAllergies")]
+        public IActionResult GetRecordAllergies(string MedicalCenterToken, int idRecord)
+        {
+            IActionResult response;
+            try
+            {
+                var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                var medicalCenter = new MedicalCenter();
+                var oRecord = db.Records.Find(idRecord);
+                if (oRecord == null)
+                {
+                    response = Ok(new { ResponseCode = "99", Message = "Record No. " + idRecord + " no encontrado" });
+                }
+                else if (medicalCenter.MedicalCenterValid(MedicalCenterToken) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
+                }
+                else
+                {
+
+                    var oPatient = db.Patients.Find(oRecord.Idpatient);
+                    var oRecordAllergies = db.RecordAllergies.Where(rvs => rvs.Idrecord == idRecord).Include(nv => nv.NvallergieNavigation).ToList();
+                    var ras = new ResponseObjects.Response_RecordAllergies().ToResponseList(oRecordAllergies);
+                    response = Ok(new
+                    {
+                        ResponseCode = "00",
+                        Message = "Success",
+                        Record = new { IDRecord = oRecord.Idrecord, IDPaciente = oRecord.Idpatient },
+                        Paciente = new { Nombre = oPatient.FirstName + " " + oPatient.LastName, Identificacion = oPatient.IdentificationNumber, Tel1 = oPatient.Tel1, Tel2 = oPatient.Tel2, Email = oPatient.Email, Direccion1 = oPatient.Address1, Direccion2 = oPatient.Address2 },
+                        Alergias = ras
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurrido un error: " + e.Message });
+            }
+            return response;
+        }
+
         [HttpPost(Name = "SetRecordVist")]
         public IActionResult SetRecordVist(Request_RecordVisit request)
         {
@@ -563,28 +642,28 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost(Name = "SetRecordVaccines")]
-        public IActionResult SetRecordVaccines(int idRecord, string MedicalCenter_Token, string[] VaccineCodes)
+        public IActionResult SetRecordVaccines(Request_RecordVaccines request)
         {
             IActionResult response = BadRequest();
             try
             {
-                if (idRecord == 0 || VaccineCodes.Length == 0)
+                if (request.idRecord == 0 || request.Codigos_Vacunas.Count == 0)
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, VaccinesCode"});
                 }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == MedicalCenter_Token).ToList();
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
                     if (medicalCenter.Count == 0)
                     {
                         response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
                     }
                     else
                     {
-                        foreach (var vaccineCode in VaccineCodes)
+                        foreach (var vaccineCode in request.Codigos_Vacunas)
                         {
-                            var vaccineResult = db.Namevalues.Where(nv => nv.Customstring1 == vaccineCode).ToList();
+                            var vaccineResult = db.Namevalues.Where(nv => nv.Customstring1 == vaccineCode.Codigo).ToList();
                             if (vaccineResult.Count == 0)
                             {
                                 throw new Exception("El codigo " + vaccineCode + " no existe en la base de datos.");
@@ -593,7 +672,7 @@ namespace WebAPI.Controllers
                             {
                                 db.RecordVaccines.Add(new RecordVaccine()
                                 {
-                                    Idrecord = idRecord,
+                                    Idrecord = request.idRecord,
                                     Nvvaccine = vaccineResult[0].Idnamevalue,
                                     CreateUser = medicalCenter[0].Description,
                                     CreateDate = DateTime.Now
@@ -601,7 +680,7 @@ namespace WebAPI.Controllers
                             }
                         }
                         db.SaveChanges();
-                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = request.idRecord });
                     }
                 }
             }
@@ -613,37 +692,37 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost(Name = "SetRecordAllergies")]
-        public IActionResult SetRecordAllergies(int idRecord, string MedicalCenter_Token, List<string> AllergiesCodes)
+        public IActionResult SetRecordAllergies(Request_RecordAllergies request) 
         {
             IActionResult response = BadRequest();
             try
             {
-                if (idRecord == 0 || AllergiesCodes.Count == 0)
+                if (request.idRecord == 0 || request.Codigos_Alergias.Count == 0)
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, AllergiesCodes" });
                 }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == MedicalCenter_Token).ToList();
+                    var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
                     if (medicalCenter.Count == 0)
                     {
                         response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
                     }
                     else
                     {
-                        foreach (var allergieCode in AllergiesCodes)
+                        foreach (var allergie in request.Codigos_Alergias)
                         {
-                            var allergieResult = db.Namevalues.Where(nv => nv.Customstring1 == allergieCode).ToList();
+                            var allergieResult = db.Namevalues.Where(nv => nv.Customstring1 == allergie.Codigo).ToList();
                             if (allergieResult.Count == 0)
                             {
-                                throw new Exception("El codigo " + allergieCode + " no existe en la base de datos.");
+                                throw new Exception("El codigo " + allergie.Codigo + " no existe en la base de datos.");
                             }
                             else
                             {
                                 db.RecordAllergies.Add(new RecordAllergy()
                                 {
-                                    Idrecord = idRecord,
+                                    Idrecord = request.idRecord,
                                     Nvallergie = allergieResult[0].Idnamevalue,
                                     CreateUser = medicalCenter[0].Description,
                                     CreateDate = DateTime.Now
@@ -651,7 +730,7 @@ namespace WebAPI.Controllers
                             }
                         }
                         db.SaveChanges();
-                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = idRecord });
+                        response = Ok(new { ResponseCode = "00", Message = "Success", IdRecord = request.idRecord });
                     }
                 }
             }
