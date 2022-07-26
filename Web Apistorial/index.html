@@ -14,13 +14,14 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
-                <a class="navbar-brand" href="#!">APISTORIAL</a>
-                <a class="btn btn-primary" href="#signup">Contacto</a>
+                <a class="navbar-brand" href="index.html">APISTORIAL</a>
+                <a class="btn btn-primary" href="RegisterMedicalCenter.html">Registrate</a>
             </div>
         </nav>
         <!-- Masthead-->
@@ -35,13 +36,13 @@
 
                                 <!-- FORMULARIO --->
 
-                            <form>
+                            <form action="PatientRecord.html">
                                   <div class="form-group">
 
                                     <select id="dpIdentificationType" type="IdenitifactionType" class="form-control">
-                                      <option value="">--- Tipo de documento ---</option>
+                                      <option value="0">--- Tipo de documento ---</option>
                                       <option value="C">Cedula</option>
-                                      <option value="">Pasaporte</option>
+                                      <option value="P">Pasaporte</option>
                                     </select>
                                     <br>
                                     <input type="cedula" class="form-control" id="exampleInputCedula" placeholder="No. Identificacion">
@@ -57,7 +58,10 @@
 
                                   </div>
 
-                                  <button type="button" class="btn btn-primary" id = "btnConsultar" >Consultar</button>
+                                  <button type="button" class="btn btn-primary" id = "btnConsultar" >
+                                    <span id="sp_btnConsultar" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                     Consultar
+                                  </button>
 
                             </form>
 
@@ -202,7 +206,7 @@
                             <li class="list-inline-item">⋅</li>
                             <li class="list-inline-item"><a href="#!">Politicas de privacidad</a></li>
                         </ul>
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; Aphistory 2022. Todos los derechos reservados</p>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; Apistorial 2022. Todos los derechos reservados</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
@@ -224,6 +228,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-        <script type = "text/javascript" src="js/scripts.js"></script>
+        <script type = "text/javascript" src="js/Index.js"></script>
     </body>
 </html>

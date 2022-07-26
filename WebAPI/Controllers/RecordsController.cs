@@ -50,9 +50,9 @@ namespace WebAPI.Controllers
                         //Logica para crear el paciente consultando el padron
                         response = Ok(new
                         {
-                            ResponseCode = "00",
-                            Message = "Success",
-                            oRecord
+                            ResponseCode = "99",
+                            Message = "Se intento consultar la nueva cedula en el padron electoral pero no hubo conexion.",
+                            Record = oRecord
                         });
                     }
                     else

@@ -259,29 +259,16 @@
                   </div>
                   <div class="modal-body">
                     <div class="row mb-5">
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpDoctor">Doctor</label>
-                        <select id="dpDoctor"class="select form-control" name="">
-                          <option value="0">--Doctor--</option>
+                      <div class="form-group col-md-12">
+                        <select id="MI_dpCentroMedico" disabled class="form-control" name="">
+                          <option value="0">--Centro Medico--</option>
                         </select>
-                      </div>
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="txtIdentificacion">No. Identificacion</label>
-                        <input readonly id = "txtIdentificacion" class = "form-control" type="text" name="" value="" placeholder="No. Identificacion">
                       </div>
                     </div>
                     <div class="row mb-5">
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpTipoOperacion">Tipo Operacion</label>
-                        <select id="dpTipoOperacion"class="select form-control" name="">
-                          <option value="0">--Tipo Operacion--</option>
-                        </select>
-                      </div>
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpOperacion">Operacion</label>
-                        <select id="dpOperacion"class="select form-control" name="">
-                          <option value="0">--Operacion--</option>
-                        </select>
+                      <div class="col-md-12 form-group">
+                        <label class = "sr-only" for="MI_txt_Razon">Razon</label>
+                        <textarea id = "MI_txtRazon" class = "form-control" name="name" rows="8" placeholder="Razon"></textarea>
                       </div>
                     </div>
                   </div>
@@ -303,29 +290,16 @@
                   </div>
                   <div class="modal-body">
                     <div class="row mb-5">
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpDoctor">Doctor</label>
-                        <select id="dpDoctor"class="select form-control" name="">
-                          <option value="0">--Doctor--</option>
+                      <div class="form-group col-md-12">
+                        <select id = "ME_dpCentroMedico"disabled class="form-control" name="">
+                          <option value="0">--Centro Medico--</option>
                         </select>
-                      </div>
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="txtIdentificacion">No. Identificacion</label>
-                        <input readonly id = "txtIdentificacion" class = "form-control" type="text" name="" value="" placeholder="No. Identificacion">
                       </div>
                     </div>
                     <div class="row mb-5">
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpTipoOperacion">Tipo Operacion</label>
-                        <select id="dpTipoOperacion"class="select form-control" name="">
-                          <option value="0">--Tipo Operacion--</option>
-                        </select>
-                      </div>
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpOperacion">Operacion</label>
-                        <select id="dpOperacion"class="select form-control" name="">
-                          <option value="0">--Operacion--</option>
-                        </select>
+                      <div class="col-md-12 form-group">
+                        <label class = "sr-only" for="dpDoctor">Razon</label>
+                        <textarea id="ME_txtRazon" class = "form-control" name="name" rows="8" placeholder="Razon"></textarea>
                       </div>
                     </div>
                   </div>
@@ -477,7 +451,7 @@
                         </tbody>
                     </table>
                     <div class="" align = "right">
-                        <button id = "btnNuevoIngresoEmergencia"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEmergencias" ><i class="fas fa-add"> </i> Agregar</button>
+                        <button id = "btnNuevoIngresoEmergencia" class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEmergencias" ><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
                 </div>
@@ -488,15 +462,95 @@
 
           <!--Fila para colocar las listas de vacunas y alergias-->
           <div class="row bg-white">
+
+            <!--Modal para agregar vacunas-->
+            <div class="modal fade" id="ModalVacunas" tabindex="-1" aria-labelledby="ModalVacunasLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Vacuna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body scrollable">
+                    <div class="row mb-5">
+                      <div class="form-group col-md-12">
+                        <table class="table table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Vacuna</th>
+                              <th>Seleccione</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>COVID SINOVAC</td>
+                              <td align="center" ><input class="checkbox" type="checkbox" name="" value=""></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Modal para agregar alergias-->
+            <div class="modal fade" id="ModalAlergias" tabindex="-1" aria-labelledby="ModalAlergiasLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Alergia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body scrollable">
+                    <div class="row mb-5">
+                      <div class="form-group col-md-12">
+                        <table class="table table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Alergia</th>
+                              <th>Seleccione</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Antibioticos</td>
+                              <td align="center" ><input class="checkbox" type="checkbox" name="" value=""></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="col-md-6">
               <div>
-                <h5>Vacunas</h5>
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5>Vacunas</h5>
+                  </div>
+                  <div class="col-md-6" align=right>
+                    <button class="btn btn-primary" type="button" name="button" data-bs-toggle="modal" data-bs-target="#ModalVacunas" > <i class="fas fa-add"></i></button>
+                  </div>
+                </div>
                 <br>
                 <table class = "table table-hover table-striped">
                   <thead class = "bg-secondary text-white">
                     <th>ID</th>
                     <th>Vacuna</th>
-                    <th>A?o</th>
+                    <th>Año</th>
                   </thead>
                   <tbody>
                     <th>2335489</th>
@@ -508,7 +562,14 @@
             </div>
             <div class="col-md-6">
               <div>
-                <h5>Alergias</h5>
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5>Alergias</h5>
+                  </div>
+                  <div class="col-md-6" align=right>
+                    <button class="btn btn-primary" type="button" name="button" data-bs-toggle="modal" data-bs-target="#ModalAlergias" > <i class="fas fa-add"></i></button>
+                  </div>
+                </div>
                 <br>
                 <table class="table table-hover table-striped">
                   <thead class = "bg-secondary text-white">
