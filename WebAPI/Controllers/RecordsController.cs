@@ -74,7 +74,8 @@ namespace WebAPI.Controllers
 
                             Paciente = new
                             {
-                                Nombre = patientList[0].FirstName + " " + patientList[0].LastName,
+                                Nombre = patientList[0].FirstName,
+                                Apellido = patientList[0].LastName,
                                 Identificacion = patientList[0].IdentificationNumber,
                                 Telefono = patientList[0].Tel1,
                                 Telefono2 = patientList[0].Tel2,

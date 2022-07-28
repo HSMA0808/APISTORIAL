@@ -7,6 +7,7 @@ window.addEventListener("load", ()=>{
       var spinner = document.querySelector("#sp_btnConsultar");
       spinner.classList.remove("d-none")
       localStorage.removeItem("idRecord")
+      localStorage.removeItem("NoIdentificacion")
       if(CedulaNull(inputCedula.value))
       {
         alert("El campo de texto No. Identificacion es requerido")
@@ -28,6 +29,7 @@ window.addEventListener("load", ()=>{
               }
               else {
                 localStorage.setItem("IDRecord", response.record.idRecord)
+                localStorage.setItem("NoIdentificacion", response.paciente.identificacion)
                 spinner.classList.add("d-none")
                 window.location = window.location.origin + window.location.pathname + "PatientRecord.html"
               }

@@ -5,9 +5,9 @@ namespace WebAPI.ResponseObjects
     public class Response_RecordInterment
     {
         public int IdrecordInterment { get; set; }
-        public string? MedicalCenter { get; set; }
-        public DateTime? Intermentdate { get; set; }
-        public string? Reason { get; set; }
+        public string? centroMedico { get; set; }
+        public DateTime? fecha_Internamiento { get; set; }
+        public string? razon { get; set; }
         public string? CreateUser { get; set; }
         public DateTime? CreateDate { get; set; }
 
@@ -27,9 +27,9 @@ namespace WebAPI.ResponseObjects
                     list.Add(new Response_RecordInterment()
                     {
                         IdrecordInterment = rI.IdrecordInterment,
-                        Reason = rI.Reason,
-                        Intermentdate = rI.Intermentdate,
-                        MedicalCenter = medicalCenter.Description,
+                        razon = rI.Reason,
+                        fecha_Internamiento = rI.Intermentdate,
+                        centroMedico = medicalCenter.Description,
                         CreateUser = rI.CreateUser,
                         CreateDate = rI.CreateDate,
                     });

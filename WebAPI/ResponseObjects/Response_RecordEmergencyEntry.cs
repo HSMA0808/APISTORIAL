@@ -4,10 +4,10 @@ namespace WebAPI.ResponseObjects
 {
     public class Response_RecordEmergencyEntry
     {
-        public int IdrecordInterment { get; set; }
-        public string? MedicalCenter { get; set; }
-        public DateTime? EntryDate { get; set; }
-        public string? Reason { get; set; }
+        public int idRecordEmergencyEntries { get; set; }
+        public string? centroMedico { get; set; }
+        public DateTime? fecha_Entrada { get; set; }
+        public string? razon { get; set; }
         public string? CreateUser { get; set; }
         public DateTime? CreateDate { get; set; }
 
@@ -26,10 +26,10 @@ namespace WebAPI.ResponseObjects
                     var medicalCenter = db.MedicalCenters.Find(rE.IdmedicalCenter);
                     list.Add(new Response_RecordEmergencyEntry()
                     {
-                        IdrecordInterment = rE.IdrecordEmergencyentry,
-                        Reason = rE.Reason,
-                        EntryDate = rE.Intermentdate,
-                        MedicalCenter = medicalCenter.Description,
+                        idRecordEmergencyEntries = rE.IdrecordEmergencyentry,
+                        razon = rE.Reason,
+                        fecha_Entrada = rE.Intermentdate,
+                        centroMedico = medicalCenter.Description,
                         CreateUser = rE.CreateUser,
                         CreateDate = rE.CreateDate,
                     });
