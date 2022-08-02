@@ -2,13 +2,19 @@ window.addEventListener("load", ()=>{
   var  urlbase = window.location.origin
   console.log(urlbase)
   console.log(localStorage.getItem("IDRecord"))
+  var consultas_btnNuevaConsulta = document.querySelector("#Consultas_btnNuevaConsulta")
+  loadData()
 
-  getRecordPaciente()
-  getRecordConsulta()
-  getRecordAnalisis()
-  getRecordOperacion()
-  getRecordInternamientos()
-  getRecordEmergencias()
+  function loadData()
+  {
+    getRecordPaciente()
+    getRecordConsulta()
+    getRecordAnalisis()
+    getRecordOperacion()
+    getRecordInternamientos()
+    getRecordEmergencias()
+}
+
 
 //Metodos para consumir API y consultar records
   function getRecordConsulta()
@@ -94,8 +100,8 @@ window.addEventListener("load", ()=>{
          tdIndicaciones.innerText = data.recordsVisits[i].indicaciones.substring(0,10) + "...";
          tdDoctorNombre.innerText = data.recordsVisits[i].doctor_Nombre;
          tdEspecialidad.innerText = data.recordsVisits[i].especialidad_Medica;
-         tdfecha.innerText = data.recordsVisits[i].fecha_Visita;
-         tdButtonView.innerHTML = '<td><button data-rVisitId = "'+data.recordsVisits[i].idrecordVisits+'" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
+         tdfecha.innerText = new Date(data.recordsVisits[i].fecha_Visita).toLocaleDateString();
+         tdButtonView.innerHTML = '<td><button data-rVisitId = "'+data.recordsVisits[i].idrecordVisits+'" data-doctorNombre = "'+data.recordsVisits[i].doctor_Nombre+'" data-especialidadMedica = "'+data.recordsVisits[i].especialidad_Medica+'" data-indicaciones = "'+data.recordsVisits[i].indicaciones+'" data-observaciones = "'+data.recordsVisits[i].observaciones+'" data-fechaVisita = "'+data.recordsVisits[i].fecha_Visita+'" class = "btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalConsulta" onclick="mapearModalConsulta('+data.recordsVisits[i].idrecordVisits+')"> <i class ="fas fa-eye"></i> </button></td>'
          tr.append(tdId);
          tr.append(tdObservaciones);
          tr.append(tdIndicaciones);
@@ -132,9 +138,9 @@ window.addEventListener("load", ()=>{
          else {
           tdResultados.innerText = "N/A";
          }
-         tdFecha.innerText = data.recordsAnalysis[i].analysisDate;
+         tdFecha.innerText = new Date(data.recordsAnalysis[i].analysisDate).toLocaleDateString();
          tdCentro.innerText = data.recordsAnalysis[i].createUser;
-         tdButtonView.innerHTML = '<td><button data-rAnalysisId = "'+data.recordsAnalysis[i].idrecordAnalysis+'" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
+         tdButtonView.innerHTML = '<td><button data-rAnalysisId = "'+data.recordsAnalysis[i].idrecordAnalysis+'" data-tipoanalisis= "" data-analisisname = "'+data.recordsAnalysis[i].analysisName+'" data-resultado = "'+data.recordsAnalysis[i].result+'" data-observaciones = "'+data.recordsAnalysis[i].resultsObservations+'" class = "btn btn-secondary" onclick="mapearModalAnalisis('+data.recordsAnalysis[i].idrecordAnalysis+')" data-bs-toggle="modal" data-bs-target="#ModalAnalisis"> <i class ="fas fa-eye"></i> </button></td>'
          tr.append(tdId);
          tr.append(tdAnalisis);
          tr.append(tdResultados);
@@ -162,9 +168,9 @@ window.addEventListener("load", ()=>{
         var tdButtonView = document.createElement("td")
          tdId.innerText = data.recordsOperations[i].idrecordOperation;
          tdOperacion.innerText = data.recordsOperations[i].operacion;
-         tdFecha.innerText = data.recordsOperations[i].fecha_Operacion;
+         tdFecha.innerText = new Date(data.recordsOperations[i].fecha_Operacion).toLocaleDateString();
          tdCentroMedico.innerText = data.recordsOperations[i].centroMedico;
-         tdButtonView.innerHTML = '<td><button data-rOperationId = "'+data.recordsOperations[i].idrecordOperation+'" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
+         tdButtonView.innerHTML = '<td><button data-rOperationId = "'+data.recordsOperations[i].idrecordOperation+'" data-doctorname = "'+data.recordsOperations[i].doctor_Nombre+'" data-fechaoperacion = "'+data.recordsOperations[i].fecha_Operacion+'" data-doctoridentificacion = " " data-tipooperacion = "" data-codigooperacion = "" data-operacion = "'+data.recordsOperations[i].operacion+'" onclick = "mapearModalOperacion('+data.recordsOperations[i].idrecordOperation+')" data-bs-toggle="modal" data-bs-target="#ModalOperacion" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
          tr.append(tdId);
          tr.append(tdOperacion);
          tr.append(tdCentroMedico);
@@ -192,8 +198,8 @@ window.addEventListener("load", ()=>{
          tdId.innerText = data.recordsInterments[i].idrecordInterment;
          tdRazon.innerText = data.recordsInterments[i].razon.substring(0,30) + "...";
          tdCentroMedico.innerText = data.recordsInterments[i].centroMedico;
-         tdFecha.innerText = data.recordsInterments[i].fecha_Internamiento;
-         tdButtonView.innerHTML = '<td><button data-rIntermentId = "'+data.recordsInterments[i].idrecordInterment+'" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
+         tdFecha.innerText = new Date(data.recordsInterments[i].fecha_Internamiento).toLocaleDateString();
+         tdButtonView.innerHTML = '<td><button data-rIntermentId = "'+data.recordsInterments[i].idrecordInterment+'" data-centromedico = "'+data.recordsInterments[i].centroMedico+'" data-razon = "'+data.recordsInterments[i].razon+'" data-fecha = "'+data.recordsInterments[i].fecha_Internamiento+'" onclick = "mapearModalInternamientos('+data.recordsInterments[i].idrecordInterment+')"  data-bs-toggle="modal" data-bs-target="#ModalInternamiento" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
          tr.append(tdId);
          tr.append(tdRazon);
          tr.append(tdCentroMedico);
@@ -221,8 +227,8 @@ window.addEventListener("load", ()=>{
          tdId.innerText = data.recordsEmergencyEntries[i].idrecordEmergencyEntries;
          tdRazon.innerText = data.recordsEmergencyEntries[i].razon.substring(0,30) + "...";
          tdCentroMedico.innerText = data.recordsEmergencyEntries[i].centroMedico;
-         tdFecha.innerText = data.recordsEmergencyEntries[i].fecha_Entrada;
-         tdButtonView.innerHTML = '<td><button data-rEmergencyEntryId = "'+data.recordsEmergencyEntries[i].idrecordEmergencyEntries+'" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
+         tdFecha.innerText = new Date(data.recordsEmergencyEntries[i].fecha_Entrada).toLocaleDateString();
+         tdButtonView.innerHTML = '<td><button data-rEmergencyEntryId = "'+data.recordsEmergencyEntries[i].idrecordEmergencyEntries+'" data-centromedico = "'+data.recordsEmergencyEntries[i].centroMedico+'" data-razon = "'+data.recordsEmergencyEntries[i].razon+'" data-fecha = "'+data.recordsEmergencyEntries[i].fecha_Entrada+'" onclick = "mapearModalEmergencias('+data.recordsEmergencyEntries[i].idrecordEmergencyEntries+')" data-bs-toggle="modal" data-bs-target="#ModalEmergencias" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
          tr.append(tdId);
          tr.append(tdRazon);
          tr.append(tdCentroMedico);
@@ -233,7 +239,6 @@ window.addEventListener("load", ()=>{
         }
     }
   }
-
 
   //Metodo para mapear data del Paciente
   function mapearDataPaciente(data)
@@ -270,4 +275,90 @@ window.addEventListener("load", ()=>{
     })
   }
 
+
 })
+
+//Metodos para mapear los modals
+function mapearModalConsulta(idRecordConsulta)
+{
+  var btnDataConsulta = document.querySelectorAll("[data-rvisitid='"+idRecordConsulta+"']")
+  var selectDoctor = document.querySelector("#Consultas_dpDoctor")
+  var txtNoIdentificacion = document.querySelector("#Consultas_txtNoIdentificacion")
+  var txtEspecialidad = document.querySelector("#Consultas_txtEspecialidad")
+  var txtObservaciones = document.querySelector("#Consultas_txtObservaciones")
+  var txtIndicaciones = document.querySelector("#Consultas_txtIndicaciones")
+  var btnGuardar = document.querySelector("#Consultas_btnGuardar")
+  desactivarControles(selectDoctor, txtNoIdentificacion, txtEspecialidad, txtObservaciones, txtIndicaciones, btnGuardar)
+  console.log(btnDataConsulta[0])
+  console.log(btnDataConsulta[0].dataset.indicaciones)
+  txtNoIdentificacion.value = btnDataConsulta[0].dataset.especialidadmedica
+  txtObservaciones.innerText = btnDataConsulta[0].dataset.observaciones
+  txtIndicaciones.innerText = btnDataConsulta[0].dataset.indicaciones
+}
+function mapearModalAnalisis(idRecordAnalisis)
+{
+  var btnDataAnalisis = document.querySelectorAll("[data-ranalysisid='"+idRecordAnalisis+"']")
+  var selectTipoAnalisis = document.querySelector("#Analisis_dpTipoAnalisis")
+  var selectAnalisis = document.querySelector("#Analisis_dpAnalisis")
+  var selectResultados = document.querySelector("#Analisis_dpResultados")
+  var txtObservaciones = document.querySelector("#Analisis_txtObservaciones")
+  var checkPublicResults = document.querySelector("#checkPublicResults")
+  var btnGuardar = document.querySelector("#Analisis_btnGuardar")
+  desactivarControles(selectTipoAnalisis, selectAnalisis, selectResultados, txtObservaciones, checkPublicResults, btnGuardar)
+  console.log(btnDataAnalisis[0])
+  console.log(btnDataAnalisis[0].dataset.indicaciones)
+  txtObservaciones.innerText = btnDataAnalisis[0].dataset.observaciones
+}
+function mapearModalOperacion(idRecordOperacion)
+{
+  var btnDataOperacion = document.querySelectorAll("[data-roperationid='"+idRecordOperacion+"']")
+  var selectDoctor = document.querySelector("#Operaciones_dpDoctor")
+  var txtNoIdentificacion = document.querySelector("#Operaciones_txtNoIdentificacion")
+  var txtFecha = document.querySelector("#Operaciones_txtFecha")
+  var selectTipoOperacion = document.querySelector("#Operaciones_dpTipoOperacion")
+  var selectOperacion = document.querySelector("#Operaciones_dpOperacion")
+  var btnGuardar = document.querySelector("#Operaciones_btnGuardar")
+  txtFecha.value = new Date(btnDataOperacion[0].dataset.fechaoperacion).toLocaleDateString()
+  desactivarControles(selectDoctor, txtNoIdentificacion, txtFecha, selectTipoOperacion, selectOperacion, btnGuardar)
+  console.log("Modal Operacion")
+}
+function mapearModalInternamientos(idRecordInternamiento)
+{
+  var btnDataInternamientos = document.querySelectorAll("[data-rIntermentId='"+idRecordInternamiento+"']")
+  var selectCentroMedico = document.querySelector("#Internamientos_dpCentroMedico")
+  var txtFecha = document.querySelector("#Internamientos_txtFecha")
+  var txtRazon = document.querySelector("#Internamientos_txtRazon")
+  var btnGuardar = document.querySelector("#Internamientos_btnGuardar")
+  txtRazon.innerText = btnDataInternamientos[0].dataset.razon
+  txtFecha.value = new Date(btnDataInternamientos[0].dataset.fecha).toLocaleDateString()
+  desactivarControles(selectCentroMedico, txtFecha, txtRazon, btnGuardar)
+}
+function mapearModalEmergencias(idRecordEmergencia)
+{
+  var btnDataEmergencias = document.querySelectorAll("[data-rEmergencyEntryId='"+idRecordEmergencia+"']")
+  var selectCentroMedico = document.querySelector("#Emergencias_dpCentroMedico")
+  var txtFecha = document.querySelector("#Emergencias_txtFecha")
+  var txtRazon = document.querySelector("#Emeregencias_txtRazon")
+  var btnGuardar = document.querySelector("#Emergencias_btnGuardar")
+  txtRazon.innerText = btnDataEmergencias[0].dataset.razon
+  txtFecha.value = new Date(btnDataEmergencias[0].dataset.fecha).toLocaleDateString()
+  desactivarControles(selectCentroMedico, txtFecha, txtRazon, btnGuardar)
+}
+
+function desactivarControles(...controles)
+{
+  let indice = 0;
+  for(indice in controles)
+  {
+    controles[indice].disabled = true
+  }
+}
+
+function activarControles(...controles)
+{
+  let indice = 0;
+  for(indice in controles)
+  {
+    controles[indice].disabled = false
+  }
+}

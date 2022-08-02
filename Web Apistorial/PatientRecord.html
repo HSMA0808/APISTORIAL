@@ -125,32 +125,32 @@
                   <div class="modal-body">
                     <div class="row mb-5">
                       <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpDoctor">Doctor</label>
-                        <select id="dpDoctor"class="select form-control" name="">
+                        <label class = "sr-only" for="Consultas_dpDoctor">Doctor</label>
+                        <select id="Consultas_dpDoctor"class="select form-control" name="">
                           <option value="0">--Doctor--</option>
                         </select>
                       </div>
                       <div class="col-md-3 form-group">
-                        <label class = "sr-only" for="txtNoIdentificacion">No. Identificacion</label>
-                        <input readonly id = "txtNoIdentificacion" class = "form-control" type="text" name="NoIdentificacion" value="" placeholder="No. Identificacion">
+                        <label class = "sr-only" for="Consultas_txtNoIdentificacion">No. Identificacion</label>
+                        <input readonly id = "Consultas_txtNoIdentificacion" class = "form-control" type="text" name="NoIdentificacion" value="" placeholder="No. Identificacion">
                       </div>
                       <div class="col-md-3 form-group">
-                        <label class = "sr-only" for="txtEspecialidad">Especialidad</label>
-                        <input readonly id = "txtEspecialidad" class = "form-control" type="text" name="Especialidad" value="" placeholder="Especialidad">
+                        <label class = "sr-only" for="Consultas_txtEspecialidad">Especialidad</label>
+                        <input readonly id = "Consultas_txtEspecialidad" class = "form-control" type="text" name="Especialidad" value="" placeholder="Especialidad">
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-6 form-group">
-                        <textarea id="txtObservaciones" class = "form-control" name="name" rows="8" placeholder="Observaciones"></textarea>
+                        <textarea id="Consultas_txtObservaciones" class = "form-control" name="name" rows="8" placeholder="Observaciones"></textarea>
                       </div>
                       <div class="col-md-6 form-group">
-                        <textarea id="txtIndicaciones" class = "form-control" name="name" rows="8" placeholder="Indicaciones"></textarea>
+                        <textarea id="Consultas_txtIndicaciones" class = "form-control" name="name" rows="8" placeholder="Indicaciones"></textarea>
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button id = "Consultas_btnGuardar" type="button" class="btn btn-primary"> <i class="fas-fa-save"></i> Guardar</button>
                   </div>
                 </div>
               </div>
@@ -167,27 +167,28 @@
                   <div class="modal-body">
                     <div class="row mb-5">
                       <div class="col-md-5 form-group">
-                        <label class = "sr-only" for="dpTipoAnalisis">Tipo Analisis</label>
-                        <select id="dpTipoAnalisis"class="select form-control" name="">
+                        <label class = "sr-only" for="Analisis_dpTipoAnalisis">Tipo Analisis</label>
+                        <select id="Analisis_dpTipoAnalisis"class="select form-control" name="">
                           <option value="0">--Tipo Analisis--</option>
                         </select>
                       </div>
                       <div class="col-md-5 form-group">
-                        <label class = "sr-only" for="dpAnalisis">Analisis</label>
-                        <select id="dpAnalisis"class="select form-control" name="">
+                        <label class = "sr-only" for="Analisis_dpAnalisis">Analisis</label>
+                        <select id="Analisis_dpAnalisis"class="select form-control" name="">
                           <option value="0">--Analisis--</option>
                         </select>
                       </div>
                       <div class="col-md-2 form-group">
-                        <label class = "sr-only" for="dpResultados">Resultados</label>
-                        <select id="dpResultados"class="select form-control" name="">
+                        <label class = "sr-only" for="Analisis_dpResultados">Resultados</label>
+                        <select id="Analisis_dpResultados"class="select form-control" name="">
                           <option value="0">--Resultados--</option>
                         </select>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-12 form-group">
-                        <textarea id="txtObservaciones" class = "form-control" name="name" rows="8" placeholder="Observaciones"></textarea>
+                        <label class = "sr-only" for="Analisis_txtObservaciones"></label>
+                        <textarea id="Analisis_txtObservaciones" class = "form-control" name="name" rows="8" placeholder="Observaciones"></textarea>
                       </div>
                     </div>
                     <br>
@@ -198,8 +199,8 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button id = "Analisis_btnGuardar" type="button" class="btn btn-primary">Guardar</button>
                   </div>
                 </div>
               </div>
@@ -215,35 +216,39 @@
                   </div>
                   <div class="modal-body">
                     <div class="row mb-5">
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpDoctor">Doctor</label>
-                        <select id="dpDoctor"class="select form-control" name="">
+                      <div class="col-md-4 form-group">
+                        <label class = "sr-only" for="Operaciones_dpDoctor">Doctor</label>
+                        <select id="Operaciones_dpDoctor"class="select form-control" name="">
                           <option value="0">--Doctor--</option>
                         </select>
                       </div>
-                      <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="txtIdentificacion">No. Identificacion</label>
-                        <input readonly id = "txtIdentificacion" class = "form-control" type="text" name="" value="" placeholder="No. Identificacion">
+                      <div class="col-md-4 form-group">
+                        <label class = "sr-only" for="Operaciones_txtNoIdentificacion">No. Identificacion</label>
+                        <input readonly id = "Operaciones_txtNoIdentificacion" class = "form-control" type="text" name="" value="" placeholder="No. Identificacion">
+                      </div>
+                      <div class="col-md-4 form-group">
+                        <label class = "sr-only" for="Operaciones_txtFecha">Fecha</label>
+                        <input id = "Operaciones_txtFecha" class = "form-control" type="date" name="txtFecha" value="">
                       </div>
                     </div>
                     <div class="row mb-5">
                       <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpTipoOperacion">Tipo Operacion</label>
-                        <select id="dpTipoOperacion"class="select form-control" name="">
+                        <label class = "sr-only" for="Operaciones_dpTipoOperacion">Tipo Operacion</label>
+                        <select id="Operaciones_dpTipoOperacion"class="select form-control" name="">
                           <option value="0">--Tipo Operacion--</option>
                         </select>
                       </div>
                       <div class="col-md-6 form-group">
-                        <label class = "sr-only" for="dpOperacion">Operacion</label>
-                        <select id="dpOperacion"class="select form-control" name="">
+                        <label class = "sr-only" for="Operaciones_dpOperacion">Operacion</label>
+                        <select id="Operaciones_dpOperacion"class="select form-control" name="">
                           <option value="0">--Operacion--</option>
                         </select>
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button id = "Operaciones_btnGuardar" type="button" class="btn btn-primary">Guardar</button>
                   </div>
                 </div>
               </div>
@@ -259,22 +264,27 @@
                   </div>
                   <div class="modal-body">
                     <div class="row mb-5">
-                      <div class="form-group col-md-12">
-                        <select id="MI_dpCentroMedico" disabled class="form-control" name="">
+                      <div class="form-group col-md-6">
+                        <label class = "sr-only" for="Internamientos_dpCentroMedico">Centro Medico</label>
+                        <select id="Internamientos_dpCentroMedico" disabled class="form-control" name="">
                           <option value="0">--Centro Medico--</option>
                         </select>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="Internamientos_txtFecha">Fecha</label>
+                        <input id = "Internamientos_txtFecha" class = "form-control" type="date" name="txtFecha" value="">
                       </div>
                     </div>
                     <div class="row mb-5">
                       <div class="col-md-12 form-group">
-                        <label class = "sr-only" for="MI_txt_Razon">Razon</label>
-                        <textarea id = "MI_txtRazon" class = "form-control" name="name" rows="8" placeholder="Razon"></textarea>
+                        <label class = "sr-only" for="Internamientos_txtRazon">Razon</label>
+                        <textarea id = "Internamientos_txtRazon" class = "form-control" name="name" rows="8" placeholder="Razon"></textarea>
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button id = "Internamientos_btnGuardar" type="button" class="btn btn-primary">Guardar</button>
                   </div>
                 </div>
               </div>
@@ -290,22 +300,27 @@
                   </div>
                   <div class="modal-body">
                     <div class="row mb-5">
-                      <div class="form-group col-md-12">
-                        <select id = "ME_dpCentroMedico"disabled class="form-control" name="">
+                      <div class="form-group col-md-6">
+                        <label class = "sr-only" for="Emergencias_dpCentroMedico">Centro Medico</label>
+                        <select id = "Emergencias_dpCentroMedico"disabled class="form-control" name="">
                           <option value="0">--Centro Medico--</option>
                         </select>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class = "sr-only" for="Emergencias_txtFecha">Fecha</label>
+                        <input id = "Emergencias_txtFecha" class = "form-control" type="date" name="txtFecha" value="">
                       </div>
                     </div>
                     <div class="row mb-5">
                       <div class="col-md-12 form-group">
-                        <label class = "sr-only" for="dpDoctor">Razon</label>
-                        <textarea id="ME_txtRazon" class = "form-control" name="name" rows="8" placeholder="Razon"></textarea>
+                        <label class = "sr-only" for="Emeregencias_txtRazon">Razon</label>
+                        <textarea id="Emeregencias_txtRazon" class = "form-control" name="name" rows="8" placeholder="Razon"></textarea>
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button id = "Emergencias_btnGuardar" type="button" class="btn btn-primary">Guardar</button>
                   </div>
                 </div>
               </div>
@@ -340,7 +355,7 @@
                         </tbody>
                     </table>
                     <div class="" align = "right">
-                        <button id = "btnNuevaConsulta"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalConsulta"><i class="fas fa-add"> </i> Agregar</button>
+                        <button id = "Consultas_btnNuevaConsulta"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalConsulta"><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
                   <div class="tab-pane fade" id="nav-analisis" role="tabpanel" aria-labelledby="analisis-tab">
@@ -582,6 +597,7 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/PatientRecord.js"`></script>
+<script type="text/javascript" src="js/jquery.js"`></script>
 <!--<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>-->
 <!--<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>-->
 </html>
