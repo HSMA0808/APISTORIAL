@@ -5,6 +5,7 @@ namespace WebAPI.ResponseObjects
     public class Response_RecordInterment
     {
         public int IdrecordInterment { get; set; }
+        public int idCentroMedico { get; set; }
         public string? centroMedico { get; set; }
         public DateTime? fecha_Internamiento { get; set; }
         public string? razon { get; set; }
@@ -29,6 +30,7 @@ namespace WebAPI.ResponseObjects
                         IdrecordInterment = rI.IdrecordInterment,
                         razon = rI.Reason,
                         fecha_Internamiento = rI.Intermentdate,
+                        idCentroMedico = medicalCenter.IdmedicalCenter,
                         centroMedico = medicalCenter.Description,
                         CreateUser = rI.CreateUser,
                         CreateDate = rI.CreateDate,

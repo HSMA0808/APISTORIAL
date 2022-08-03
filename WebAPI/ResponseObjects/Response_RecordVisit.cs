@@ -7,9 +7,11 @@ namespace WebAPI.ResponseObjects
         public int IdrecordVisits { get; set; }
         public int? Iddoctor { get; set; }
         public string? Doctor_Nombre { get; set; }
+        public string? Doctor_NoIdentificacion { get; set; }
         public string? Especialidad_Medica { get; set; }
         public string? Observaciones { get; set; }
         public string? Indicaciones { get; set; }
+        public int idCentroMedico { get; set; }
         public string? CentroMedico { get; set; }
         public DateTime? Fecha_Visita { get; set; }
         public string? CreateUser { get; set; }
@@ -29,14 +31,16 @@ namespace WebAPI.ResponseObjects
                 {
                     var EspecialidadMedica = db.Specialtys.Find(rv.Idspecialty);
                     var Doctor = db.Doctors.Find(rv.Iddoctor);
-                    var centroMedico = db.MedicalCenters.Where(m => m.IdmedicalCenter == rv.IdMedicalCenter).First().Description;
+                    var centroMedico = db.MedicalCenters.Where(m => m.IdmedicalCenter == rv.IdMedicalCenter).First();
                     list.Add(new Response_RecordVisit()
                     {
                         IdrecordVisits = rv.IdrecordVisits,
                         Iddoctor = rv.Iddoctor,
+                        Doctor_NoIdentificacion = Doctor.IdentificationNumber,
                         Doctor_Nombre = Doctor.FirstName + " " + Doctor.LastName,
                         Especialidad_Medica = EspecialidadMedica.Description,
-                        CentroMedico = centroMedico,
+                        idCentroMedico = centroMedico.IdmedicalCenter,
+                        CentroMedico = centroMedico.Description,
                         Observaciones = rv.Observations,
                         Indicaciones = rv.Indications,
                         Fecha_Visita = rv.VisitDate,

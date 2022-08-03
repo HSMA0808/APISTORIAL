@@ -5,6 +5,7 @@ namespace WebAPI.ResponseObjects
     public class Response_RecordEmergencyEntry
     {
         public int idRecordEmergencyEntries { get; set; }
+        public int idCentroMedico { get; set; }
         public string? centroMedico { get; set; }
         public DateTime? fecha_Entrada { get; set; }
         public string? razon { get; set; }
@@ -29,6 +30,7 @@ namespace WebAPI.ResponseObjects
                         idRecordEmergencyEntries = rE.IdrecordEmergencyentry,
                         razon = rE.Reason,
                         fecha_Entrada = rE.Intermentdate,
+                        idCentroMedico = medicalCenter.IdmedicalCenter,
                         centroMedico = medicalCenter.Description,
                         CreateUser = rE.CreateUser,
                         CreateDate = rE.CreateDate,

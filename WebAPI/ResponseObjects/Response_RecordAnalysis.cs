@@ -1,16 +1,19 @@
-﻿using WebAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using WebAPI.Models;
 
 namespace WebAPI.ResponseObjects
 {
     public class Response_RecordAnalysis
     {
         public int IdrecordAnalysis { get; set; }
-        public string? analysisName { get; set; }
-        public string? analysisCode { get; set; }
-        public bool? PublicResults { get; set; }
-        public string? Result { get; set; }
-        public string? ResultsObservations { get; set; }
-        public DateTime? AnalysisDate { get; set; }
+        public string? NombreAnalisis { get; set; }
+        public string? CodigoAnalisis { get; set; }
+        public string TipoAnalisis { get; set; }
+        public string Codigo_TipoAnalisis { get; set; }
+        public bool? ResultadosPublicos { get; set; }
+        public string? Resultados { get; set; }
+        public string? Resultados_Observaciones { get; set; }
+        public DateTime? FechaAnalisis { get; set; }
         public string? CreateUser { get; set; }
         public DateTime? CreateDate { get; set; }
 
@@ -27,15 +30,17 @@ namespace WebAPI.ResponseObjects
                 var analysis = new Analysis();
                 foreach (var rA in recordsAnalysis)
                 {
-                    analysis = db.Analyses.Find(rA.Idanalysis);
+                    analysis = db.Analyses.Where(a=>a.Idanalysis == rA.Idanalysis).Include(ta=>ta.IdanalysisTypeNavigation).ToList()[0];
                     list.Add(new Response_RecordAnalysis()
                     {
                         IdrecordAnalysis = rA.IdrecordAnalysis,
-                        analysisName = analysis.Description,
-                        analysisCode = analysis.Code,
-                        Result = rA.Result,
-                        ResultsObservations = rA.ResultsObservations,
-                        AnalysisDate = rA.AnalysisDate,
+                        NombreAnalisis = analysis.Description,
+                        CodigoAnalisis = analysis.Code,
+                        TipoAnalisis = analysis.IdanalysisTypeNavigation.Description,
+                        Codigo_TipoAnalisis = analysis.IdanalysisTypeNavigation.Code,
+                        Resultados = rA.Result,
+                        Resultados_Observaciones = rA.ResultsObservations,
+                        FechaAnalisis = rA.AnalysisDate,
                         CreateUser = rA.CreateUser,
                         CreateDate = rA.CreateDate,
                     });
