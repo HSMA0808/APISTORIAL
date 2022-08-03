@@ -50,5 +50,81 @@ namespace WebAPI.Controllers
             }
             return response;
         }
+
+        [HttpGet(Name = "GetmMedicalCenterList")]
+        public IActionResult GetmMedicalCenterList(string ApistorialKey, int Estatus)
+        { 
+            IActionResult response = BadRequest();
+            try
+            {
+                if (ApistorialKey == null || ApistorialKey.Trim() == string.Empty)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El parametro 'ApistorialKey' no puede ser enviado null o vacio" });
+                }
+                else if (Estatus != 0 && Estatus != 6 && Estatus != 7)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El parametro 'Estatus' debe tener uno de los siguientes valores: 6 - Activo, 7 - Pendiente, 0 - Todos" });
+                }
+                else
+                {
+                    var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                    if (Estatus == 0)
+                    {
+                        var medicalCenterList = db.MedicalCenters.ToList();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", CentrosMedicos = medicalCenterList });
+                    }
+                    else
+                    {
+                        var medicalCenterList = db.MedicalCenters.Where(cm => cm.NvstatusCenter == Estatus).ToList();
+                        response = Ok(new { ResponseCode = "00", Message = "Success", CentrosMedicos = medicalCenterList });
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new
+                {
+                    ResponseCode = "99",
+                    Message = "Ha ocurrido un error: " + e.Message
+                });
+            }
+            return response;
+        }
+
+        [HttpGet(Name = "GetMedicalCenterStatus")]
+        public IActionResult GetMedicalCenterStatus(string RNC, string MedicalCenterToken)
+        {
+            IActionResult response = BadRequest();
+            try
+            {
+                if (RNC == null || RNC.Trim() == string.Empty || MedicalCenterToken == null || MedicalCenterToken.Trim() == string.Empty)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "Los parametros 'RNC' y 'MedicalCenterToken' no pueden ser enviados vacios o nulos" });
+                }
+                else
+                {
+                    var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
+                    var centrosMedico = db.MedicalCenters.Where(cm => cm.Rnc == RNC && cm.Token == MedicalCenterToken).ToList();
+                    if (centrosMedico.Count == 0)
+                    {
+                        response = BadRequest(new { ResponseCode = "99", Message = "No se encontro un centro medico registrado con los parametros suministrados." });
+                    }
+                    else
+                    {
+                        response = Ok(new { ResponseCode = "00", Message = "Success", CentroMedico = centrosMedico[0] });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(new
+                {
+                    ResponseCode = "99",
+                    Message = "Ha ocurrido un error: " + e.Message
+                });
+            }
+            return response;
+        }
     }
 }
