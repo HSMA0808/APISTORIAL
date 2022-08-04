@@ -25,67 +25,54 @@
           <a class="btn btn-primary" href="RegisterMedicalCenter.html">Registrate</a>
       </div>
   </nav>
+  </nav>
   <br>
   <br>
 <div class="container">
-  <div class="" align = "center">
-    <h1>Formulario de Registro</h1>
-    <br>
-    <h5>Aumente su eficiencia registrando su centro medico con nosotros.</h5>
-  </div>
   <div class="row">
-    <div class="offset-md-3 col-md-6 p-5">
-      <form class="form" action="#" method="post">
-        <div class="form-group">
-            <label class = "label sr-only" for="txtNombreCM">Nombre del Centro Medico</label>
-            <input type="text" class="form-control" id="txtNombreCM" placeholder="Nombre del Centro Medico" value="">
-        </div>
-        <br>
-        <div class="form-group">
-            <label class = "label sr-only" for="txtNombreCM">RNC</label>
-            <input type="text" class="form-control" id="txtRNC" placeholder="RNC" value="">
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-6 mb-2">
-              <div class="form-group">
-                  <label class = "label sr-only" for="txtTelefonoCM1">Telefono 1</label>
-                  <input type="text" class="form-control" id="txtTelefonoCM1" placeholder="Telefono 1" value="">
-              </div>
-            </div>
-            <div class="col-md-6 mb-2">
-              <div class="form-group">
-                  <label class = "label sr-only" for="txtTelefonoCM2">Telefono 2</label>
-                  <input type="text" class="form-control" id="txtTelefonoCM2" placeholder="Telefono 2" value="">
-              </div>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-6 mb-2">
-              <div class="form-group">
-                  <label class = "label sr-only" for="txtEmailCM1">Email 1</label>
-                  <input type="email" class="form-control" id="txtEmailCM1" placeholder="Email 1" value="">
-              </div>
-            </div>
-            <div class="col-md-6 mb-2">
-              <div class="form-group">
-                  <label class = "label sr-only" for="txtEmailCM2">Email 2</label>
-                  <input type="email" class="form-control" id="txtEmailCM2" placeholder="Email 2" value="">
-              </div>
-            </div>
-        </div>
-        <br>
-        <div class="form-group">
-            <label class = "label sr-only" for="txtNombreContactoCM">Nombre del Contacto</label>
-            <input type="text" class="form-control" id="txtNombreContactoCM" placeholder="Nombre del Contacto" value="">
-        </div>
-        <br>
-        <div class="d-grid gap-2 mb-2">
-          <button id="btnGuardar" class="btn btn-primary" type="button"><i class="fas fa-save"></i> Guardar</button>
-        </div>
-      </form>
+    <div class="col-md-12">
+      <div align = "center" class="mb-5">
+        <h2>Centros Medicos Registrados</h2>
+        <p>Filtre por el estatus deseado</p>
+      </div>
     </div>
+  </div>
+  <div class="row mb-5">
+    <div class="offset-md-3 col-md-6">
+      <div class="form-group">
+        <label class = "sr-only" for="">Estatus</label>
+        <select id = "select_Estatus" class="form-control" name="">
+          <option value="0">-- Estatus --</option>
+          <option value="6">Autorizado</option>
+          <option value="7">Pendiente</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="offset-md-3 col-md-6">
+      <div class="d-grid gap-2">
+        <button id = "btnBuscar" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Buscar</button>
+      </div>
+    </div>
+  </div>
+  <div id = "div_DataView" hidden class="row mt-5">
+    <br>
+    <br>
+    <table id = "table_CentrosMedicos" class = "table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>RNC</th>
+          <th>Centro Medico</th>
+          <th>Nombre Contacto</th>
+          <th>Telefono</th>
+          <th>Email</th>
+          <th>Estatus</th>
+        </tr>
+      </thead>
+      <tbody id = "tbody_CentrosMedicos">
+      </tbody>
+    </table>
   </div>
 </div>
 </body>
@@ -122,6 +109,6 @@
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-<script type="text/javascript" src="js/RegisterMedicalCenter.js"></script>
+<script type="text/javascript" src="js/MedicalCenterList.js"></script>
 <!--<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>-->
 </html>

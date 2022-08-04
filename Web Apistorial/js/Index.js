@@ -1,4 +1,6 @@
 window.addEventListener("load", ()=>{
+  localStorage.setItem("userId", "Admin")
+  localStorage.setItem("Password", "Admin2012.")
   var dpIdentificationType = document.querySelector("#dpIdentificationType")
   var inputCedula = document.querySelector("#exampleInputCedula");
   var btnConsultar = document.querySelector("#btnConsultar");

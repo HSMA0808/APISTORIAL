@@ -3,41 +3,46 @@ using Microsoft.AspNetCore.Mvc;
 using System.Configuration;
 using Newtonsoft.Json;
 using WebAPI.Models;
+using Microsoft.AspNetCore.Cors;
+using WebAPI.ResponseObjects;
+using WebAPI.RequestObjects;
+
 
 namespace WebAPI.Controllers
 {
     [ApiController]
+    [EnableCors("MyPolicy")]
     [Route("[controller]/[action]")]
     public class MedicalCenterController : ControllerBase
     {
         [HttpPost(Name = "Register")]
-        public IActionResult Register(string Descripcion, string RNC, string Tel1, string? Tel2, string Email1, string? Email2, string NombreContacto, string Referencia)
+        public IActionResult Register(Request_MedicalCenter request)
         {
             IActionResult response = BadRequest();
             try
             {
-                if (Descripcion.Trim() == string.Empty || RNC.Trim() == string.Empty || Tel1.Trim() == string.Empty || Email1.Trim() == string.Empty || NombreContacto.Trim() == string.Empty)
+                if (request.Descripcion.Trim() == string.Empty || request.Rnc.Trim() == string.Empty || request.Tel1.Trim() == string.Empty || request.Email1.Trim() == string.Empty || request.NombreContacto.Trim() == string.Empty)
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Los siguientes campos son reqeuridos: Descripcion, RNC, Tel1, Email1, NombreContacto" });
                 }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
-                    if (db.MedicalCenters.Where(mc => mc.Rnc == RNC).ToList().Count == 1)
+                    if (db.MedicalCenters.Where(mc => mc.Rnc == request.Rnc).ToList().Count == 1)
                     {
-                        throw new Exception("Ya existe un centro medico registrado con el RNC " + RNC);
+                        throw new Exception("Ya existe un centro medico registrado con el RNC " + request.Rnc);
                     }
                     db.MedicalCenters.Add(new MedicalCenter() { 
-                        Description = Descripcion,
-                        Rnc = RNC,
-                        Tel1 = Tel1,
-                        Tel2 = Tel2,
-                        Email1 = Email1,
-                        Email2 = Email2,
-                        NameContact = NombreContacto,
+                        Description = request.Descripcion,
+                        Rnc = request.Rnc,
+                        Tel1 = request.Tel1,
+                        Tel2 = request.Tel2,
+                        Email1 = request.Email1,
+                        Email2 = request.Email2,
+                        NameContact = request.NombreContacto,
                         Token = Guid.NewGuid().ToString(),
                         NvstatusCenter = 7,
-                        CreateUser = Referencia,
+                        CreateUser = request.Referencia,
                         CreateDate = DateTime.Now
                     });;
                     db.SaveChanges();
@@ -71,12 +76,16 @@ namespace WebAPI.Controllers
                     if (Estatus == 0)
                     {
                         var medicalCenterList = db.MedicalCenters.ToList();
-                        response = Ok(new { ResponseCode = "00", Message = "Success", CentrosMedicos = medicalCenterList });
+                        var response_medicalCenter = new Response_MedicalCenter();
+                        var cmList = response_medicalCenter.ToResponseList(medicalCenterList);
+                        response = Ok(new { ResponseCode = "00", Message = "Success", CentrosMedicos = cmList });
                     }
                     else
                     {
                         var medicalCenterList = db.MedicalCenters.Where(cm => cm.NvstatusCenter == Estatus).ToList();
-                        response = Ok(new { ResponseCode = "00", Message = "Success", CentrosMedicos = medicalCenterList });
+                        var response_medicalCenter = new Response_MedicalCenter();
+                        var cmList = response_medicalCenter.ToResponseList(medicalCenterList);
+                        response = Ok(new { ResponseCode = "00", Message = "Success", CentrosMedicos = cmList });
                     }
 
                 }
@@ -112,7 +121,9 @@ namespace WebAPI.Controllers
                     }
                     else
                     {
-                        response = Ok(new { ResponseCode = "00", Message = "Success", CentroMedico = centrosMedico[0] });
+                        var response_medicalCenter = new Response_MedicalCenter();
+                        var cmList = response_medicalCenter.ToResponseList(centrosMedico);
+                        response = Ok(new { ResponseCode = "00", Message = "Success", CentroMedico = cmList[0] });
                     }
                 }
             }
