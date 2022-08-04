@@ -34,5 +34,23 @@ namespace WebAPI
             }
             return paramName;
         }
+
+        public static bool validateIdentification(string NoIdentification, string identificationType)
+        {
+            bool isValid = true;
+            foreach (char item in NoIdentification)
+            {
+                try
+                {
+                    int.Parse(item.ToString());
+                }
+                catch (Exception e)
+                {
+                    isValid = false;
+                    break;
+                }
+            }
+            return isValid;
+        }
     }
 }

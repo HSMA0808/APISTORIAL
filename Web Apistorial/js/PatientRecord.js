@@ -14,6 +14,31 @@ window.addEventListener("load", ()=>{
   var btnGuardarInternamiento = document.querySelector("#Internamientos_btnGuardar")
   var btnGuardarEmergencias = document.querySelector("#Emergencias_btnGuardar")
 
+  var select_Consultas_dpDoctor = document.querySelector("#Consultas_dpDoctor")
+  var select_Operaciones_dpDoctor = document.querySelector("#Operaciones_dpDoctor")
+  var select_Operaciones_TipoOperacion = document.querySelector("#Operaciones_dpTipoOperacion")
+
+  select_Consultas_dpDoctor.addEventListener("change", ()=>{
+    var txtNoIdentificacion = document.querySelector("#Consultas_txtNoIdentificacion")
+    var txtEspecialidad = document.querySelector("#Consultas_txtEspecialidad")
+    txtNoIdentificacion.value = select_Consultas_dpDoctor.value
+    txtEspecialidad.value = select_Consultas_dpDoctor.options[select_Consultas_dpDoctor.selectedIndex].dataset.especialidad
+  })
+  select_Operaciones_dpDoctor.addEventListener("change", ()=>{
+    var txtNoIdentificacion = document.querySelector("#Operaciones_txtNoIdentificacion")
+    txtNoIdentificacion.value = select_Operaciones_dpDoctor.value
+  })
+  select_Operaciones_TipoOperacion.addEventListener("change", ()=>{
+    var select_Operaciones_Operacion = document.querySelector("#Operaciones_dpOperacion")
+    var i = 0
+    var tipoOperacionId = select_Operaciones_TipoOperacion.options
+    for(i in select_Operaciones_Operacion.options)
+    {
+      if()
+    }
+  })
+
+
   btnGuardarConsulta.addEventListener("", ()=>{
       var select_Doctor = document.querySelector("#Consultas_dpDoctor")
       var txtNoIdentificacion = document.querySelector("#Consultas_txtNoIdentificacion")
@@ -21,30 +46,36 @@ window.addEventListener("load", ()=>{
       var txtObservaciones = document.querySelector("#Consultas_txtObservaciones")
       var txtIndicaciones = document.querySelector("#Consultas_txtIndicaciones")
 
-      var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), doctor_Identification: "string", specialtyCode: "string", observations: "string", indications: "string",  visitDate: "string"}
-      fetch("https://localhost:44320/Records/SetRecordVisit", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      //credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      //redirect: 'follow', // manual, *follow, error
-      //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.responseCode != "00")
+      if(select_Doctor.value == 0 || txtNoIdentificacion.value.trim() == "" || txtEspecialidad.value.trim() == "" || txtObservaciones.value.trim() == "" || txtIndicaciones.value.trim() == "")
       {
-        alert("Algo no ha salido bien, respuesta del API: " + data.message)
+        alert("Los siguientes campos son requeridos: 'Doctor', Observaciones, Indicaciones")
       }
       else {
+        var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), doctor_Identification: "string", specialtyCode: "string", observations: "string", indications: "string",  visitDate: "string"}
+        fetch("https://localhost:44320/Records/SetRecordVisit", {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        //credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        //redirect: 'follow', // manual, *follow, error
+        //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.responseCode != "00")
+        {
+          alert("Algo no ha salido bien, respuesta del API: " + data.message)
+        }
+        else {
 
+        }
+      })
       }
-    })
   })
   btnGuardarAnalisis.addEventListener("", ()=>{
       var select_TipoAnalisis = document.querySelector("#Analisis_dpTipoAnalisis")
@@ -52,30 +83,36 @@ window.addEventListener("load", ()=>{
       var select_Resultados = document.querySelector("#Analisis_dpResultados")
       var txtObservaciones = document.querySelector("#Analisis_txtObservaciones")
 
-      var datos = { idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), analysisCode: "string", publicResults: true, resultCode: "string", resultsObservations: "string", analysisDate: "string"}
-      fetch("https://localhost:44320/Records/SetRecordAnalysis", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      //credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      //redirect: 'follow', // manual, *follow, error
-      //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.responseCode != "00")
+      if(selectTipoAnalisis.value == 0 || select_Analisis.value == 0 || select_Resultados.value == 0)
       {
-        alert("Algo no ha salido bien, respuesta del API: " + data.message)
+        alert("Los siguientes campos son requeridos: 'Tipo Analisis', 'Analisis', 'Resultados'")
       }
       else {
+        var datos = { idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:localStorage.getItem("MedicalCenterToken"), analysisCode: "string", publicResults: true, resultCode: "string", resultsObservations: "string", analysisDate: "string"}
+        fetch("https://localhost:44320/Records/SetRecordAnalysis", {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        //credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        //redirect: 'follow', // manual, *follow, error
+        //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.responseCode != "00")
+        {
+          alert("Algo no ha salido bien, respuesta del API: " + data.message)
+        }
+        else {
 
+        }
+      })
       }
-    })
   })
   btnGuardarOperacion.addEventListener("", ()=>{
       var select_Doctor = document.querySelector("#Operaciones_dpDoctor")
@@ -83,91 +120,106 @@ window.addEventListener("load", ()=>{
       var txtFecha = document.querySelector("#Operaciones_txtFecha")
       var select_TipoOperacion = document.querySelector("#Operaciones_dpTipoOperacion")
       var select_Operacion = document.querySelector("#Operaciones_dpOperacion")
-
-      var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), doctor_Identification: "string", operationCode: "string", operationDate: "string"}
-      fetch("https://localhost:44320/Records/SetRecordOperation", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      //credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      //redirect: 'follow', // manual, *follow, error
-      //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.responseCode != "00")
+      if(select_Doctor.value == 0 || txtFecha.value == null || select_TipoOperacion.value == 0 || select_Operacion.value == 0)
       {
-        alert("Algo no ha salido bien, respuesta del API: " + data.message)
+        alert("Los siguientes campos son requeridos: 'Doctor', 'Fecha', 'Tipo Operacion', 'Operacion'")
       }
       else {
+          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), doctor_Identification: "string", operationCode: "string", operationDate: "string"}
+          fetch("https://localhost:44320/Records/SetRecordOperation", {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          //credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          //redirect: 'follow', // manual, *follow, error
+          //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.responseCode != "00")
+          {
+            alert("Algo no ha salido bien, respuesta del API: " + data.message)
+          }
+          else {
 
+          }
+        })
       }
-    })
   })
   btnGuardarInternamiento.addEventListener("", ()=>{
       var select_CentroMedico = document.querySelector("#Internamientos_dpCentroMedico")
       var txtFecha = document.querySelector("#Internamientos_txtFecha")
       var txtRazon = document.querySelector("#Internamientos_txtRazon")
-
-      var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), reasonInterment: "string", intermentDate: "string"}
-      fetch("https://localhost:44320/Records/SetRecordInterment", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      //credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      //redirect: 'follow', // manual, *follow, error
-      //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.responseCode != "00")
+      if(selectCentroMedico.value == 0 || txtFecha.value == null || txtRazon.value == "" )
       {
-        alert("Algo no ha salido bien, respuesta del API: " + data.message)
+        alert("Los siguientes campos son requeridos: 'Centro Medico', 'Fecha', 'Razon'")
       }
       else {
+          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:localStorage.getItem("MedicalCenterToken"), reasonInterment: "string", intermentDate: "string"}
+          fetch("https://localhost:44320/Records/SetRecordInterment", {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          //credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          //redirect: 'follow', // manual, *follow, error
+          //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.responseCode != "00")
+          {
+            alert("Algo no ha salido bien, respuesta del API: " + data.message)
+          }
+          else {
 
+          }
+        })
       }
-    })
   })
   btnGuardarEmergencias.addEventListener("", ()=>{
     var select_CentroMedico = document.querySelector("#Emergencias_dpCentroMedico")
     var txtFecha = document.querySelector("#Emergencias_txtFecha")
     var txtRazon = document.querySelector("#Emergencias_txtRazon")
-
-      var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), reasonInterment: "string", entryDate: "string"}
-      fetch("https://localhost:44320/Records/EmergencyEntry", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      //credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      //redirect: 'follow', // manual, *follow, error
-      //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.responseCode != "00")
+      if(selectCentroMedico.value == 0 || txtFecha.value == null || txtRazon.value == "" )
       {
-        alert("Algo no ha salido bien, respuesta del API: " + data.message)
+        alert("Los siguientes campos son requeridos: 'Centro Medico', 'Fecha', 'Razon'")
       }
       else {
+          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:localStorage.getItem("MedicalCenterToken"), reasonInterment: "string", entryDate: "string"}
+          fetch("https://localhost:44320/Records/EmergencyEntry", {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          //credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          //redirect: 'follow', // manual, *follow, error
+          //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(datos) //JSON.parse('{"descripcion": "'+txtNombre.value+'", "rnc": "'+txtRNC.value+'", "tel1": "'+txtTelefono1.value+'", "tel2": "'+txtTelefono2.value+'", "email1": "'+txtEmail1.value+'", "email2": "'+txtEmail2.value+'", "nombreContacto": "'+txtNombreContactoCM.value+'", "referencia": "ApistorialWeb"}') // body data type must match "Content-Type" header
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.responseCode != "00")
+          {
+            alert("Algo no ha salido bien, respuesta del API: " + data.message)
+          }
+          else {
 
+          }
+        })
       }
-    })
   })
 
   consulta_btnAgregar.addEventListener("click", ()=>{

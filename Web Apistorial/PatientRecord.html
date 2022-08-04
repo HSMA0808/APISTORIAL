@@ -130,7 +130,8 @@
                       <div class="col-md-6 form-group">
                         <label class = "sr-only" for="Consultas_dpDoctor">Doctor</label>
                         <select id="Consultas_dpDoctor"class="select form-control" name="">
-                          <option value="0">--Doctor--</option>
+                          <option data-especialidad = "" value="">--Doctor--</option>
+                          <option data-especialidad="PSICOLOGIA" value="6546678438">MILDRED ANTONIA ESPINAL</option>
                         </select>
                       </div>
                       <div class="col-md-3 form-group">
@@ -173,18 +174,43 @@
                         <label class = "sr-only" for="Analisis_dpTipoAnalisis">Tipo Analisis</label>
                         <select id="Analisis_dpTipoAnalisis"class="select form-control" name="">
                           <option value="0">--Tipo Analisis--</option>
+                          <option value="00">LABORATORIO</option>
+                          <option value="01">IMAGENES</option>
                         </select>
                       </div>
                       <div class="col-md-5 form-group">
                         <label class = "sr-only" for="Analisis_dpAnalisis">Analisis</label>
                         <select id="Analisis_dpAnalisis"class="select form-control" name="">
                           <option value="0">--Analisis--</option>
+                          <option value="100">FALCEMIA</option>
+                          <option value="101">VIH SIDA</option>
+                          <option value="102">HEPATITIS C</option>
+                          <option value="103">HEPATITIS B</option>
+                          <option value="104">HEPATITIS A</option>
+                          <option value="105">HEMOGRAMA</option>
+                          <option value="106">COPROLOGICO</option>
+                          <option value="107">COLESTEROL</option>
+                          <option value="108">LDL</option>
+                          <option value="109">HDL</option>
+                          <option value="110">TRIGLICERIDOS</option>
+                          <option value="111">BILIRRUBINA TOTAL</option>
+                          <option value="112">BILIRRUBINA DIRECTA</option>
+                          <option value="113">AST</option>
+                          <option value="114">LDH</option>
+                          <option value="115">TSH</option>
+                          <option value="116">T3</option>
+                          <option value="117">T4</option>
+                          <option value="118">ELECTROLITOS</option>
+                          <option value="119">GLUCOSA</option>
+                          <option value="120">NITROGENO DE UREA</option>
                         </select>
                       </div>
                       <div class="col-md-2 form-group">
                         <label class = "sr-only" for="Analisis_dpResultados">Resultados</label>
                         <select id="Analisis_dpResultados"class="select form-control" name="">
                           <option value="0">--Resultados--</option>
+                          <option value="20">POSITIVO</option>
+                          <option value="21">NEGATIVO</option>
                         </select>
                       </div>
                     </div>
@@ -222,7 +248,8 @@
                       <div class="col-md-4 form-group">
                         <label class = "sr-only" for="Operaciones_dpDoctor">Doctor</label>
                         <select id="Operaciones_dpDoctor"class="select form-control" name="">
-                          <option value="0">--Doctor--</option>
+                          <option data-especialidad value="">--Doctor--</option>
+                          <option data-especialidad="PSICOLOGIA" value="6546678438">MILDRED ANTONIA ESPINAL</option>
                         </select>
                       </div>
                       <div class="col-md-4 form-group">
@@ -238,13 +265,30 @@
                       <div class="col-md-6 form-group">
                         <label class = "sr-only" for="Operaciones_dpTipoOperacion">Tipo Operacion</label>
                         <select id="Operaciones_dpTipoOperacion"class="select form-control" name="">
-                          <option value="0">--Tipo Operacion--</option>
+                          <option data-id = "0" value="0">--Tipo Operacion--</option>
+                          <option data-id = "1" value="00">MEDICA</option>
+                          <option data-id = "2" value="01">PLASTICA</option>
                         </select>
                       </div>
                       <div class="col-md-6 form-group">
                         <label class = "sr-only" for="Operaciones_dpOperacion">Operacion</label>
                         <select id="Operaciones_dpOperacion"class="select form-control" name="">
-                          <option value="0">--Operacion--</option>
+                          <option data-tipooeracioncode = "0" value="0">--Operacion--</option>
+                          <option data-tipooeracioncode = "1" value="100">VASECTOMIA</option>
+                          <option data-tipooeracioncode = "1" value="101">APENDICECTOMIA</option>
+                          <option data-tipooeracioncode = "1" value="102">CIRUGIA DE CATARATAS</option>
+                          <option data-tipooeracioncode = "1" value="103">PARTO NATURAL</option>
+                          <option data-tipooeracioncode = "1" value="104">CESAREA</option>
+                          <option data-tipooeracioncode = "1" value="105">COLECISTECTOMIA</option>
+                          <option data-tipooeracioncode = "1" value="106">ULCERA DE ESTOMAGO</option>
+                          <option data-tipooeracioncode = "1" value="107">PERFORACION GASTROINTESTINAL</option>
+                          <option data-tipooeracioncode = "1" value="108">BYPASS DE ARTERIA CORONARIA</option>
+                          <option data-tipooeracioncode = "2" value="109">MAMOPLASTIA DE AUMENTO</option>
+                          <option data-tipooeracioncode = "2" value="110">MAMOPLASTIA DE REDUCCION</option>
+                          <option data-tipooeracioncode = "2" value="111">LIPOESCULTURA</option>
+                          <option data-tipooeracioncode = "1" value="112">HEMORROIDECTOMIA</option>
+                          <option data-tipooeracioncode = "1" value="113">IMPLANTACION DE PROTESIS DE ARTICULACION</option>
+                          <option data-tipooeracioncode = "1" value="113">LAPAROTOMIA</option>
                         </select>
                       </div>
                     </div>
@@ -269,7 +313,7 @@
                     <div class="row mb-5">
                       <div class="form-group col-md-6">
                         <label class = "sr-only" for="Internamientos_dpCentroMedico">Centro Medico</label>
-                        <select id="Internamientos_dpCentroMedico" disabled class="form-control" name="">
+                        <select id="Internamientos_dpCentroMedico" class="form-control" name="">
                           <option value="0">--Centro Medico--</option>
                         </select>
                       </div>
@@ -305,7 +349,7 @@
                     <div class="row mb-5">
                       <div class="form-group col-md-6">
                         <label class = "sr-only" for="Emergencias_dpCentroMedico">Centro Medico</label>
-                        <select id = "Emergencias_dpCentroMedico"disabled class="form-control" name="">
+                        <select id = "Emergencias_dpCentroMedico" class="form-control" name="">
                           <option value="0">--Centro Medico--</option>
                         </select>
                       </div>

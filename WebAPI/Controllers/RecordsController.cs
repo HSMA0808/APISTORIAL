@@ -36,6 +36,10 @@ namespace WebAPI.Controllers
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                 }
+                else if (StaticsOperations.validateIdentification(Identification, "C"))
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "Numero de identificacion invalido" });
+                }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
@@ -385,15 +389,19 @@ namespace WebAPI.Controllers
             {
             if (request.idRecord == 0 || request.Doctor_Identification.Trim() == string.Empty || request.SpecialtyCode.Trim() == string.Empty || request.VisitDate.Trim() == string.Empty)
             {
-                response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, IDDoctor, SpecialtyCode, VisitDate" });
+                response = BadRequest(new { ResponseCode = "99", Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, IDDoctor, SpecialtyCode, VisitDate" });
             }
             else if (!DateTime.TryParse(request.VisitDate, out visitDate))
             {
-                response = BadRequest(new { ResponseCode = 99, Message = "El parametro VisitDate tiene el formato incorrecto" });
+                response = BadRequest(new { ResponseCode = "99", Message = "El parametro VisitDate tiene el formato incorrecto" });
+            }
+            else if (StaticsOperations.validateIdentification(request.Doctor_Identification, "C"))
+            {
+                response = BadRequest(new { ResponseCode = "99", Message = "Numero de identificacion invalido" });
             }
             else if (!doctor.ReviewDoctor(request.Doctor_Identification))
             {
-                response = BadRequest(new { ResponseCode = 99, Message = "RecordVisit no insertado, El doctor no fue encontrado en el padron electoral" });
+                response = BadRequest(new { ResponseCode = "99", Message = "RecordVisit no insertado, El doctor no fue encontrado en el padron electoral" });
             }
             else
             {
@@ -402,7 +410,7 @@ namespace WebAPI.Controllers
                     var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
                     if (medicalCenter.Count == 0)
                     {
-                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                        response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                     }
                     else if(doctorReview.ReviewDoctor(request.Doctor_Identification))
                     {
@@ -429,7 +437,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception e)
             {
-                response = BadRequest(new { ResponseCode = 99, Message = "Ha ocurriedo un error: " + e.Message });
+                response = BadRequest(new { ResponseCode = "99", Message = "Ha ocurriedo un error: " + e.Message });
             }
             return response;
         }
@@ -444,15 +452,19 @@ namespace WebAPI.Controllers
             {
                 if (request.idRecord == 0 || request.Doctor_Identification.Trim() == string.Empty || request.OperationCode.Trim() == string.Empty || request.OperationDate.Trim() == string.Empty)
                 {
-                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, IDDoctor, OperationCode, OperationDate" });
+                    response = BadRequest(new { ResponseCode = "99", Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, IDDoctor, OperationCode, OperationDate" });
                 }
                 else if (!DateTime.TryParse(request.OperationDate, out visitDate))
                 {
-                    response = BadRequest(new { ResponseCode = 99, Message = "El parametro OperationDate tiene el formato incorrecto" });
+                    response = BadRequest(new { ResponseCode = "99", Message = "El parametro OperationDate tiene el formato incorrecto" });
+                }
+                else if (StaticsOperations.validateIdentification(request.Doctor_Identification, "C"))
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "Numero de identificacion invalido" });
                 }
                 else if (!doctor.ReviewDoctor(request.Doctor_Identification))
                 {
-                    response = BadRequest(new { ResponseCode = 99, Message = "RecordOperation no insertado, El doctor no fue encontrado en el padron electoral" });
+                    response = BadRequest(new { ResponseCode = "99", Message = "RecordOperation no insertado, El doctor no fue encontrado en el padron electoral" });
                 }
                 else
                 {
@@ -461,7 +473,7 @@ namespace WebAPI.Controllers
                     var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
                     if (medicalCenter.Count == 0)
                     {
-                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                        response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                     }
                     else if(doctorReview.ReviewDoctor(request.Doctor_Identification))
                     {
@@ -605,11 +617,11 @@ namespace WebAPI.Controllers
             {
                 if (request.idRecord == 0 || request.MedicalCenter_Token.Trim() == string.Empty || request.ReasonInterment.Trim() == string.Empty)
                 {
-                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, Token, Reason" });
+                    response = BadRequest(new { ResponseCode = "99", Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, Token, Reason" });
                 }
                 else if (!DateTime.TryParse(request.EntryDate, out entryDate))
                 {
-                    response = BadRequest(new { ResponseCode = 99, Message = "El parametro AnalysisDate tiene el formato incorrecto" });
+                    response = BadRequest(new { ResponseCode = "99", Message = "El parametro AnalysisDate tiene el formato incorrecto" });
                 }
                 else
                 {
@@ -617,7 +629,7 @@ namespace WebAPI.Controllers
                     var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
                     if (medicalCenter.Count == 0)
                     {
-                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                        response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                     }
                     else
                     {
@@ -650,7 +662,7 @@ namespace WebAPI.Controllers
             {
                 if (request.idRecord == 0 || request.Codigos_Vacunas.Count == 0)
                 {
-                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, VaccinesCode"});
+                    response = BadRequest(new { ResponseCode = "99", Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, VaccinesCode"});
                 }
                 else
                 {
@@ -658,7 +670,7 @@ namespace WebAPI.Controllers
                     var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
                     if (medicalCenter.Count == 0)
                     {
-                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                        response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                     }
                     else
                     {
@@ -700,7 +712,7 @@ namespace WebAPI.Controllers
             {
                 if (request.idRecord == 0 || request.Codigos_Alergias.Count == 0)
                 {
-                    response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, AllergiesCodes" });
+                    response = BadRequest(new { ResponseCode = "99", Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, AllergiesCodes" });
                 }
                 else
                 {
@@ -708,7 +720,7 @@ namespace WebAPI.Controllers
                     var medicalCenter = db.MedicalCenters.Where(mc => mc.Token == request.MedicalCenter_Token).ToList();
                     if (medicalCenter.Count == 0)
                     {
-                        response = BadRequest(new { ResponseCode = 99, Message = "El Token suministrado no es valido" });
+                        response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                     }
                     else
                     {

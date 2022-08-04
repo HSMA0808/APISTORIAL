@@ -25,6 +25,10 @@ namespace WebAPI.Controllers
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Los siguientes campos son reqeuridos: Descripcion, RNC, Tel1, Email1, NombreContacto" });
                 }
+                else if (StaticsOperations.validateIdentification(request.Rnc, 7))
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "Numeracion RNC invalida" });
+                }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());
@@ -32,7 +36,8 @@ namespace WebAPI.Controllers
                     {
                         throw new Exception("Ya existe un centro medico registrado con el RNC " + request.Rnc);
                     }
-                    db.MedicalCenters.Add(new MedicalCenter() { 
+                    db.MedicalCenters.Add(new MedicalCenter()
+                    {
                         Description = request.Descripcion,
                         Rnc = request.Rnc,
                         Tel1 = request.Tel1,
@@ -44,9 +49,9 @@ namespace WebAPI.Controllers
                         NvstatusCenter = 7,
                         CreateUser = request.Referencia,
                         CreateDate = DateTime.Now
-                    });;
+                    }); ;
                     db.SaveChanges();
-                    response = Ok(new { ResponseCode = "00", Message = "Success"});
+                    response = Ok(new { ResponseCode = "00", Message = "Success" });
                 }
             }
             catch (Exception e)
