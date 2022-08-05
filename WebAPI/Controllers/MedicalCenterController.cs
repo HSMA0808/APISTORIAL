@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Los siguientes campos son reqeuridos: Descripcion, RNC, Tel1, Email1, NombreContacto" });
                 }
-                else if (StaticsOperations.validateIdentification(request.Rnc, 7))
+                else if (!StaticsOperations.validateIdentification(request.Rnc, "R"))
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Numeracion RNC invalida" });
                 }

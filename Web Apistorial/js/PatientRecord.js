@@ -17,6 +17,8 @@ window.addEventListener("load", ()=>{
   var select_Consultas_dpDoctor = document.querySelector("#Consultas_dpDoctor")
   var select_Operaciones_dpDoctor = document.querySelector("#Operaciones_dpDoctor")
   var select_Operaciones_TipoOperacion = document.querySelector("#Operaciones_dpTipoOperacion")
+  var select_Analisis_TipoAnalisis = document.querySelector("#Analisis_dpTipoAnalisis")
+  var select_Analisis_Analisis = document.querySelector("#Analisis_dpAnalisis")
 
   select_Consultas_dpDoctor.addEventListener("change", ()=>{
     var txtNoIdentificacion = document.querySelector("#Consultas_txtNoIdentificacion")
@@ -30,16 +32,61 @@ window.addEventListener("load", ()=>{
   })
   select_Operaciones_TipoOperacion.addEventListener("change", ()=>{
     var select_Operaciones_Operacion = document.querySelector("#Operaciones_dpOperacion")
+    select_Operaciones_Operacion.selectedIndex = 0
     var i = 0
-    var tipoOperacionId = select_Operaciones_TipoOperacion.options
+    var tipoOperacionId = select_Operaciones_TipoOperacion.options[select_Operaciones_TipoOperacion.selectedIndex].dataset.id
     for(i in select_Operaciones_Operacion.options)
     {
-      if()
+      var option = select_Operaciones_Operacion.options[i]
+      if (tipoOperacionId == 0) {
+        option.hidden=false;
+      }
+      else if(option.dataset.tipooperacioncode != tipoOperacionId.toString() && option.dataset.tipooperacioncode != 0)
+      {
+        option.hidden = true
+      }
+      else if(option.dataset.tipooperacioncode == tipoOperacionId.toString() && option.dataset.tipooperacioncode != 0)
+      {
+        option.hidden = false
+      }
+    }
+  })
+  select_Analisis_TipoAnalisis.addEventListener("change", ()=>{
+    var select_Analisis_Analisis = document.querySelector("#Analisis_dpAnalisis")
+    select_Analisis_Analisis.selectedIndex = 0
+    var i = 0
+    var tipoAnalisisId = select_Analisis_TipoAnalisis.options[select_Analisis_TipoAnalisis.selectedIndex].dataset.id
+    for(i in select_Analisis_Analisis.options)
+    {
+      var option = select_Analisis_Analisis.options[i]
+      if (tipoAnalisisId == 0) {
+        option.hidden=false;
+      }
+      else if(option.dataset.tipoanalisisid != tipoAnalisisId.toString() && option.dataset.tipoanalisisid != 0)
+      {
+        option.hidden = true
+      }
+      else if(option.dataset.tipoanalisisid == tipoAnalisisId.toString() && option.dataset.tipoanalisisid != 0)
+      {
+        option.hidden = false
+      }
+    }
+  })
+  select_Analisis_Analisis.addEventListener("change", ()=>{
+    var select_Analisis_Resultado = document.querySelector("#Analisis_dpResultados")
+    if(select_Analisis_Analisis.options[select_Analisis_Analisis.selectedIndex].dataset.tiporesultado == 2)
+    {
+      select_Analisis_Resultado.disabled = true
+    }
+    else {
+      select_Analisis_Resultado.disabled = false
     }
   })
 
 
-  btnGuardarConsulta.addEventListener("", ()=>{
+
+  btnGuardarConsulta.addEventListener("click", ()=>{
+      desactivarControles(btnGuardarConsulta)
       var select_Doctor = document.querySelector("#Consultas_dpDoctor")
       var txtNoIdentificacion = document.querySelector("#Consultas_txtNoIdentificacion")
       var txtEspecialidad = document.querySelector("#Consultas_txtEspecialidad")
@@ -49,9 +96,12 @@ window.addEventListener("load", ()=>{
       if(select_Doctor.value == 0 || txtNoIdentificacion.value.trim() == "" || txtEspecialidad.value.trim() == "" || txtObservaciones.value.trim() == "" || txtIndicaciones.value.trim() == "")
       {
         alert("Los siguientes campos son requeridos: 'Doctor', Observaciones, Indicaciones")
+        activarControles(btnGuardarConsulta)
       }
       else {
-        var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), doctor_Identification: "string", specialtyCode: "string", observations: "string", indications: "string",  visitDate: "string"}
+        fecha = new Date().toLocaleDateString()
+        var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: "ASDJKHAUIOF", doctor_Identification: txtNoIdentificacion.value, specialtyCode: select_Doctor.options[select_Doctor.selectedIndex].dataset.codigoespecialidad, observations: txtObservaciones.value, indications: txtIndicaciones.value,  visitDate: fecha}
+        console.log(datos)
         fetch("https://localhost:44320/Records/SetRecordVisit", {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -72,23 +122,29 @@ window.addEventListener("load", ()=>{
           alert("Algo no ha salido bien, respuesta del API: " + data.message)
         }
         else {
-
+          desactivarControles(select_Doctor, txtNoIdentificacion, txtEspecialidad, txtObservaciones, txtIndicaciones, btnGuardarConsulta)
+          loadData();
+          alert("Consulta guardada satisfactoriamente");
         }
       })
       }
   })
-  btnGuardarAnalisis.addEventListener("", ()=>{
+  btnGuardarAnalisis.addEventListener("click", ()=>{
+      desactivarControles(btnGuardarAnalisis)
       var select_TipoAnalisis = document.querySelector("#Analisis_dpTipoAnalisis")
       var select_Analisis = document.querySelector("#Analisis_dpAnalisis")
       var select_Resultados = document.querySelector("#Analisis_dpResultados")
       var txtObservaciones = document.querySelector("#Analisis_txtObservaciones")
+      var checkResultadosPublicos = document.querySelector("#checkPublicResults")
 
-      if(selectTipoAnalisis.value == 0 || select_Analisis.value == 0 || select_Resultados.value == 0)
+      if(select_TipoAnalisis.value.toString() == "0" || select_Analisis.value == 0 || (select_Resultados.value == 0 && txtObservaciones.value == ""))
       {
         alert("Los siguientes campos son requeridos: 'Tipo Analisis', 'Analisis', 'Resultados'")
+        activarControles(btnGuardarAnalisis)
       }
       else {
-        var datos = { idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:localStorage.getItem("MedicalCenterToken"), analysisCode: "string", publicResults: true, resultCode: "string", resultsObservations: "string", analysisDate: "string"}
+        var fecha = new Date().toLocaleDateString()
+        var datos = { idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:"ASDJKHAUIOF", analysisCode: select_Analisis.value, publicResults: false, resultCode: select_Resultados.value, resultsObservations: txtObservaciones.value, analysisDate: fecha}
         fetch("https://localhost:44320/Records/SetRecordAnalysis", {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -109,23 +165,27 @@ window.addEventListener("load", ()=>{
           alert("Algo no ha salido bien, respuesta del API: " + data.message)
         }
         else {
-
+          desactivarControles(btnGuardarAnalisis, select_TipoAnalisis, select_Analisis, select_Resultados, txtObservaciones, checkResultadosPublicos)
+          loadData()
+          alert("El analisis se ha registrado correctamente.")
         }
       })
       }
   })
-  btnGuardarOperacion.addEventListener("", ()=>{
+  btnGuardarOperacion.addEventListener("click", ()=>{
+      desactivarControles(btnGuardarOperacion)
       var select_Doctor = document.querySelector("#Operaciones_dpDoctor")
       var txtNoIdentificacion = document.querySelector("#Operaciones_txtNoIdentificacion")
       var txtFecha = document.querySelector("#Operaciones_txtFecha")
       var select_TipoOperacion = document.querySelector("#Operaciones_dpTipoOperacion")
       var select_Operacion = document.querySelector("#Operaciones_dpOperacion")
-      if(select_Doctor.value == 0 || txtFecha.value == null || select_TipoOperacion.value == 0 || select_Operacion.value == 0)
+      if(select_Doctor.value == 0 || txtFecha.value == null || select_TipoOperacion.value.toString() == "0" || select_Operacion.value == 0)
       {
         alert("Los siguientes campos son requeridos: 'Doctor', 'Fecha', 'Tipo Operacion', 'Operacion'")
+        activarControles(btnGuardarOperacion)
       }
       else {
-          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: localStorage.getItem("MedicalCenterToken"), doctor_Identification: "string", operationCode: "string", operationDate: "string"}
+          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: "MFHTWHAUIOF", doctor_Identification: txtNoIdentificacion.value, operationCode: select_Operacion.value, operationDate: txtFecha.value}
           fetch("https://localhost:44320/Records/SetRecordOperation", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
@@ -146,21 +206,26 @@ window.addEventListener("load", ()=>{
             alert("Algo no ha salido bien, respuesta del API: " + data.message)
           }
           else {
+            desactivarControles(btnGuardarOperacion, select_Doctor, txtNoIdentificacion, txtFecha, select_TipoOperacion, select_Operacion)
+            loadData()
+            alert("La operacion se ha registrado correctamente.")
 
           }
         })
       }
   })
-  btnGuardarInternamiento.addEventListener("", ()=>{
+  btnGuardarInternamiento.addEventListener("click", ()=>{
+      desactivarControles(btnGuardarInternamiento)
       var select_CentroMedico = document.querySelector("#Internamientos_dpCentroMedico")
       var txtFecha = document.querySelector("#Internamientos_txtFecha")
       var txtRazon = document.querySelector("#Internamientos_txtRazon")
-      if(selectCentroMedico.value == 0 || txtFecha.value == null || txtRazon.value == "" )
+      if(select_CentroMedico.value == 0 || txtFecha.value == null || txtRazon.value == "" )
       {
         alert("Los siguientes campos son requeridos: 'Centro Medico', 'Fecha', 'Razon'")
+        activarControles(btnGuardarInternamiento)
       }
       else {
-          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:localStorage.getItem("MedicalCenterToken"), reasonInterment: "string", intermentDate: "string"}
+          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:"MFHTWHAUIOF", reasonInterment: txtRazon.value, intermentDate: txtFecha.value}
           fetch("https://localhost:44320/Records/SetRecordInterment", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
@@ -181,22 +246,26 @@ window.addEventListener("load", ()=>{
             alert("Algo no ha salido bien, respuesta del API: " + data.message)
           }
           else {
-
+            desactivarControles(btnGuardarInternamiento, select_CentroMedico, txtFecha, txtRazon)
+            loadData()
+            alert("El internamiento se ha registrado correctamente.")
           }
         })
       }
   })
-  btnGuardarEmergencias.addEventListener("", ()=>{
+  btnGuardarEmergencias.addEventListener("click", ()=>{
+    desactivarControles(btnGuardarEmergencias)
     var select_CentroMedico = document.querySelector("#Emergencias_dpCentroMedico")
     var txtFecha = document.querySelector("#Emergencias_txtFecha")
     var txtRazon = document.querySelector("#Emergencias_txtRazon")
-      if(selectCentroMedico.value == 0 || txtFecha.value == null || txtRazon.value == "" )
+      if(select_CentroMedico.value == 0 || txtFecha.value == null || txtRazon.value == "" )
       {
         alert("Los siguientes campos son requeridos: 'Centro Medico', 'Fecha', 'Razon'")
+        activarControles(btnGuardarEmergencias)
       }
       else {
-          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:localStorage.getItem("MedicalCenterToken"), reasonInterment: "string", entryDate: "string"}
-          fetch("https://localhost:44320/Records/EmergencyEntry", {
+          var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:"ASDJKHAUIOF", reasonInterment: txtRazon.value, entryDate: txtFecha.value}
+          fetch("https://localhost:44320/Records/SetRecordEmergencyEntry", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -216,7 +285,9 @@ window.addEventListener("load", ()=>{
             alert("Algo no ha salido bien, respuesta del API: " + data.message)
           }
           else {
-
+            desactivarControles(btnGuardarEmergencias)
+            loadData()
+            alert("La Emergencia ha sido registrada correctamente.")
           }
         })
       }
@@ -229,8 +300,9 @@ window.addEventListener("load", ()=>{
     var txtObservaciones = document.querySelector("#Consultas_txtObservaciones")
     var txtIndicaciones = document.querySelector("#Consultas_txtIndicaciones")
     var btnGuardar = document.querySelector("#Consultas_btnGuardar")
+    selectDoctor.selectedIndex = 0
     limpiarControles(txtNoIdentificacion, txtEspecialidad, txtObservaciones, txtIndicaciones)
-    activarControles(txtNoIdentificacion, txtEspecialidad, txtObservaciones, txtIndicaciones)
+    activarControles(selectDoctor, txtNoIdentificacion, txtEspecialidad, txtObservaciones, txtIndicaciones)
   })
   analisis_btnAgregar.addEventListener("click", ()=>{
     var selectTipoAnalisis = document.querySelector("#Analisis_dpTipoAnalisis")
@@ -239,7 +311,7 @@ window.addEventListener("load", ()=>{
     var txtObservaciones = document.querySelector("#Analisis_txtObservaciones")
     var checkPublicResults = document.querySelector("#checkPublicResults")
     limpiarControles(txtObservaciones, checkPublicResults)
-    activarControles(txtObservaciones, checkPublicResults)
+    activarControles(selectTipoAnalisis, selectAnalisis, selectResultados, txtObservaciones, checkPublicResults)
   })
   operacion_btnAgregar.addEventListener("click", ()=>{
     var selectDoctor = document.querySelector("#Operaciones_dpDoctor")
@@ -260,9 +332,10 @@ window.addEventListener("load", ()=>{
   emergencia_btnAgregar.addEventListener("click", ()=>{
     var selectCentroMedico = document.querySelector("#Emergencias_dpCentroMedico")
     var txtFecha = document.querySelector("#Emergencias_txtFecha")
-    var txtRazon = document.querySelector("#Emeregencias_txtRazon")
+    var txtRazon = document.querySelector("#Emergencias_txtRazon")
+    var btnGuardar = document.querySelector("#Emergencias_btnGuardar")
     limpiarControles(txtFecha, txtRazon)
-    activarControles(txtFecha, txtRazon)
+    activarControles(selectCentroMedico, txtFecha, txtRazon, btnGuardar)
   })
 
   loadData()
@@ -346,6 +419,7 @@ window.addEventListener("load", ()=>{
     if(data.recordsVisits.length > 0)
     {
       var tbody_Consultas = document.querySelector("#tbody_Consultas");
+      tbody_Consultas.innerText = ""
       let i = 0;
       for(i=0;i<data.recordsVisits.length;i++)
       {
@@ -381,6 +455,7 @@ window.addEventListener("load", ()=>{
     if(data.recordsAnalysis.length > 0)
     {
       var tbody_Analisis = document.querySelector("#tbody_Analisis");
+      tbody_Analisis.innerText = ""
       let i = 0;
       for(i=0;i<data.recordsAnalysis.length;i++)
       {
@@ -393,9 +468,9 @@ window.addEventListener("load", ()=>{
         var tdButtonView = document.createElement("td")
          tdId.innerText = data.recordsAnalysis[i].idrecordAnalysis;
          tdAnalisis.innerText = data.recordsAnalysis[i].nombreAnalisis;
-         if(data.recordsAnalysis[i].result != null)
+         if(data.recordsAnalysis[i].resultados != null)
          {
-            tdResultados.innerText = data.recordsAnalysis[i].resultado;
+            tdResultados.innerText = data.recordsAnalysis[i].resultados;
          }
          else {
           tdResultados.innerText = "N/A";
@@ -419,6 +494,7 @@ window.addEventListener("load", ()=>{
     if(data.recordsOperations.length > 0)
     {
       var tbody_Operaciones = document.querySelector("#tbody_Operaciones");
+      tbody_Operaciones.innerText = ""
       let i = 0;
       for(i=0;i<data.recordsOperations.length;i++)
       {
@@ -448,6 +524,7 @@ window.addEventListener("load", ()=>{
     if(data.recordsInterments.length>0)
     {
       var tbody_Internamientos = document.querySelector("#tbody_Internamientos");
+      tbody_Internamientos.innerText = ""
       let i = 0;
       for(i=0;i<data.recordsInterments.length;i++)
       {
@@ -476,7 +553,8 @@ window.addEventListener("load", ()=>{
   {
     if(data.recordsEmergencyEntries.length > 0)
     {
-      var tbody_Internamientos = document.querySelector("#tbody_Emergencias");
+      var tbody_Emergencias = document.querySelector("#tbody_Emergencias");
+      tbody_Emergencias.innerText = ""
       let i = 0;
       for(i=0;i<data.recordsEmergencyEntries.length;i++)
       {
@@ -486,18 +564,18 @@ window.addEventListener("load", ()=>{
         var tdFecha = document.createElement("td")
         var tdCentroMedico = document.createElement("td")
         var tdButtonView = document.createElement("td")
-         tdId.innerText = data.recordsEmergencyEntries[i].idrecordEmergencyEntries;
+         tdId.innerText = data.recordsEmergencyEntries[i].idRecordEmergencyEntries;
          tdRazon.innerText = data.recordsEmergencyEntries[i].razon.substring(0,30) + "...";
          tdCentroMedico.innerText = data.recordsEmergencyEntries[i].centroMedico;
          tdFecha.innerText = new Date(data.recordsEmergencyEntries[i].fecha_Entrada).toLocaleDateString();
-         tdButtonView.innerHTML = '<td><button data-rEmergencyEntryId = "'+data.recordsEmergencyEntries[i].idrecordEmergencyEntries+'" data-idCentroMedico = "'+data.recordsInterments[i].idCentroMedico+'" data-centromedico = "'+data.recordsEmergencyEntries[i].centroMedico+'" data-razon = "'+data.recordsEmergencyEntries[i].razon+'" data-fecha = "'+data.recordsEmergencyEntries[i].fecha_Entrada+'" onclick = "mapearModalEmergencias('+data.recordsEmergencyEntries[i].idrecordEmergencyEntries+')" data-bs-toggle="modal" data-bs-target="#ModalEmergencias" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
+         tdButtonView.innerHTML = '<td><button data-rEmergencyEntryId = "'+data.recordsEmergencyEntries[i].idRecordEmergencyEntries+'" data-idCentroMedico = "'+data.recordsEmergencyEntries[i].idCentroMedico+'" data-centromedico = "'+data.recordsEmergencyEntries[i].centroMedico+'" data-razon = "'+data.recordsEmergencyEntries[i].razon+'" data-fecha = "'+data.recordsEmergencyEntries[i].fecha_Entrada+'" onclick = "mapearModalEmergencias('+data.recordsEmergencyEntries[i].idRecordEmergencyEntries+')" data-bs-toggle="modal" data-bs-target="#ModalEmergencias" class = "btn btn-secondary"> <i class ="fas fa-eye"></i> </button></td>'
          tr.append(tdId);
          tr.append(tdRazon);
          tr.append(tdCentroMedico);
          tr.append(tdFecha);
          tr.append(tdButtonView);
          console.log(tr)
-         tbody_Internamientos.append(tr)
+         tbody_Emergencias.append(tr)
         }
     }
   }
@@ -554,8 +632,9 @@ function mapearModalConsulta(idRecordConsulta)
   console.log(btnDataConsulta[0].dataset.indicaciones)
   txtEspecialidad.value = btnDataConsulta[0].dataset.especialidadmedica
   txtNoIdentificacion.value = btnDataConsulta[0].dataset.doctornoidentificacion
-  txtObservaciones.innerText = btnDataConsulta[0].dataset.observaciones
-  txtIndicaciones.innerText = btnDataConsulta[0].dataset.indicaciones
+  txtObservaciones.value = btnDataConsulta[0].dataset.observaciones
+  txtIndicaciones.value = btnDataConsulta[0].dataset.indicaciones
+  selectDoctor.selectedIndex = 1
   desactivarControles(selectDoctor, txtNoIdentificacion, txtEspecialidad, txtObservaciones, txtIndicaciones, btnGuardar)
 }
 function mapearModalAnalisis(idRecordAnalisis)
@@ -598,12 +677,12 @@ function mapearModalInternamientos(idRecordInternamiento)
 }
 function mapearModalEmergencias(idRecordEmergencia)
 {
-  var btnDataEmergencias = document.querySelectorAll("[data-rEmergencyEntryId='"+idRecordEmergencia+"']")
+  var btnDataEmergencias = document.querySelectorAll("[data-remergencyentryid='"+idRecordEmergencia+"']")
   var selectCentroMedico = document.querySelector("#Emergencias_dpCentroMedico")
   var txtFecha = document.querySelector("#Emergencias_txtFecha")
-  var txtRazon = document.querySelector("#Emeregencias_txtRazon")
+  var txtRazon = document.querySelector("#Emergencias_txtRazon")
   var btnGuardar = document.querySelector("#Emergencias_btnGuardar")
-  txtRazon.innerText = btnDataEmergencias[0].dataset.razon
+  txtRazon.value = btnDataEmergencias[0].dataset.razon
   txtFecha.value = new Date(btnDataEmergencias[0].dataset.fecha).toLocaleDateString()
   desactivarControles(selectCentroMedico, txtFecha, txtRazon, btnGuardar)
 }
@@ -632,6 +711,5 @@ function limpiarControles(...controles)
   for(indice in controles)
   {
     controles[indice].value = null
-    controles[indice].innerText = ""
   }
 }

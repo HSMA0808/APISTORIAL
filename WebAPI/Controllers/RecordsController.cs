@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                 }
-                else if (StaticsOperations.validateIdentification(Identification, "C"))
+                else if (!StaticsOperations.validateIdentification(Identification, "C"))
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Numero de identificacion invalido" });
                 }
@@ -379,8 +379,8 @@ namespace WebAPI.Controllers
             return response;
         }
 
-        [HttpPost(Name = "SetRecordVist")]
-        public IActionResult SetRecordVist(Request_RecordVisit request)
+        [HttpPost(Name = "SetRecordVisit")]
+        public IActionResult SetRecordVisit(Request_RecordVisit request)
         {
             IActionResult response = BadRequest();
             var visitDate = new DateTime();
@@ -395,7 +395,7 @@ namespace WebAPI.Controllers
             {
                 response = BadRequest(new { ResponseCode = "99", Message = "El parametro VisitDate tiene el formato incorrecto" });
             }
-            else if (StaticsOperations.validateIdentification(request.Doctor_Identification, "C"))
+            else if (!StaticsOperations.validateIdentification(request.Doctor_Identification, "C"))
             {
                 response = BadRequest(new { ResponseCode = "99", Message = "Numero de identificacion invalido" });
             }
@@ -458,7 +458,7 @@ namespace WebAPI.Controllers
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "El parametro OperationDate tiene el formato incorrecto" });
                 }
-                else if (StaticsOperations.validateIdentification(request.Doctor_Identification, "C"))
+                else if (!StaticsOperations.validateIdentification(request.Doctor_Identification, "C"))
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Numero de identificacion invalido" });
                 }
@@ -510,7 +510,7 @@ namespace WebAPI.Controllers
             var analysisDate = new DateTime();
             try
             {
-                if (request.idRecord == 0 || request.AnalysisCode.Trim() == string.Empty || request.ResultsObservations.Trim() == string.Empty || request.ResultCode.Trim() == string.Empty)
+                if (request.idRecord == 0 || request.AnalysisCode.Trim() == string.Empty || (request.ResultsObservations.Trim() == string.Empty && request.ResultCode.Trim() == string.Empty))
                 {
                     response = BadRequest(new { ResponseCode = 99, Message = "Les siguientes parametros no pueden ser enviados nulos: IDRecord, AnalysisCode, ResultsObservations, ResultCode" });
                 }
