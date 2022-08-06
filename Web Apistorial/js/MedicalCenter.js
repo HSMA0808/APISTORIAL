@@ -1,5 +1,5 @@
 window.addEventListener("load", ()=>{
-
+  var urlAPI = document.querySelector("#APIURL")
   var btnBuscar = document.querySelector("#btnBuscar");
   btnBuscar.addEventListener("click", () => {
     var txtRnc = document.querySelector("#txtRncCentroMedico")
@@ -9,7 +9,7 @@ window.addEventListener("load", ()=>{
       alert("Los campos 'Rnc' y 'Token' son requeridos");
     }
     else {
-        fetch("https://localhost:44320/MedicalCenter/GetMedicalCenterStatus?RNC="+txtRnc.value+"&MedicalCenterToken=" + txtToken.value,{
+        fetch(urlAPI.value + "MedicalCenter/GetMedicalCenterStatus?RNC="+txtRnc.value+"&MedicalCenterToken=" + txtToken.value,{
           method: 'GET',
           mode: 'cors',
         })

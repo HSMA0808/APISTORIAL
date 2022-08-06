@@ -1,7 +1,7 @@
 window.addEventListener("load", ()=>{
 
 })
-
+var urlAPI = document.querySelector("#APIURL")
 var btnBuscar = document.querySelector("#btnBuscar");
 btnBuscar.addEventListener("click", () => {
   var select_Estatus = document.querySelector("#select_Estatus")
@@ -10,7 +10,7 @@ btnBuscar.addEventListener("click", () => {
     alert("El valor asignado al dropdown es incorrecto: " + select_Estatus.value);
   }
   else {
-      fetch("https://localhost:44320/MedicalCenter/GetmMedicalCenterList?ApistorialKey=TestKey&Estatus=" + select_Estatus.value,{
+      fetch(urlAPI.value + "MedicalCenter/GetmMedicalCenterList?ApistorialKey=TestKey&Estatus=" + select_Estatus.value,{
         method: 'GET',
         mode: 'cors',
       })

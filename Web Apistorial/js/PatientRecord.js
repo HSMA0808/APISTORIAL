@@ -1,3 +1,4 @@
+var urlAPI = document.querySelector("#APIURL")
 window.addEventListener("load", ()=>{
   var  urlbase = window.location.origin
   console.log(urlbase)
@@ -102,7 +103,7 @@ window.addEventListener("load", ()=>{
         fecha = new Date().toLocaleDateString()
         var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: "ASDJKHAUIOF", doctor_Identification: txtNoIdentificacion.value, specialtyCode: select_Doctor.options[select_Doctor.selectedIndex].dataset.codigoespecialidad, observations: txtObservaciones.value, indications: txtIndicaciones.value,  visitDate: fecha}
         console.log(datos)
-        fetch("https://localhost:44320/Records/SetRecordVisit", {
+        fetch(urlAPI.value + "Records/SetRecordVisit", {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -145,7 +146,7 @@ window.addEventListener("load", ()=>{
       else {
         var fecha = new Date().toLocaleDateString()
         var datos = { idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:"ASDJKHAUIOF", analysisCode: select_Analisis.value, publicResults: false, resultCode: select_Resultados.value, resultsObservations: txtObservaciones.value, analysisDate: fecha}
-        fetch("https://localhost:44320/Records/SetRecordAnalysis", {
+        fetch(urlAPI.value + "Records/SetRecordAnalysis", {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -186,7 +187,7 @@ window.addEventListener("load", ()=>{
       }
       else {
           var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token: "MFHTWHAUIOF", doctor_Identification: txtNoIdentificacion.value, operationCode: select_Operacion.value, operationDate: txtFecha.value}
-          fetch("https://localhost:44320/Records/SetRecordOperation", {
+          fetch(urlAPI.value + "Records/SetRecordOperation", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -226,7 +227,7 @@ window.addEventListener("load", ()=>{
       }
       else {
           var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:"MFHTWHAUIOF", reasonInterment: txtRazon.value, intermentDate: txtFecha.value}
-          fetch("https://localhost:44320/Records/SetRecordInterment", {
+          fetch(urlAPI.value + "Records/SetRecordInterment", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -265,7 +266,7 @@ window.addEventListener("load", ()=>{
       }
       else {
           var datos = {idRecord: localStorage.getItem("IDRecord"), medicalCenter_Token:"ASDJKHAUIOF", reasonInterment: txtRazon.value, entryDate: txtFecha.value}
-          fetch("https://localhost:44320/Records/SetRecordEmergencyEntry", {
+          fetch(urlAPI.value + "Records/SetRecordEmergencyEntry", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -354,7 +355,7 @@ window.addEventListener("load", ()=>{
 //Metodos para consumir API y consultar records
   function getRecordConsulta()
   {
-    fetch("https://localhost:44320/Records/GetRecordVisit?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
+    fetch(urlAPI.value + "Records/GetRecordVisit?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
       method: 'GET',
       mode: 'cors',
     })
@@ -366,7 +367,7 @@ window.addEventListener("load", ()=>{
   }
   function getRecordAnalisis()
   {
-    fetch("https://localhost:44320/Records/GetRecordAnalysis?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
+    fetch(urlAPI.value + "Records/GetRecordAnalysis?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
       method: 'GET',
       mode: 'cors',
     })
@@ -378,7 +379,7 @@ window.addEventListener("load", ()=>{
   }
   function getRecordOperacion()
   {
-    fetch("https://localhost:44320/Records/GetRecordOperation?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
+    fetch(urlAPI.value + "Records/GetRecordOperation?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
       method: 'GET',
       mode: 'cors',
     })
@@ -390,7 +391,7 @@ window.addEventListener("load", ()=>{
   }
   function getRecordInternamientos()
   {
-    fetch("https://localhost:44320/Records/GetRecordInterment?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
+    fetch(urlAPI.value + "Records/GetRecordInterment?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
       method: 'GET',
       mode: 'cors',
     })
@@ -402,7 +403,7 @@ window.addEventListener("load", ()=>{
   }
   function getRecordEmergencias()
   {
-    fetch("https://localhost:44320/Records/GetRecordEmergencyEntry?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
+    fetch(urlAPI.value + "Records/GetRecordEmergencyEntry?MedicalCenterToken=MFHTWHAUIOF&idRecord=" + localStorage.getItem("IDRecord"),{
       method: 'GET',
       mode: 'cors',
     })
@@ -605,7 +606,7 @@ window.addEventListener("load", ()=>{
 
   function getRecordPaciente()
   {
-    fetch("https://localhost:44320/Records/GetRecord?MedicalCenterToken=MFHTWHAUIOF&Identification=" + localStorage.getItem("NoIdentificacion"),{
+    fetch(urlAPI.value + "Records/GetRecord?MedicalCenterToken=MFHTWHAUIOF&Identification=" + localStorage.getItem("NoIdentificacion"),{
       method: 'GET',
       mode: 'cors',
     })

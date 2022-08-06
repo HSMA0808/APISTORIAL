@@ -1,3 +1,4 @@
+  var urlAPI = document.querySelector("#APIURL")
 localStorage.setItem("userId", "Admin")
 localStorage.setItem("Password", "Admin2012.")
 var btnLogIn = document.querySelector("#btnLogIn")
@@ -17,7 +18,7 @@ btnLogIn.addEventListener("click", ()=>{
       alert("Credenciales Incorrectas. Intentelo de nuevo.")
     }
     else {
-      window.location = window.location.origin + window.location.pathname + "index.html"
+      window.location = window.location.origin + "/index.html"
     }
   }
 })

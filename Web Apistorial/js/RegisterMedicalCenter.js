@@ -1,4 +1,4 @@
-
+var urlAPI = document.querySelector("#APIURL")
 var txtNombre = document.querySelector("#txtNombreCM")
 var txtRNC = document.querySelector("#txtRNC")
 var txtTelefono1 = document.querySelector("#txtTelefonoCM1")
@@ -17,7 +17,7 @@ btnGuardar.addEventListener("click", ()=>{
     }
     else {
       var datos = {descripcion: txtNombre.value, rnc: txtRNC.value, tel1: txtTelefono1.value, tel2: txtTelefono2.value, email1: txtEmail1.value, email2: txtEmail2.value, nombreContacto: txtNombreContactoCM.value, referencia: "ApistorialWeb"}
-      fetch("https://localhost:44320/MedicalCenter/Register", {
+      fetch(urlAPI.value + "MedicalCenter/Register", {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

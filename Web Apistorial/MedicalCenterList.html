@@ -13,18 +13,21 @@
     <!--<link rel="stylesheet" type="text/css" href="css/index.css">-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="css/styles.css" rel="stylesheet" />
-    <title>Registro</title>
+    <title>Centros Medicos</title>
 </head>
 <body class ="">
+  <input hidden id="APIURL"type="text" name="" value="http://www.apsitorial.somee.com/">
   <!-- Navigation-->
   <nav class="navbar navbar-light bg-light static-top">
       <div class="container">
-          <a class="navbar-brand" href="index.html">APISTORIAL</a>
-          <a class = "navbar-brand" href="MedicalCenterList.html">Centros Medicos</a>
-          <a class = "navbar-brand" href="MedicalCenter.html">Validacion de Estatus</a>
+          <ul  class="nav">
+            <li class="nav-item"><a class="navbar-brand" href="index.html">APISTORIAL</a></li>
+            <li class="nav-item"><a class = "nav-link text-black" href="MedicalCenterList.html">Centros Medicos</a></li>
+            <li class="nav-item"><a class = "nav-link text-black" href="Patients.html">Pacientes</a></li>
+            <li class="nav-item"><a class = "nav-link text-black" href="MedicalCenter.html">Validacion de Estatus</a></li>
+          </ul>
           <a class="btn btn-primary" href="RegisterMedicalCenter.html">Registrate</a>
       </div>
-  </nav>
   </nav>
   <br>
   <br>
@@ -56,7 +59,7 @@
       </div>
     </div>
   </div>
-  <div id = "div_DataView" hidden class="row mt-5">
+  <div id = "div_DataView" hidden class="row mt-5 table-responsive">
     <br>
     <br>
     <table id = "table_CentrosMedicos" class = "table table-hover table-striped">

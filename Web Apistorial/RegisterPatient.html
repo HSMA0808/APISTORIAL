@@ -16,7 +16,7 @@
     <title>Registro</title>
 </head>
 <body class ="">
-  <input hidden id="APIURL"type="text" name="" value="http://www.apsitorial.somee.com/">
+  <input hidden id="APIURL"type="text" name="" value="https://localhost:44320/">
   <!-- Navigation-->
   <nav class="navbar navbar-light bg-light static-top">
       <div class="container">
@@ -33,56 +33,107 @@
   <br>
 <div class="container">
   <div class="" align = "center">
-    <h1>Formulario de Registro</h1>
+    <h1>Registrar Paciente</h1>
     <br>
-    <h5>Aumente su eficiencia registrando su centro medico con nosotros.</h5>
+    <h5>Complete los siguientes campos para registrar a un nuevo paciente.</h5>
   </div>
   <div class="row">
     <div class="offset-md-3 col-md-6 p-5">
       <form class="form" action="#" method="post">
-        <div class="form-group">
-            <label class = "label sr-only" for="txtNombreCM">Nombre del Centro Medico</label>
-            <input type="text" class="form-control" id="txtNombreCM" placeholder="Nombre del Centro Medico" value="">
+        <div class="row">
+          <div class="form-group col-md-6 mb-2">
+              <label class = "label sr-only" for="txtPrimerNombre">Primer Nombre</label>
+              <input type="text" class="form-control" id="txtPrimerNombre" placeholder="Primer Nombre" value="">
+          </div>
+          <div class="form-group col-md-6 mb-2">
+              <label class = "label sr-only" for="txtSegundoNombre">Segundo Nombre</label>
+              <input type="text" class="form-control" id="txtSegundoNombre" placeholder="Segundo Nombre" value="">
+          </div>
         </div>
         <br>
-        <div class="form-group">
-            <label class = "label sr-only" for="txtNombreCM">RNC</label>
-            <input type="text" class="form-control" id="txtRNC" placeholder="RNC" value="">
+        <div class="row">
+          <div class="form-group col-md-12">
+              <label class = "label sr-only" for="dpTipoIdentificacion">Apellidos</label>
+              <input id = "txtApellido" class = "form-control" type="text" name="" value="" placeholder="Apellidos">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="form-group col-md-12">
+              <label class = "label sr-only" for="dpSexo">Sexo</label>
+              <select id = "dpSexo" class="select form-control" name="">
+                <option value="0">-- Sexo --</option>
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="O">Otro</option>
+              </select>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="form-group col-md-12">
+              <label class = "label sr-only" for="dpTipoIdentificacion">Tipo Identificacion</label>
+              <select id = "dpTipoIdentificacion" class="select form-control" name="">
+                <option value="0">-- Tipo Identificacion --</option>
+                <option value="C">Cedula</option>
+                <option value="P">Pasaporte</option>
+              </select>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="form-group col-md-12">
+              <label class = "label sr-only" for="txtNumeroIdentificacion">Numero Identificacion</label>
+              <input type="text" class="form-control" id="txtNumeroIdentificacion" placeholder="Numero de Identificacion" value="">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="form-group col-md-12">
+              <label class = "label sr-only" for="dpTipoSangre">Tipo de Sangre</label>
+              <select id = "dpTipoSangre" class="select form-control" name="">
+                <option value="0">-- Tipo de Sangre --</option>
+                <option value="B+">B+</option>
+                <option value="A+">A+</option>
+                <option value="B-">B-</option>
+                <option value="A-">A-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+          </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-6 mb-2">
               <div class="form-group">
-                  <label class = "label sr-only" for="txtTelefonoCM1">Telefono 1</label>
-                  <input type="text" class="form-control" id="txtTelefonoCM1" placeholder="Telefono 1" value="">
+                  <label class = "label sr-only" for="txtTelefono1">Telefono 1</label>
+                  <input type="text" class="form-control" id="txtTelefono1" placeholder="Telefono 1" value="">
               </div>
             </div>
             <div class="col-md-6 mb-2">
               <div class="form-group">
-                  <label class = "label sr-only" for="txtTelefonoCM2">Telefono 2</label>
-                  <input type="text" class="form-control" id="txtTelefonoCM2" placeholder="Telefono 2" value="">
+                  <label class = "label sr-only" for="txtTelefono2">Telefono 2</label>
+                  <input type="text" class="form-control" id="txtTelefono2" placeholder="Telefono 2" value="">
               </div>
             </div>
         </div>
         <br>
         <div class="row">
-            <div class="col-md-6 mb-2">
+            <div class="col-md-12 mb-2">
               <div class="form-group">
-                  <label class = "label sr-only" for="txtEmailCM1">Email 1</label>
-                  <input type="email" class="form-control" id="txtEmailCM1" placeholder="Email 1" value="">
-              </div>
-            </div>
-            <div class="col-md-6 mb-2">
-              <div class="form-group">
-                  <label class = "label sr-only" for="txtEmailCM2">Email 2</label>
-                  <input type="email" class="form-control" id="txtEmailCM2" placeholder="Email 2" value="">
+                  <label class = "label sr-only" for="txtEmail">Email</label>
+                  <input type="email" class="form-control" id="txtEmail" placeholder="Email" value="">
               </div>
             </div>
         </div>
         <br>
-        <div class="form-group">
-            <label class = "label sr-only" for="txtNombreContactoCM">Nombre del Contacto</label>
-            <input type="text" class="form-control" id="txtNombreContactoCM" placeholder="Nombre del Contacto" value="">
+        <div class="row">
+          <div class="col-md-6 mb-2">
+              <textarea id = "txtDireccion1"class = "form-control"name="name" rows="4" placeholder="Direccion 1"></textarea>
+          </div>
+          <div class="col-md-6 mb-2">
+              <textarea id = "txtDireccion2"class = "form-control"name="name" rows="4" placeholder="Direccion 2"></textarea>
+          </div>
         </div>
         <br>
         <div class="d-grid gap-2 mb-2">
@@ -126,6 +177,6 @@
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-<script type="text/javascript" src="js/RegisterMedicalCenter.js"></script>
+<script type="text/javascript" src="js/RegisterPatient.js"></script>
 <!--<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>-->
 </html>

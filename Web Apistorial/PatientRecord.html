@@ -16,12 +16,16 @@
     <title>Record del Paciente</title>
 </head>
 <body class ="bg-dark">
+  <input hidden id="APIURL"type="text" name="" value="http://www.apsitorial.somee.com/">
   <!-- Navigation-->
   <nav class="navbar navbar-light bg-light static-top">
       <div class="container">
-          <a class="navbar-brand" href="index.html">APISTORIAL</a>
-          <a class = "navbar-brand" href="MedicalCenterList.html">Centros Medicos</a>
-          <a class = "navbar-brand" href="MedicalCenter.html">Validacion de Estatus</a>
+          <ul  class="nav">
+            <li class="nav-item"><a class="navbar-brand" href="index.html">APISTORIAL</a></li>
+            <li class="nav-item"><a class = "nav-link text-black" href="MedicalCenterList.html">Centros Medicos</a></li>
+            <li class="nav-item"><a class = "nav-link text-black" href="Patients.html">Pacientes</a></li>
+            <li class="nav-item"><a class = "nav-link text-black" href="MedicalCenter.html">Validacion de Estatus</a></li>
+          </ul>
           <a class="btn btn-primary" href="RegisterMedicalCenter.html">Registrate</a>
       </div>
   </nav>
@@ -125,29 +129,29 @@
                     <h5 class="modal-title" id="exampleModalLabel">Nueva Consulta</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="modal-body">
+                  <div class="modal-body table-responsive">
                     <div class="row mb-5">
-                      <div class="col-md-6 form-group">
+                      <div class="col-sm-12 col-md-6 form-group">
                         <label class = "sr-only" for="Consultas_dpDoctor">Doctor</label>
                         <select id="Consultas_dpDoctor"class="select form-control" name="">
                           <option data-especialidad = "" value="">--Doctor--</option>
                           <option data-especialidad="PSICOLOGIA" data-codigoespecialidad="09" value="6546678438">MILDRED ANTONIA ESPINAL</option>
                         </select>
                       </div>
-                      <div class="col-md-3 form-group">
+                      <div class="col-sm-12 col-md-3 form-group">
                         <label class = "sr-only" for="Consultas_txtNoIdentificacion">No. Identificacion</label>
                         <input readonly id = "Consultas_txtNoIdentificacion" class = "form-control" type="text" name="NoIdentificacion" value="" placeholder="No. Identificacion">
                       </div>
-                      <div class="col-md-3 form-group">
+                      <div class="col-sm-12 col-md-3 form-group">
                         <label class = "sr-only" for="Consultas_txtEspecialidad">Especialidad</label>
                         <input readonly id = "Consultas_txtEspecialidad" class = "form-control" type="text" name="Especialidad" value="" placeholder="Especialidad">
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6 form-group">
+                      <div class="col-sm-12 col-md-6 form-group">
                         <textarea id="Consultas_txtObservaciones" class = "form-control" name="name" rows="8" placeholder="Observaciones"></textarea>
                       </div>
-                      <div class="col-md-6 form-group">
+                      <div class="col-sm-12 col-md-6 form-group">
                         <textarea id="Consultas_txtIndicaciones" class = "form-control" name="name" rows="8" placeholder="Indicaciones"></textarea>
                       </div>
                     </div>
@@ -387,7 +391,7 @@
                   </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                  <div class="tab-pane fade show active" id="nav-consulta" role="tabpanel" aria-labelledby="consulta-tab">
+                  <div class="tab-pane fade show active table-responsive" id="nav-consulta" role="tabpanel" aria-labelledby="consulta-tab">
                     <table  id="tabla_Consultas"class="mb-15 table table-hover">
                         <thead class="bg-dark text-white">
                             <tr>
@@ -407,7 +411,7 @@
                         <button id = "btnNuevaConsulta"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalConsulta"><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="nav-analisis" role="tabpanel" aria-labelledby="analisis-tab">
+                  <div class="tab-pane fade table-responsive" id="nav-analisis" role="tabpanel" aria-labelledby="analisis-tab">
                     <table id = "tabla_Analisis" class="mb-15 table table-hover">
                         <thead class="bg-dark text-white">
                             <tr>
@@ -426,7 +430,7 @@
                         <button id = "btnNuevoAnalisis"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalAnalisis" ><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="nav-operaciones" role="tabpanel" aria-labelledby="operaciones-tab">
+                  <div class="tab-pane fade table-responsive" id="nav-operaciones" role="tabpanel" aria-labelledby="operaciones-tab">
                     <table id = "tabla_Operaciones" class="mb-15 table table-hover">
                         <thead class="bg-dark text-white">
                             <tr>
@@ -444,7 +448,7 @@
                         <button id = "btnNuevaOperacion"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalOperacion" ><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="nav-internamientos" role="tabpanel" aria-labelledby="internamientos-tab">
+                  <div class="tab-pane fade table-responsive" id="nav-internamientos" role="tabpanel" aria-labelledby="internamientos-tab">
                     <table id = "tabla_Internamientos" class="mb-15 table table-hover">
                         <thead class="bg-dark text-white">
                             <tr>
@@ -462,7 +466,7 @@
                         <button id = "btnNuevoInternamiento"class = "btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalInternamiento" ><i class="fas fa-add"> </i> Agregar</button>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="nav-emergencia" role="tabpanel" aria-labelledby="emergencia-tab">
+                  <div class="tab-pane fade table-responsive" id="nav-emergencia" role="tabpanel" aria-labelledby="emergencia-tab">
                     <table id="tabla_Emergencias" class="mb-15 table table-hover">
                         <thead class="bg-dark text-white">
                             <tr>

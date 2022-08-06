@@ -13,7 +13,7 @@
     <!--<link rel="stylesheet" type="text/css" href="css/index.css">-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="css/styles.css" rel="stylesheet" />
-    <title>Centros Medicos</title>
+    <title>Pacientes</title>
 </head>
 <body class ="">
   <input hidden id="APIURL"type="text" name="" value="http://www.apsitorial.somee.com/">
@@ -35,51 +35,29 @@
   <div class="row">
     <div class="col-md-12">
       <div align = "center" class="mb-5">
-        <h3>Consulte el estatus de registro de tu centro medico</h3>
-        <p>Complete los siguientes campos para realizar la consulta</p>
+        <h2>Pacientes Registrados</h2>
+        <p>Listado de los pacientes registrados en nuestra plataforma</p>
       </div>
     </div>
   </div>
-  <div class="row mb-2">
-    <div class="offset-md-3 col-md-6">
-      <div class="form-group">
-        <label for="txtRncCentroMedico" class = "sr-only">RNC del centro medico</label>
-        <input required id = "txtRncCentroMedico" class = "form-control" type="text" name="" value="" placeholder="RNC">
-      </div>
-    </div>
-  </div>
-  <div class="row mb-5">
-    <div class="offset-md-3 col-md-6">
-      <div class="form-group">
-        <label for="txtTokenCentroMedico" class = "sr-only">Token de registro</label>
-        <input required id = "txtTokenCentroMedico" class = "form-control" type="text" name="" value="" placeholder="Token de registro">
-      </div>
-    </div>
-  </div>
-  <div class="row mb-2">
-    <div class="offset-md-3 col-md-6">
-      <div class="d-grid gap-2">
-        <button id = "btnBuscar" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Buscar</button>
-      </div>
-    </div>
-  </div>
-  <br>
-  <br>
   <div id = "div_DataView" hidden class="row mt-5 table-responsive">
     <br>
     <br>
-    <table id = "table_CentrosMedicos" class = "table table-hover table-striped">
+    <div align = "right" class="">
+      <button id = "btnNuevoPaciente"  class = "btn btn-success" type="button" name="button"> <i class="fas fa-plus"></i> Nuevo Paciente</button>
+    </div>
+    <table id = "table_Pacientes" class = "table table-hover table-striped">
       <thead>
         <tr>
-          <th>RNC</th>
-          <th>Centro Medico</th>
-          <th>Nombre Contacto</th>
+          <th>Nombre</th>
+          <th>Tipo Identificacion</th>
+          <th>Numero Identificacion</th>
+          <th>Tipo de Sangre</th>
           <th>Telefono</th>
           <th>Email</th>
-          <th>Estatus</th>
         </tr>
       </thead>
-      <tbody id = "tbody_CentrosMedicos">
+      <tbody id = "tbody_Pacientes">
       </tbody>
     </table>
   </div>
@@ -118,6 +96,6 @@
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-<script type="text/javascript" src="js/MedicalCenter.js"></script>
+<script type="text/javascript" src="js/Patients.js"></script>
 <!--<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>-->
 </html>
