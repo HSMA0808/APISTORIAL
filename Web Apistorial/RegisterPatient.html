@@ -16,7 +16,7 @@
     <title>Registro</title>
 </head>
 <body class ="">
-  <input hidden id="APIURL"type="text" name="" value="https://localhost:44320/">
+  <input hidden id="APIURL"type="text" name="" value="http://www.apsitorial.somee.com/">
   <!-- Navigation-->
   <nav class="navbar navbar-light bg-light static-top">
       <div class="container">
@@ -43,18 +43,18 @@
         <div class="row">
           <div class="form-group col-md-6 mb-2">
               <label class = "label sr-only" for="txtPrimerNombre">Primer Nombre</label>
-              <input type="text" class="form-control" id="txtPrimerNombre" placeholder="Primer Nombre" value="">
+              <input type="text" class="form-control" id="txtPrimerNombre" maxlength="75" placeholder="Primer Nombre" value="">
           </div>
           <div class="form-group col-md-6 mb-2">
               <label class = "label sr-only" for="txtSegundoNombre">Segundo Nombre</label>
-              <input type="text" class="form-control" id="txtSegundoNombre" placeholder="Segundo Nombre" value="">
+              <input type="text" class="form-control" id="txtSegundoNombre" maxlength="75" placeholder="Segundo Nombre" value="">
           </div>
         </div>
         <br>
         <div class="row">
           <div class="form-group col-md-12">
               <label class = "label sr-only" for="dpTipoIdentificacion">Apellidos</label>
-              <input id = "txtApellido" class = "form-control" type="text" name="" value="" placeholder="Apellidos">
+              <input id = "txtApellido" class = "form-control" type="text" maxlength="75" name="" value="" placeholder="Apellidos">
           </div>
         </div>
         <br>
@@ -84,7 +84,7 @@
         <div class="row">
           <div class="form-group col-md-12">
               <label class = "label sr-only" for="txtNumeroIdentificacion">Numero Identificacion</label>
-              <input type="text" class="form-control" id="txtNumeroIdentificacion" placeholder="Numero de Identificacion" value="">
+              <input type="text" class="form-control" id="txtNumeroIdentificacion" minlength="13" maxlength="20" placeholder="Numero de Identificacion" value="">
           </div>
         </div>
         <br>
@@ -107,13 +107,13 @@
             <div class="col-md-6 mb-2">
               <div class="form-group">
                   <label class = "label sr-only" for="txtTelefono1">Telefono 1</label>
-                  <input type="text" class="form-control" id="txtTelefono1" placeholder="Telefono 1" value="">
+                  <input type="text" class="form-control" id="txtTelefono1" maxlength="10" placeholder="Telefono 1" value="">
               </div>
             </div>
             <div class="col-md-6 mb-2">
               <div class="form-group">
                   <label class = "label sr-only" for="txtTelefono2">Telefono 2</label>
-                  <input type="text" class="form-control" id="txtTelefono2" placeholder="Telefono 2" value="">
+                  <input type="text" class="form-control" id="txtTelefono2" maxlength="10" placeholder="Telefono 2" value="">
               </div>
             </div>
         </div>
@@ -122,17 +122,17 @@
             <div class="col-md-12 mb-2">
               <div class="form-group">
                   <label class = "label sr-only" for="txtEmail">Email</label>
-                  <input type="email" class="form-control" id="txtEmail" placeholder="Email" value="">
+                  <input type="email" class="form-control" id="txtEmail" maxlength="200" placeholder="Email" value="">
               </div>
             </div>
         </div>
         <br>
         <div class="row">
           <div class="col-md-6 mb-2">
-              <textarea id = "txtDireccion1"class = "form-control"name="name" rows="4" placeholder="Direccion 1"></textarea>
+              <textarea id = "txtDireccion1"class = "form-control"name="name" rows="4" maxlength="500" placeholder="Direccion 1"></textarea>
           </div>
           <div class="col-md-6 mb-2">
-              <textarea id = "txtDireccion2"class = "form-control"name="name" rows="4" placeholder="Direccion 2"></textarea>
+              <textarea id = "txtDireccion2"class = "form-control"name="name" rows="4" maxlength="500" placeholder="Direccion 2"></textarea>
           </div>
         </div>
         <br>

@@ -593,7 +593,7 @@ window.addEventListener("load", ()=>{
     var txtEmail = document.querySelector("#txtEmail");
     var txtDireccion = document.querySelector("#txtDireccion");
     var txtDireccion2 = document.querySelector("#txtDireccion2");
-    txtNombre.value = data.nombre
+    txtNombre.value = data.nombre + " " + data.segundoNombre
     txtApellido.value = data.apellido
     //dpTipoIdentificacion.value = ""
     txtNoIdentificacion.value = data.identificacion
@@ -606,12 +606,13 @@ window.addEventListener("load", ()=>{
 
   function getRecordPaciente()
   {
-    fetch(urlAPI.value + "Records/GetRecord?MedicalCenterToken=MFHTWHAUIOF&Identification=" + localStorage.getItem("NoIdentificacion"),{
+    fetch(urlAPI.value + "Records/GetRecord?MedicalCenterToken=MFHTWHAUIOF&Identification=" + localStorage.getItem("NoIdentificacion")+"&codigoTipoIdentificacion="+localStorage.getItem("TipoIdentificacion"),{
       method: 'GET',
       mode: 'cors',
     })
     .then(response => response.json())
     .then(data=>{
+      console.log(data)
     mapearDataPaciente(data.paciente)
     })
   }

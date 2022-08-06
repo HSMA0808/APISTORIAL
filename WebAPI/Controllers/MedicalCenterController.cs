@@ -29,6 +29,10 @@ namespace WebAPI.Controllers
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Numeracion RNC invalida" });
                 }
+                else if (StaticsOperations.validateEmail(request.Email1) == false || StaticsOperations.validateEmail(request.Email2, true) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "Uno de los correos electronicos es invalido, favor de validar: Email 1: " + request.Email1 + " | 2: " + request.Email2 });
+                }
                 else
                 {
                     var db = new APISTORIAL_v1Context(new DbContextOptions<APISTORIAL_v1Context>());

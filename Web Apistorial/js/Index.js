@@ -17,9 +17,15 @@ window.addEventListener("load", ()=>{
         alert("El campo de texto No. Identificacion es requerido")
         spinner.classList.add("d-none")
       }
+      else if (dpIdentificationType.value == 0)
+      {
+        alert("Seleccione un tipo de identificacion");
+        spinner.classList.add("d-none")
+      }
       else {
         try {
-          fetch(urlAPI.value + "Records/GetRecord?MedicalCenterToken=MFHTWHAUIOF&identification=" + inputCedula.value,
+          console.log(dpIdentificationType.value)
+          fetch(urlAPI.value + "Records/GetRecord?MedicalCenterToken=MFHTWHAUIOF&identification=" + inputCedula.value+"&codigoTipoIdentificacion=" + dpIdentificationType.value,
           {
               method: 'GET',
               mode: 'cors', // <---
@@ -29,6 +35,7 @@ window.addEventListener("load", ()=>{
               if(response.responseCode != "00" && response.message == "Se intento consultar la nueva cedula en el padron electoral pero no hubo conexion.")
               {
                 alert("El paciente no fue encontrado")
+                spinner.classList.add("d-none")
                 window.location = window.location.origin + "/RegisterPatient.html"
               }
               else if(response.responseCode != "00")
@@ -39,6 +46,7 @@ window.addEventListener("load", ()=>{
               else {
                 localStorage.setItem("IDRecord", response.record.idRecord)
                 localStorage.setItem("NoIdentificacion", response.paciente.identificacion)
+                localStorage.setItem("TipoIdentificacion", dpIdentificationType.value)
                 spinner.classList.add("d-none")
                 window.location = window.location.origin + "/PatientRecord.html"
               }

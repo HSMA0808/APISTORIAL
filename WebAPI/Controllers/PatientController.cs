@@ -21,13 +21,21 @@ namespace WebAPI.Controllers
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Los siguientes parametros no pueden ser enviados nulos o en 0: Nombre, Apellido, No. Identificacion, Tipo Identificacion, Telefono 1, Email 1, Direccion 1" });
                 }
-                else if (!StaticsOperations.validateIdentification(request.NumeroIdentificacion, "C"))
-                {
-                    response = BadRequest(new { ResponseCode = "99", Message = "El numero de identificacion suministrado es invalido" });
-                }
-                else if (request.Codigo_TipoIdentificacion != "C" && request.Codigo_TipoIdentificacion != "P")
+                else if (request.Codigo_TipoIdentificacion.ToUpper() != "C" && request.Codigo_TipoIdentificacion.ToUpper() != "P")
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "El tipo de identificacion suministrado es invalido" });
+                }
+                else if (!StaticsOperations.validateIdentification(request.NumeroIdentificacion, request.Codigo_TipoIdentificacion))
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "La identificacion suministrada es invalida: " + request.NumeroIdentificacion });
+                }
+                else if (StaticsOperations.validateEmail(request.Email) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "El correo electronico es invalido, favor de validar: Email : " + request.Email });
+                }
+                else if (StaticsOperations.validateTel(request.Telefono1) == false || StaticsOperations.validateTel(request.Telefono2, true) == false)
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "Uno o ambos numeros de telefonos son inalidos, Telefono 1: " + request.Telefono1 + " | Telefono 2: " + request.Telefono2 });
                 }
                 else
                 {
@@ -43,7 +51,7 @@ namespace WebAPI.Controllers
                     {
                         response = BadRequest(new { ResponseCode = 99, Message = "El cliente ya existe en la base de datos" });
                     }
-                    else if(nvBlood.Count == 0)
+                    else if (nvBlood.Count == 0)
                     {
                         response = BadRequest(new { ResponseCode = 99, Message = "El tipo de sangre suministrado es incorrecto" });
                     }

@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     public class RecordsController : ControllerBase
     {
         [HttpGet(Name = "GetRecord")]
-        public IActionResult GetRecord(string MedicalCenterToken, string Identification = "")
+        public IActionResult GetRecord(string MedicalCenterToken, string Identification = "", string codigoTipoIdentificacion="")
             {
                 IActionResult response;  
                 bool NewRecord = false;
@@ -36,7 +36,12 @@ namespace WebAPI.Controllers
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "El Token suministrado no es valido" });
                 }
-                else if (!StaticsOperations.validateIdentification(Identification, "C"))
+                else if(codigoTipoIdentificacion != "C" && codigoTipoIdentificacion != "P" && codigoTipoIdentificacion != "R")
+                {
+                    response = BadRequest(new { ResponseCode = "99", Message = "Tipo de identificacion invalida" });
+
+                }
+                else if (!StaticsOperations.validateIdentification(Identification, codigoTipoIdentificacion))
                 {
                     response = BadRequest(new { ResponseCode = "99", Message = "Numero de identificacion invalido" });
                 }
@@ -46,8 +51,9 @@ namespace WebAPI.Controllers
                     var Response_rv = new Response_RecordVisit();
                     var oRecordVisits = new List<RecordVisit>();
                     var response_RvList = new List<Response_RecordVisit>();
+                    var nvit = db.Namevalues.Where(nv=>nv.GroupName == "IDENTIFICATIONTYPE_GROUP" && nv.Customstring1 == codigoTipoIdentificacion).First().Idnamevalue;
                     var idPatient = 0;
-                    var patientList = db.Patients.Where(x => x.IdentificationNumber == Identification).ToList();
+                    var patientList = db.Patients.Where(x => x.IdentificationNumber == Identification && x.NvidentificationType == nvit).ToList();
                     if (patientList.Count() <= 0)
                     {
                         NewRecord = true;
@@ -79,6 +85,7 @@ namespace WebAPI.Controllers
                             Paciente = new
                             {
                                 Nombre = patientList[0].FirstName,
+                                SegundoNombre = patientList[0].MiddleName,
                                 Apellido = patientList[0].LastName,
                                 Identificacion = patientList[0].IdentificationNumber,
                                 Telefono = patientList[0].Tel1,

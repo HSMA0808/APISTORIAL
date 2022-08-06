@@ -50,6 +50,9 @@
                             <label for="txtNombre">Nombre</label>
                           </div>
                         </div>
+                      </div>
+                      <br>
+                      <div class="row g-2">
                         <div class="col-md">
                           <div class="form-floating">
                             <input readonly type="text" class="form-control" id="txtApellido" placeholder="PEREZ MARTINEZ" value=" ">
@@ -114,9 +117,7 @@
                         </div>
                       </div>
                   </div>
-                  <div class="d-grid gap-2">
-                    <button class="btn btn-secondary" type="button"><i class="fas fa-edit"></i> Editar</button>
-                  </div>
+
               </form>
             </div>
 
@@ -491,7 +492,7 @@
           <hr width="100%">
 
           <!--Fila para colocar las listas de vacunas y alergias-->
-          <div class="row bg-white">
+          <div hidden class="row bg-white">
 
             <!--Modal para agregar vacunas-->
             <div class="modal fade" id="ModalVacunas" tabindex="-1" aria-labelledby="ModalVacunasLabel" aria-hidden="true">
@@ -571,9 +572,9 @@
                   <div class="col-md-6">
                     <h5>Vacunas</h5>
                   </div>
-                  <div class="col-md-6" align=right>
+                <!--<div class="col-md-6" align=right>
                     <button class="btn btn-primary" type="button" name="button" data-bs-toggle="modal" data-bs-target="#ModalVacunas" > <i class="fas fa-add"></i></button>
-                  </div>
+                  </div>-->
                 </div>
                 <br>
                 <table class = "table table-hover table-striped">
@@ -596,9 +597,9 @@
                   <div class="col-md-6">
                     <h5>Alergias</h5>
                   </div>
-                  <div class="col-md-6" align=right>
+                  <!--<div class="col-md-6" align=right>
                     <button class="btn btn-primary" type="button" name="button" data-bs-toggle="modal" data-bs-target="#ModalAlergias" > <i class="fas fa-add"></i></button>
-                  </div>
+                  </div>-->
                 </div>
                 <br>
                 <table class="table table-hover table-striped">
